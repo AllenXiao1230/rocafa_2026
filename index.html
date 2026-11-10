@@ -9,7 +9,7 @@
   <meta property="og:title" content="越境·寰宇｜2026 空軍官校禮儀示範晚會" />
   <meta property="og:description" content="12 月 24 日於空軍軍官學校舉行。查看活動資訊與報名流程。" />
   <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261110-event-copy" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261110-hallmark" />
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳至主要內容</a>
@@ -28,13 +28,15 @@
         <a href="#info">舞會資訊</a>
         <a href="#schedule">當日流程</a>
         <a href="#faq">入場須知</a>
-        <a href="#protocol" class="header-register-button btn-gold">查看報名流程</a>
       </nav>
 
-      <button id="mobile-menu-btn" type="button" aria-label="開啟導覽選單" aria-controls="mobile-menu" aria-expanded="false" class="mobile-toggle" hidden>
-        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" hidden><path d="m6 6 12 12M18 6 6 18"/></svg>
-      </button>
+      <div class="header-actions">
+        <a href="#protocol" class="header-register-button btn-gold">查看報名流程</a>
+        <button id="mobile-menu-btn" type="button" aria-label="開啟導覽選單" aria-controls="mobile-menu" aria-expanded="false" class="mobile-toggle" hidden>
+          <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" hidden><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
     </div>
 
     <nav id="mobile-menu" class="mobile-menu" aria-label="行動版導覽" hidden>
@@ -42,9 +44,6 @@
       <a href="#info" class="mobile-nav-link">舞會資訊</a>
       <a href="#schedule" class="mobile-nav-link">當日流程</a>
       <a href="#faq" class="mobile-nav-link">入場須知</a>
-      <div class="mobile-register-row">
-        <a href="#protocol" class="mobile-register-button mobile-nav-link btn-gold">查看報名流程</a>
-      </div>
     </nav>
   </header>
 
@@ -58,16 +57,14 @@
           <path class="star-glint" d="M62 321v14m-7-7h14M898 116v16m-8-8h16M148 393v8m-4-4h8M811 69v8m-4-4h8" />
         </svg>
         <div class="container hero-copy">
-          <div>
+          <hgroup class="hero-heading">
+            <h1 class="hero-title-frame font-serif-tc">越境 · 寰宇</h1>
             <p class="hero-tagline font-display-en" lang="en">Beyond Borders · Across the Universe</p>
-            <div class="hero-title-frame">
-              <h1 class="hero-title font-serif-tc">越境 · 寰宇</h1>
-            </div>
             <p class="hero-subtitle font-serif-tc">2026 空軍官校禮儀示範晚會</p>
-          </div>
+          </hgroup>
 
           <p class="hero-details">
-            <time datetime="2026-12-24T18:00:00+08:00">12 月 24 日（四）18:00–22:00</time>
+            <time datetime="2026-12-24T18:00:00+08:00">12 月 24 日（四）18:00 至 22:00</time>
             <span>高雄 · 空軍軍官學校</span>
           </p>
         </div>
@@ -80,7 +77,7 @@
           <path class="star-trail" pathLength="1" d="M30 365C118 363 157 185 252 125M748 335C835 280 902 97 970 95" />
           <path class="star-glint" d="M112 296v16m-8-8h16M886 147v16m-8-8h16M73 390v8m-4-4h8M931 63v8m-4-4h8" />
         </svg>
-        <div class="container-narrow">
+        <div class="container">
           <div class="tear-ticket">
             <div class="tear-ticket-plane">
               <div class="tear-ticket-body">
@@ -91,7 +88,7 @@
               </div>
               <div class="tear-ticket-stub" aria-hidden="true">
                 <img src="assets/images/brand-emblem.svg" width="26" height="26" alt="" />
-                <p lang="en">ROCAFA</p>
+                <p class="tear-ticket-wordmark" lang="en">ROCAFA</p>
                 <span class="tear-ticket-edition font-display-en">2026</span>
                 <span class="tear-ticket-stub-type" lang="en">Annual Ball</span>
               </div>
@@ -104,29 +101,29 @@
     <!-- 2. Countdown Section -->
     <section class="countdown scroll-scene">
       <div class="scene-stage countdown-stage">
-        <div class="container-narrow">
+        <div class="container">
           <h2 class="section-title countdown-title font-serif-tc">晚會倒數</h2>
 
-          <div class="grid-4">
+          <div class="grid-4" id="countdown-values" hidden>
             <div class="countdown-card card">
-              <div id="cd-days" class="countdown-value font-display-en">—</div>
+              <div id="cd-days" class="countdown-value font-display-en"></div>
               <div class="countdown-unit font-serif-tc">日</div>
             </div>
             <div class="countdown-card card">
-              <div id="cd-hours" class="countdown-value font-display-en">—</div>
+              <div id="cd-hours" class="countdown-value font-display-en"></div>
               <div class="countdown-unit font-serif-tc">時</div>
             </div>
             <div class="countdown-card card">
-              <div id="cd-minutes" class="countdown-value font-display-en">—</div>
+              <div id="cd-minutes" class="countdown-value font-display-en"></div>
               <div class="countdown-unit font-serif-tc">分</div>
             </div>
             <div class="countdown-card card">
-              <div id="cd-seconds" class="countdown-value-seconds font-display-en">—</div>
+              <div id="cd-seconds" class="countdown-value-seconds font-display-en"></div>
               <div class="countdown-unit font-serif-tc">秒</div>
             </div>
           </div>
           <p id="cd-status-note">
-            12 月 24 日 18:00 開始
+            <time datetime="2026-12-24">12 月 24 日</time>開場
           </p>
         </div>
       </div>
@@ -134,7 +131,7 @@
 
     <section class="ball-motto scroll-scene" aria-label="晚會題詞">
       <div class="scene-stage motto-stage">
-        <div class="container-narrow">
+        <div class="container">
           <p class="motto-text font-serif-tc">
             <span class="motto-line">以飛行之名，</span>
             <span class="motto-line">越青春之境；</span>
@@ -159,8 +156,8 @@
               <h3 class="item-title font-serif-tc">Portugal Airlines</h3>
               <p class="journal-entry-copy">從葡萄牙航線出發，跨越熟悉的邊界，飛向更遠的星空。</p>
             </div>
-            <iframe class="journal-media" src="https://www.instagram.com/p/DfhLLIIyrTI/embed/" title="Instagram：Portugal Airlines" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen" allowfullscreen></iframe>
-            <a class="journal-link" href="https://www.instagram.com/p/DfhLLIIyrTI/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看「Portugal Airlines」">在 Instagram 查看 <span aria-hidden="true">↗</span></a>
+            <a class="journal-link" href="https://www.instagram.com/p/DfhLLIIyrTI/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看原文：Portugal Airlines">在 Instagram 查看原文</a>
+            <iframe class="journal-media" src="https://www.instagram.com/p/DfhLLIIyrTI/embed/" title="Instagram：Portugal Airlines" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </article>
           <article class="journal-entry">
             <div class="journal-entry-body">
@@ -168,17 +165,17 @@
               <h3 class="item-title font-serif-tc">Upside Down</h3>
               <p class="journal-entry-copy">打破既定航線，在星河中開闢新的方向。</p>
             </div>
-            <iframe class="journal-media" src="https://www.instagram.com/reel/DfCSSubyl4C/embed/" title="Instagram：Upside Down" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen" allowfullscreen></iframe>
-            <a class="journal-link" href="https://www.instagram.com/reel/DfCSSubyl4C/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看「Upside Down」">在 Instagram 查看 <span aria-hidden="true">↗</span></a>
+            <a class="journal-link" href="https://www.instagram.com/reel/DfCSSubyl4C/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看原文：Upside Down">在 Instagram 查看原文</a>
+            <iframe class="journal-media" src="https://www.instagram.com/reel/DfCSSubyl4C/embed/" title="Instagram：Upside Down" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </article>
           <article class="journal-entry">
             <div class="journal-entry-body">
               <p class="journal-meta"><time datetime="2026-10-19">10 月 19 日</time> · 照片</p>
               <h3 class="item-title font-serif-tc">《越境·寰宇》主題發布</h3>
-              <p class="journal-entry-copy">12 月 24 日，在空軍軍官學校共赴一場平安夜晚會。</p>
+              <p class="journal-entry-copy">在空軍軍官學校共赴一場平安夜晚會。</p>
             </div>
-            <iframe class="journal-media" src="https://www.instagram.com/p/DerGlyJy-WF/embed/" title="Instagram：《越境·寰宇》主題發布" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen" allowfullscreen></iframe>
-            <a class="journal-link" href="https://www.instagram.com/p/DerGlyJy-WF/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看「《越境·寰宇》主題發布」">在 Instagram 查看 <span aria-hidden="true">↗</span></a>
+            <a class="journal-link" href="https://www.instagram.com/p/DerGlyJy-WF/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看原文：《越境·寰宇》主題發布">在 Instagram 查看原文</a>
+            <iframe class="journal-media" src="https://www.instagram.com/p/DerGlyJy-WF/embed/" title="Instagram：《越境·寰宇》主題發布" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </article>
         </div>
       </div>
@@ -196,8 +193,8 @@
           <div class="card">
             <div>
               <h3 class="item-title font-serif-tc">2026 年 12 月 24 日（四）</h3>
-              <p class="info-card-summary">18:00–22:00</p>
-              <p class="info-card-note">建議 17:00–17:45 抵達，預留入場查驗時間。</p>
+              <p class="info-card-summary">18:00 至 22:00</p>
+              <p class="info-card-note">建議在 17:00 至 17:45 抵達，預留入場查驗時間。</p>
             </div>
             <div class="info-card-action">
               <button type="button" id="download-ics-btn" hidden class="full-width-button btn-outline">
@@ -227,7 +224,7 @@
             </div>
             <div class="info-card-action">
               <a href="#protocol" class="full-width-button btn-outline">
-                前往禮賓對接檢核 →
+                查看報名流程
               </a>
             </div>
           </div>
@@ -236,7 +233,7 @@
     </section>
 
     <section id="schedule">
-      <div class="container-narrow">
+      <div class="container">
         <div class="section-heading">
           <h2 class="section-title font-serif-tc">當日流程</h2>
         </div>
@@ -244,7 +241,7 @@
         <ol class="schedule-list" role="list">
           <li class="schedule-event">
             <div class="schedule-entry">
-              <span class="schedule-time font-display-en"><time datetime="17:00">17:00</time>–<time datetime="18:00">18:00</time></span>
+              <span class="schedule-time font-display-en"><time datetime="17:00">17:00</time> 至 <time datetime="18:00">18:00</time></span>
               <div>
                 <h3 class="item-title font-serif-tc">迎賓與入場</h3>
                 <p class="schedule-entry-copy">接駁車抵達、身分查驗與拍照。</p>
@@ -286,7 +283,7 @@
     </section>
 
     <!-- 7. Registration Flow -->
-    <section id="protocol">
+    <section id="protocol" tabindex="-1">
       <div class="container">
         <div class="section-heading">
           <h2 class="section-title font-serif-tc">報名流程</h2>
@@ -309,7 +306,7 @@
             </div>
             <div class="protocol-step-footer">
               <p class="protocol-note">資料用於當日門禁與接待。<a href="#faq">查看入場須知</a></p>
-              <a class="full-width-button btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLSfoJ6wk85NshcKoN-W9an7NjDU1-Q6USu9ARC0B8YKi7dxaQg/viewform" target="_blank" rel="noopener noreferrer">開啟報名表 ↗</a>
+              <a class="full-width-button btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLSfoJ6wk85NshcKoN-W9an7NjDU1-Q6USu9ARC0B8YKi7dxaQg/viewform" target="_blank" rel="noopener noreferrer">開啟報名表</a>
             </div>
           </div>
 
@@ -324,7 +321,7 @@
               </p>
             </div>
             <div class="protocol-step-footer">
-              <a class="full-width-button btn-outline" href="https://www.instagram.com/rocafa_2026/" target="_blank" rel="noopener noreferrer">開啟官方 IG ↗</a>
+              <a class="full-width-button btn-outline" href="https://www.instagram.com/rocafa_2026/" target="_blank" rel="noopener noreferrer">開啟官方 IG</a>
             </div>
           </div>
 
@@ -345,7 +342,7 @@
 
     <!-- 8. Warm Cream FAQ Accordion Section -->
     <section id="faq" class="cream-section">
-      <div class="container-narrow">
+      <div class="container">
         <div class="section-heading">
           <h2 class="section-title font-serif-tc">入場須知與常見問題</h2>
         </div>
@@ -389,7 +386,7 @@
           <details class="faq-item" name="event-faq">
             <summary class="faq-btn font-serif-tc">當天幾點抵達比較合適？</summary>
             <div class="faq-body">
-              <p>建議 17:00–17:45 抵達，預留身分查驗時間。晚會 18:00 開場，22:00 結束。</p>
+              <p>建議在 17:00 至 17:45 抵達，預留身分查驗時間。</p>
             </div>
           </details>
 
@@ -447,6 +444,6 @@
     </div>
   </dialog>
 
-  <script src="assets/js/site.js?v=20261110-scene-atmosphere"></script>
+  <script src="assets/js/site.js?v=20261110-hallmark"></script>
 </body>
 </html>

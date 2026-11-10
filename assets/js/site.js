@@ -3,6 +3,9 @@
   var mobileMenu = document.getElementById('mobile-menu');
   var iconOpen = document.getElementById('menu-icon-open');
   var iconClose = document.getElementById('menu-icon-close');
+  var registerLink = document.querySelector('.header-register-button');
+  var main = document.getElementById('main-content');
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
   function setMobileMenu(open) {
     mobileMenu.hidden = !open;
@@ -16,14 +19,14 @@
   mobileMenuBtn.addEventListener('click', function () {
     setMobileMenu(mobileMenu.hidden);
   });
-  mobileMenu.querySelectorAll('a').forEach(function (link) {
+  document.querySelectorAll('.mobile-nav-link, .header-register-button').forEach(function (link) {
     link.addEventListener('click', function () {
       setMobileMenu(false);
       var destination = document.querySelector(link.hash);
       destination.focus({ preventScroll: true });
     });
   });
-  document.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+  mobileMenu.querySelectorAll('a').forEach(function (link) {
     document.querySelector(link.hash).tabIndex = -1;
   });
   document.addEventListener('keydown', function (event) {
@@ -33,7 +36,11 @@
     }
   });
   matchMedia('(max-width: 900px)').addEventListener('change', function (event) {
-    if (!event.matches) setMobileMenu(false);
+    if (event.matches) return;
+    if (mobileMenu.contains(document.activeElement) || document.activeElement === mobileMenuBtn) {
+      registerLink.focus({ preventScroll: true });
+    }
+    setMobileMenu(false);
   });
 
   var ticket = document.querySelector('.tear-ticket');
@@ -71,7 +78,8 @@
     var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
     var ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
     var ticketHeight = ticketStage.offsetHeight;
-    var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight);
+    var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
+    var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset);
     var ticketProgress = limitProgress(-ticketTop / ticketDistance);
     var tearEnd = 0.8;
     var tearProgress = limitProgress(ticketProgress / tearEnd);
@@ -107,11 +115,27 @@
     if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScrollScenes);
   }
 
-  document.getElementById('main-content').classList.add('has-scroll-scenes');
-  window.addEventListener('scroll', queueSceneUpdate, { passive: true });
-  window.addEventListener('resize', queueSceneUpdate);
-  window.addEventListener('pageshow', queueSceneUpdate);
-  queueSceneUpdate();
+  function syncScrollMotion() {
+    main.classList.toggle('has-scroll-scenes', !reduceMotion.matches);
+    if (reduceMotion.matches) {
+      window.removeEventListener('scroll', queueSceneUpdate);
+      window.removeEventListener('resize', queueSceneUpdate);
+      window.removeEventListener('pageshow', queueSceneUpdate);
+      cancelAnimationFrame(sceneFrame);
+      sceneFrame = 0;
+      [heroStage, ticketStage, ticket, countdownStage, mottoStage].forEach(function (element) {
+        element.removeAttribute('style');
+      });
+      return;
+    }
+    window.addEventListener('scroll', queueSceneUpdate, { passive: true });
+    window.addEventListener('resize', queueSceneUpdate);
+    window.addEventListener('pageshow', queueSceneUpdate);
+    queueSceneUpdate();
+  }
+
+  reduceMotion.addEventListener('change', syncScrollMotion);
+  syncScrollMotion();
 
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');
@@ -140,6 +164,7 @@
     elSeconds.textContent = pad2(Math.floor((diff / 1000) % 60));
   }
   updateCountdown();
+  document.getElementById('countdown-values').hidden = false;
   if (Date.now() < targetTime) countdownTimer = setInterval(updateCountdown, 1000);
 
   var calendarButton = document.getElementById('download-ics-btn');
@@ -244,11 +269,24 @@
     modalOpener.focus({ preventScroll: true });
   });
 
+  // Focus inside a cross-origin embed may not propagate a focus event to its card.
+  var focusedJournal;
+  function syncJournalFocus() {
+    var active = document.activeElement;
+    var card = active.matches('.journal-media') ? active.closest('.journal-entry') : null;
+    if (focusedJournal === card) return;
+    if (focusedJournal) focusedJournal.classList.remove('has-frame-focus');
+    if (card) card.classList.add('has-frame-focus');
+    focusedJournal = card;
+  }
+  window.addEventListener('blur', function () { requestAnimationFrame(syncJournalFocus); });
+  document.addEventListener('focusin', syncJournalFocus);
+
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
       '.ticket-star-trails',
       '.section-heading > *',
-      '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
+      '#info .card', '.journal-entry',
       '.schedule-entry', '.protocol-steps > .card',
       '.faq-item', '.footer-inner > *'
     ].join(','));
