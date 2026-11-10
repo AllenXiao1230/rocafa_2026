@@ -53,7 +53,7 @@
       elHours.textContent = '00';
       elMinutes.textContent = '00';
       elSeconds.textContent = '00';
-      elNote.textContent = '《越境·寰宇》2026 空軍官校禮儀示範晚會已璀璨啟航！';
+      elNote.textContent = '晚會倒數已結束。';
       clearInterval(countdownTimer);
       return;
     }
@@ -95,15 +95,6 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   });
 
-
-  document.querySelectorAll('.journal-embed').forEach(function (details) {
-    var frame = details.querySelector('iframe');
-    details.hidden = false;
-    details.addEventListener('toggle', function () {
-      if (details.open) frame.src = details.dataset.embedSrc;
-      else frame.removeAttribute('src');
-    });
-  });
 
   var scheduleFilters = document.querySelector('.schedule-filters');
   var scheduleButtons = scheduleFilters.querySelectorAll('.sched-tab');

@@ -33,4 +33,4 @@ rocafa_2026/
 
 ## 舞會手記更新
 
-在 `index.html` 的 `#journal` 更新貼文標題、日期、原文連結及相應的 `data-embed-src`。站內預覽在訪客展開後才向 Instagram 載入，原文連結可直接使用。
+在 `index.html` 的 `#journal` 更新貼文標題、日期、摘要、原文連結與 iframe 的 `src`。保留貼文或 Reel 路徑，並在 iframe 網址尾端加上 `embed/`。貼文接近畫面時才由瀏覽器向 Instagram 載入。
