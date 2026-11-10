@@ -188,15 +188,19 @@
   function updateScheduleRail() {
     scheduleFrame = 0;
     var first = scheduleEntries[0];
-    var last = scheduleEntries[scheduleEntries.length - 1];
-    var length = last.offsetTop - first.offsetTop;
+    var start = first.offsetTop;
+    var offsets = Array.from(scheduleEntries, function (entry) { return entry.offsetTop - start; });
+    var length = offsets[offsets.length - 1];
     var viewport = document.documentElement.clientHeight;
-    var distance = viewport * 0.82 - first.getBoundingClientRect().top;
-    var progress = Math.max(0, Math.min(1, distance / (length + viewport * 0.37)));
+    var distance = viewport * 0.74 - first.getBoundingClientRect().top;
+    var progress = limitProgress(distance / Math.max(1, length));
 
     scheduleList.style.setProperty('--schedule-rail-length', length + 'px');
     scheduleList.style.setProperty('--schedule-progress', progress);
     scheduleList.style.setProperty('--schedule-rail-opacity', Math.min(1, progress * 10));
+    scheduleEntries.forEach(function (entry, index) {
+      entry.classList.toggle('is-lit', distance >= offsets[index]);
+    });
   }
 
   function queueScheduleUpdate() {

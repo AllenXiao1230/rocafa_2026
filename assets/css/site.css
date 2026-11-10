@@ -83,7 +83,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   position: absolute; width: 1px; height: 1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
-.inline-link, .protocol-note a {
+.inline-link {
   color: var(--gold-light);
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -757,12 +757,6 @@ main > .cream-section {
   margin-top: 0.3rem;
 }
 
-.info-card-note {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-top: 0.6rem;
-}
-
 .info-card-action {
   margin-top: 1.25rem;
 }
@@ -788,8 +782,6 @@ main > .cream-section {
 #journal {
   background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
-
-.journal-account { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; }
 
 .journal-list {
   display: grid;
@@ -904,12 +896,18 @@ main > .cream-section {
   border: 1px solid var(--gold);
   background: var(--bg-navy);
   transform: translate(-50%, -50%) rotate(45deg);
+  transition: background-color 0.24s ease-out, border-color 0.24s ease-out, transform 0.3s ease-out;
 }
 
 .schedule-event-opening::after {
   width: 0.65rem;
   height: 0.65rem;
-  background: var(--gold);
+}
+
+.schedule-event.is-lit::after {
+  border-color: var(--gold-light);
+  background: var(--gold-light);
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.15);
 }
 
 .schedule-entry {
@@ -968,8 +966,6 @@ main > .cream-section {
 
 /* FAQ and final registration links */
 
-.protocol-note { color: var(--text-secondary); font-size: 0.875rem; }
-.protocol-step-footer .protocol-note + a { margin-top: 0.65rem; }
 .brand-emblem { flex-shrink: 0; }
 #modal-body p + p { margin-top: 0.75rem; }
 .btn-gold, .btn-outline, .mobile-toggle, .mobile-menu a, #close-modal-btn {
