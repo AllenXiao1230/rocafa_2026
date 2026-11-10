@@ -191,32 +191,11 @@ main > .cream-section {
 
 /* Header */
 
-.brand-name-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .brand-name {
   font-weight: 600;
   font-size: 1.05rem;
   letter-spacing: 0.06em;
   color: #f7ebd9;
-}
-
-.brand-year {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  background: rgba(216,180,124,0.15);
-  color: var(--gold);
-  border: 1px solid rgba(216,180,124,0.3);
-}
-
-.brand-caption {
-  font-size: 11px;
-  color: var(--text-muted);
 }
 
 .header-register-button {
@@ -277,6 +256,11 @@ main > .cream-section {
   line-height: 1.06;
   letter-spacing: 0.035em;
   transform-origin: center;
+}
+
+.hero-subtitle,
+.hero-tagline {
+  text-align: right;
 }
 
 .hero-subtitle {
@@ -898,10 +882,6 @@ main > .cream-section {
   .countdown-value, .countdown-value-seconds { font-size: clamp(1.25rem, 7vw, 2.4rem); }
   .schedule-entry { flex-wrap: wrap; gap: 0.25rem; }
   .schedule-time, .schedule-time-opening { flex-basis: 100%; }
-}
-
-@media (max-width: 360px) {
-  .brand-year { display: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
