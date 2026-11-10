@@ -174,7 +174,7 @@ main > section + section:not(.ticket-section, .countdown)::after {
   translate: -50% -50%;
 }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 640px; margin: 0 auto; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; max-width: 640px; margin: 0 auto; }
 
 /* Cards & Badges */
 .card {
@@ -270,7 +270,7 @@ main > .cream-section {
 /* Hero and key visual */
 
 .scroll-scene {
-  --scene-height: calc(100dvh - 4rem);
+  --scene-height: calc(100svh - 4rem);
   --scene-runway: clamp(10rem, 32svh, 18rem);
   padding: 0;
 }
@@ -294,7 +294,7 @@ main > .cream-section {
   top: 4rem;
 }
 
-:is(.hero-stage, .ticket-stage, .countdown-stage, .motto-stage)::before,
+:is(.hero-stage, .scene-arrival, .motto-stage)::before,
 #schedule > .container::before {
   content: "";
   position: absolute;
@@ -445,7 +445,9 @@ main > .cream-section {
 
 .ticket-section {
   --ticket-inset: 1rem;
-  --ticket-stage-height: calc(100dvh - 4rem - 2 * var(--ticket-inset));
+  --arrival-inset: calc(2 * var(--ticket-inset));
+  --ticket-stage-height: calc(100svh - 4rem - var(--arrival-inset));
+  --arrival-height: var(--ticket-stage-height);
   --ticket-scroll-distance: clamp(10rem, 28svh, 15rem);
   isolation: isolate;
   min-block-size: calc(var(--ticket-stage-height) + var(--ticket-scroll-distance) + 2 * var(--ticket-inset));
@@ -456,8 +458,8 @@ main > .cream-section {
 }
 
 .ticket-stage {
-  --ticket-presence: calc(var(--scene-entry, 1) * (1 - var(--ticket-exit, 0)));
-  --ticket-offset: calc(var(--scene-entry-offset, 0px) - var(--ticket-exit, 0) * 3.5rem);
+  --ticket-presence: calc(1 - var(--ticket-exit, 0));
+  --ticket-offset: calc(var(--ticket-exit, 0) * -3.5rem);
   --scene-glow: rgb(var(--gold-rgb) / 12%);
   --scene-glow-opacity: var(--ticket-presence);
   --scene-glow-offset: var(--ticket-offset);
@@ -465,11 +467,44 @@ main > .cream-section {
   top: calc(4rem + var(--ticket-inset));
   isolation: isolate;
   display: grid;
-  align-content: center;
   min-block-size: var(--ticket-stage-height);
 }
 
-.ticket-stage > .container { width: 100%; padding-inline: 0; }
+.ticket-stage .scene-arrival > .container { padding-inline: 0; }
+
+.scene-arrival {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  opacity: var(--scene-entry, 1);
+  transform: translateY(var(--scene-entry-offset, 0px));
+  scale: calc(1 - (1 - var(--arrival-scale, 1)) * (1 - var(--scene-entry, 1)));
+}
+
+.scene-arrival > .container { width: 100%; }
+
+@supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) and (view-timeline-inset: 4rem 0px) {
+  .has-scroll-scenes :is(.ticket-section, .countdown) {
+    view-timeline-name: --arrival;
+    /* Keep the timeline aligned with the stage when mobile browser controls retract. */
+    view-timeline-inset: 4rem max(0px, calc(100dvh - 100svh));
+  }
+
+  .has-scroll-scenes .scene-arrival {
+    animation: scene-arrive auto linear both;
+    animation-timeline: --arrival;
+    animation-range: entry var(--arrival-inset, 0px) entry 100%;
+  }
+
+  @keyframes scene-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(calc(var(--arrival-height) * -5 / 6)) scale(var(--arrival-scale, 1));
+    }
+    to { opacity: 1; transform: none; }
+  }
+}
 
 .tear-ticket {
   max-width: 36rem;
@@ -620,22 +655,21 @@ main > .cream-section {
 
 .countdown {
   --scene-runway: clamp(6rem, 18svh, 10rem);
+  --arrival-height: var(--scene-height);
+  --arrival-scale: 0.72;
   background: linear-gradient(var(--bg-navy), var(--bg-deep));
   text-align: center;
 }
 
 .countdown-stage {
-  --countdown-presence: calc(var(--scene-entry, 1) * (1 - var(--countdown-exit, 0)));
+  --countdown-presence: calc(1 - var(--countdown-exit, 0));
   --scene-glow: var(--glow-countdown);
   --scene-glow-opacity: var(--countdown-presence);
-  --scene-glow-offset: var(--scene-entry-offset, 0px);
+  align-content: stretch;
 }
 
-.countdown-stage > .container {
-  --countdown-entry: var(--scene-entry, 1);
-  scale: calc(0.72 + var(--countdown-entry) * 0.28);
+.countdown-stage .scene-arrival > .container {
   opacity: var(--countdown-presence);
-  translate: 0 var(--scene-entry-offset, 0px);
 }
 
 .countdown-title {

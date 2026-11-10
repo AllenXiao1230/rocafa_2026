@@ -54,6 +54,9 @@
   var countdownStage = countdownScene.querySelector('.scene-stage');
   var mottoStage = mottoScene.querySelector('.scene-stage');
   var sceneFrame = 0;
+  var nativeSceneArrival = CSS.supports('animation-timeline: view()') &&
+    CSS.supports('animation-range: entry 0% entry 100%') &&
+    CSS.supports('view-timeline-inset: 4rem 0px');
 
   function limitProgress(value) {
     return Math.max(0, Math.min(1, value));
@@ -100,11 +103,13 @@
     heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
     heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
 
-    setSceneEntrance(ticketStage, ticketTop, ticketHeight);
+    if (!nativeSceneArrival) {
+      setSceneEntrance(ticketStage, ticketTop, ticketHeight);
+      setSceneEntrance(countdownStage, countdownTop, countdownHeight);
+    }
     ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
     ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
     ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
-    setSceneEntrance(countdownStage, countdownTop, countdownHeight);
     countdownStage.style.setProperty('--countdown-exit', countdownExit);
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
     mottoStage.style.setProperty('--motto-exit', mottoExit);
@@ -130,6 +135,12 @@
   var countdownTimer;
 
   function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function setCountdownValue(element, value) {
+    var text = pad2(value);
+    if (element.textContent !== text) element.textContent = text;
+  }
+
   function updateCountdown() {
     var diff = targetTime - Date.now();
     if (diff <= 0) {
@@ -141,10 +152,10 @@
       clearInterval(countdownTimer);
       return;
     }
-    elDays.textContent = pad2(Math.floor(diff / 86400000));
-    elHours.textContent = pad2(Math.floor((diff / 3600000) % 24));
-    elMinutes.textContent = pad2(Math.floor((diff / 60000) % 60));
-    elSeconds.textContent = pad2(Math.floor((diff / 1000) % 60));
+    setCountdownValue(elDays, Math.floor(diff / 86400000));
+    setCountdownValue(elHours, Math.floor((diff / 3600000) % 24));
+    setCountdownValue(elMinutes, Math.floor((diff / 60000) % 60));
+    setCountdownValue(elSeconds, Math.floor((diff / 1000) % 60));
   }
   updateCountdown();
   document.getElementById('countdown-values').hidden = false;
