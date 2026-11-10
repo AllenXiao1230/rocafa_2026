@@ -68,6 +68,7 @@
     var copyExit = limitProgress(heroProgress / 0.36);
     var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
     var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
+    var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
     var ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
     var ticketHeight = ticketStage.offsetHeight;
     var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight);
@@ -76,23 +77,30 @@
     var tearProgress = limitProgress(ticketProgress / tearEnd);
     var countdownTop = countdownScene.getBoundingClientRect().top - headerHeight;
     var countdownHeight = countdownStage.offsetHeight;
+    var countdownDistance = countdownScene.clientHeight - countdownHeight;
+    var countdownExit = limitProgress((-countdownTop - countdownDistance) / (countdownHeight * 0.58));
     var mottoTop = mottoScene.getBoundingClientRect().top - headerHeight;
     var mottoLead = mottoStage.offsetHeight * 0.23;
     var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoStage.offsetHeight);
     var mottoProgress = limitProgress((mottoLead - mottoTop) / (mottoDistance + mottoLead));
+    var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoStage.offsetHeight * 0.6));
 
     heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
     heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
-    heroStage.style.setProperty('--hero-logo-opacity', (0.12 + 0.82 * logoEnter) * (1 - logoExit));
+    heroStage.style.setProperty('--hero-logo-opacity', logoOpacity);
     heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
     heroStage.style.setProperty('--hero-logo-layer', copyExit === 1 ? 1 : -1);
+    heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
+    heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
 
     setSceneEntrance(ticketStage, ticketTop, ticketHeight);
     ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
     ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
-    ticket.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
+    ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
     setSceneEntrance(countdownStage, countdownTop, countdownHeight);
+    countdownStage.style.setProperty('--countdown-exit', countdownExit);
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
+    mottoStage.style.setProperty('--motto-exit', mottoExit);
   }
 
   function queueSceneUpdate() {
