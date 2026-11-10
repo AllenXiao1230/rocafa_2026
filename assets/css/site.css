@@ -542,7 +542,7 @@ main > .cream-section {
   padding-inline: 0.4rem;
 }
 
-#info { background: linear-gradient(var(--bg-deep), var(--bg-navy)); }
+#info { background: linear-gradient(var(--bg-navy), var(--bg-twilight)); }
 
 .info-card-title {
   font-size: 1.25rem;
@@ -585,7 +585,7 @@ main > .cream-section {
 
 /* Journal */
 #journal {
-  background: linear-gradient(var(--bg-navy), var(--bg-twilight));
+  background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
 .journal-heading {
@@ -918,7 +918,7 @@ main > .cream-section {
 /* Entrances */
 
 .hero-title-frame {
-  animation: title-arrive 0.85s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation: title-arrive 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
 }
 
 :is(
@@ -927,12 +927,12 @@ main > .cream-section {
   #info-modal[open] .modal-panel, .faq-item[open] .faq-body
 ),
 .has-entered:not(.star-trails, :focus-within) {
-  animation: settle-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation: settle-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
 }
 
-.hero-subtitle { animation-delay: 0.12s; }
-.hero-tagline { animation-delay: 0.18s; }
-.hero-details { animation-delay: 0.24s; }
+.hero-subtitle { animation-delay: 0.24s; }
+.hero-tagline { animation-delay: 0.3s; }
+.hero-details { animation-delay: 0.36s; }
 
 @keyframes title-arrive {
   from { clip-path: inset(105% -8% 0); translate: 0 0.22em; }
