@@ -37,6 +37,7 @@
   });
 
   var ticket = document.querySelector('.tear-ticket');
+  var ticketFocusLayout = matchMedia('(max-width: 767px), (max-width: 960px) and (pointer: coarse)');
   var ticketFrame = 0;
   var lastTicketProgress = -1;
 
@@ -44,8 +45,10 @@
     ticketFrame = 0;
     var bounds = ticket.getBoundingClientRect();
     var viewport = document.documentElement.clientHeight;
-    var start = Math.min(viewport * 0.72, viewport - bounds.height - 12);
-    var progress = Math.max(0, Math.min(1, (start - bounds.top) / (viewport * 0.4)));
+    var focusedLayout = ticketFocusLayout.matches;
+    var start = Math.min(viewport * (focusedLayout ? 0.5 : 0.72), viewport - bounds.height - 12);
+    var travel = viewport * (focusedLayout ? 0.2 : 0.4);
+    var progress = Math.max(0, Math.min(1, (start - bounds.top) / travel));
     if (progress === lastTicketProgress) return;
     lastTicketProgress = progress;
 

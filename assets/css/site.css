@@ -367,8 +367,20 @@ main > .cream-section {
 .ticket-section {
   isolation: isolate;
   padding-block: clamp(5rem, 11vw, 10rem);
+  padding-block-end: clamp(7rem, 14vw, 12rem);
   overflow-x: clip;
   background: var(--bg-navy);
+}
+
+@media (max-width: 767px), (max-width: 960px) and (pointer: coarse) {
+  .ticket-section {
+    display: grid;
+    align-content: center;
+    min-block-size: calc(100svh + 8rem);
+    padding-block: 5rem;
+  }
+
+  .ticket-section > .container-narrow { width: 100%; }
 }
 
 .tear-ticket {
