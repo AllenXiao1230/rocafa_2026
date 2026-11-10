@@ -187,4 +187,25 @@
     document.body.classList.remove('dialog-open');
     modalOpener.focus({ preventScroll: true });
   });
+
+  if ('IntersectionObserver' in window) {
+    var entranceTargets = document.querySelectorAll([
+      '.tear-ticket-plane', '.countdown-title', '.countdown-card', '#cd-status-note',
+      '.section-heading > *', '.compact-section-heading > *', '.journal-heading > *',
+      '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
+      '.schedule-filters > button', '.schedule-entry', '.protocol-steps > .card',
+      '.faq-item', '.footer-inner > *'
+    ].join(','));
+    var entranceObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('has-entered');
+        entranceObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '-64px 0px -8px' });
+
+    entranceTargets.forEach(function (target) {
+      entranceObserver.observe(target);
+    });
+  }
 })();

@@ -262,11 +262,6 @@ main > .cream-section {
   transform-origin: center;
 }
 
-.hero-subtitle,
-.hero-tagline {
-  text-align: right;
-}
-
 .hero-subtitle {
   margin-top: 0.75rem;
   color: var(--text-main);
@@ -291,20 +286,6 @@ main > .cream-section {
 
 .text-gold { color: var(--gold); }
 
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-}
-
-.hero-register-button,
-.hero-schedule-button {
-  padding: 0.75rem 1.35rem;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-}
-
 .key-visual-button {
   min-height: 44px;
   padding-inline: 0.6rem;
@@ -317,6 +298,7 @@ main > .cream-section {
 /* Scroll ticket */
 
 .ticket-section {
+  padding-block: clamp(5rem, 11vw, 10rem);
   overflow-x: clip;
   background: var(--bg-navy);
 }
@@ -888,88 +870,77 @@ main > .cream-section {
   .schedule-entry { grid-template-columns: minmax(0, 1fr); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero-title-frame {
-    animation: title-arrive 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* Entrances */
+
+.hero-title-frame {
+  animation: title-arrive 0.85s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+:is(
+  .brand-link, .desktop-nav > a, .mobile-toggle,
+  .mobile-menu > *, .hero-subtitle, .hero-tagline, .hero-details,
+  #info-modal[open] .modal-panel, .faq-item[open] .faq-body
+),
+.has-entered:not(:focus-within) {
+  animation: settle-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.hero-subtitle { animation-delay: 0.12s; }
+.hero-tagline { animation-delay: 0.18s; }
+.hero-details { animation-delay: 0.24s; }
+
+@keyframes title-arrive {
+  from { clip-path: inset(105% -8% 0); translate: 0 0.22em; }
+  to { clip-path: inset(-8% -8% -8%); translate: 0; }
+}
+
+@keyframes settle-in {
+  from { opacity: 0.48; translate: 0 0.75rem; }
+  to { opacity: 1; translate: 0; }
+}
+
+@supports (animation-timeline: scroll()) and (animation-range: 0px 100px) {
+  main > section + section {
+    view-timeline-name: --section-scroll;
+    view-timeline-inset: 0 -2rem;
   }
 
-  .hero-subtitle,
-  .hero-tagline,
-  .hero-details,
-  .hero-actions {
-    animation: settle-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  main > section + section::before {
+    animation: draw-divider auto linear both;
+    animation-timeline: --section-scroll;
+    animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + clamp(4rem, 15svh, 8rem));
   }
 
-  .hero-subtitle { animation-delay: 0.12s; }
-  .hero-tagline { animation-delay: 0.18s; }
-  .hero-details { animation-delay: 0.24s; }
-  .hero-actions { animation-delay: 0.3s; }
-  .hero-actions:focus-within { animation: none; }
+  @media (min-height: 620px) {
+    #hero { min-height: calc(100svh - 4rem + var(--hero-scroll-distance)); }
+    .hero-stage { position: sticky; top: 4rem; }
 
-  @keyframes title-arrive {
-    from { clip-path: inset(105% -8% 0); translate: 0 0.22em; }
-    to { clip-path: inset(-8% -8% -8%); translate: 0; }
+    .hero-title {
+      animation: title-recede auto linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px var(--hero-scroll-distance);
+    }
+
+    .hero-orbit {
+      animation: orbit-recede auto linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px var(--hero-scroll-distance);
+    }
   }
 
-  @keyframes settle-in {
-    from { opacity: 0.84; translate: 0 0.75rem; }
-    to { opacity: 1; translate: 0; }
+  @keyframes title-recede {
+    from { scale: 1; }
+    to { scale: 0.58; }
   }
 
-  @supports (animation-timeline: scroll()) and (animation-range: 0px 100px) {
-    :is(
-      .section-heading, .compact-section-heading, .journal-heading,
-      .countdown-title, .countdown-card, #cd-status-note, #info .card,
-      .journal-entry-body, .journal-media, .journal-link, .schedule-entry,
-      .protocol-steps > .card, .faq-item, .footer-inner
-    ):not(:focus-within) {
-      animation: settle-in auto linear both;
-      animation-timeline: view(block);
-      animation-range: entry 0% cover 22%;
-    }
+  @keyframes orbit-recede {
+    from { transform: scale(1); opacity: 0.12; }
+    to { transform: scale(0.77) rotate(-9deg); opacity: 0.045; }
+  }
 
-    main > section + section {
-      view-timeline-name: --section-scroll;
-      view-timeline-inset: 0 -2rem;
-    }
-
-    main > section + section::before {
-      animation: draw-divider auto linear both;
-      animation-timeline: --section-scroll;
-      animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + clamp(4rem, 15svh, 8rem));
-    }
-
-    @media (min-height: 620px) {
-      #hero { min-height: calc(100svh - 4rem + var(--hero-scroll-distance)); }
-      .hero-stage { position: sticky; top: 4rem; }
-
-      .hero-title {
-        animation: title-recede auto linear both;
-        animation-timeline: scroll(root block);
-        animation-range: 0px var(--hero-scroll-distance);
-      }
-
-      .hero-orbit {
-        animation: orbit-recede auto linear both;
-        animation-timeline: scroll(root block);
-        animation-range: 0px var(--hero-scroll-distance);
-      }
-    }
-
-    @keyframes title-recede {
-      from { scale: 1; }
-      to { scale: 0.58; }
-    }
-
-    @keyframes orbit-recede {
-      from { transform: scale(1); opacity: 0.12; }
-      to { transform: scale(0.77) rotate(-9deg); opacity: 0.045; }
-    }
-
-    @keyframes draw-divider {
-      from { scale: 0.24 1; opacity: 0.35; }
-      to { scale: 1 1; opacity: 1; }
-    }
+  @keyframes draw-divider {
+    from { scale: 0.24 1; opacity: 0.35; }
+    to { scale: 1 1; opacity: 1; }
   }
 }
 
