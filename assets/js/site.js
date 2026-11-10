@@ -37,18 +37,17 @@
   });
 
   var ticket = document.querySelector('.tear-ticket');
-  var ticketFocusLayout = matchMedia('(max-width: 767px), (max-width: 960px) and (pointer: coarse)');
+  var ticketStage = document.querySelector('.ticket-stage');
+  var ticketSection = document.querySelector('.ticket-section');
+  var headerInner = document.querySelector('.header-inner');
   var ticketFrame = 0;
   var lastTicketProgress = -1;
 
   function updateTicket() {
     ticketFrame = 0;
-    var bounds = ticket.getBoundingClientRect();
-    var viewport = document.documentElement.clientHeight;
-    var focusedLayout = ticketFocusLayout.matches;
-    var start = Math.min(viewport * (focusedLayout ? 0.5 : 0.72), viewport - bounds.height - 12);
-    var travel = viewport * (focusedLayout ? 0.2 : 0.4);
-    var progress = Math.max(0, Math.min(1, (start - bounds.top) / travel));
+    var travel = Math.max(1, ticketSection.clientHeight - ticketStage.offsetHeight);
+    var distance = headerInner.offsetHeight - ticketSection.getBoundingClientRect().top;
+    var progress = Math.max(0, Math.min(1, distance / travel));
     if (progress === lastTicketProgress) return;
     lastTicketProgress = progress;
 
@@ -63,7 +62,7 @@
     if (!ticketFrame) ticketFrame = requestAnimationFrame(updateTicket);
   }
 
-  if (ticket) {
+  if (ticket && ticketStage && ticketSection) {
     window.addEventListener('scroll', queueTicketUpdate, { passive: true });
     window.addEventListener('resize', queueTicketUpdate);
     window.addEventListener('pageshow', queueTicketUpdate);
