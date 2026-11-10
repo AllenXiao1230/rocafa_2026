@@ -808,7 +808,7 @@ main > .cream-section {
 
 .journal-entry-body { flex: 1; padding: 1.1rem 1.15rem 1rem; }
 .journal-meta { font-size: 0.875rem; color: var(--text-muted); }
-.journal-entry-body .item-title { margin-top: 0.2rem; }
+.journal-entry-body .item-title { margin-top: 0.2rem; text-align: left; }
 .journal-entry-copy { margin-top: 0.45rem; color: var(--text-secondary); }
 
 .journal-media {
@@ -939,23 +939,6 @@ main > .cream-section {
 /* Registration */
 
 #protocol { background: linear-gradient(var(--bg-navy), var(--bg-deep)); }
-
-.registration-status {
-  width: fit-content;
-  margin: 1rem auto 0.75rem;
-  padding: 0.75rem 1.1rem;
-  border: 1px solid var(--rule);
-  border-radius: 0.75rem;
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-}
-
-.registration-status-label {
-  color: var(--gold-light);
-  font-size: 1rem;
-  font-weight: 700;
-}
 
 .protocol-step-header {
   display: flex;
@@ -1165,20 +1148,5 @@ main > .cream-section {
   @keyframes flight-divider {
     from { opacity: 0.4; scale: 0.75; }
     to { opacity: 1; scale: 1; }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .ticket-section { min-block-size: 0; }
-  .ticket-stage, .scene-stage { position: relative; top: auto; }
-  :is(.ticket-stage, .countdown-stage, .motto-stage) {
-    min-block-size: 0;
-    padding-block: clamp(2rem, min(8vw, 8svh), 6rem);
-  }
-  .schedule-list::after {
-    opacity: 1;
-    transform: translateX(-50%);
   }
 }

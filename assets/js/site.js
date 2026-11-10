@@ -5,7 +5,6 @@
   var iconClose = document.getElementById('menu-icon-close');
   var registerLink = document.querySelector('.header-register-button');
   var main = document.getElementById('main-content');
-  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
   function setMobileMenu(open) {
     mobileMenu.hidden = !open;
@@ -115,27 +114,11 @@
     if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScrollScenes);
   }
 
-  function syncScrollMotion() {
-    main.classList.toggle('has-scroll-scenes', !reduceMotion.matches);
-    if (reduceMotion.matches) {
-      window.removeEventListener('scroll', queueSceneUpdate);
-      window.removeEventListener('resize', queueSceneUpdate);
-      window.removeEventListener('pageshow', queueSceneUpdate);
-      cancelAnimationFrame(sceneFrame);
-      sceneFrame = 0;
-      [heroStage, ticketStage, ticket, countdownStage, mottoStage].forEach(function (element) {
-        element.removeAttribute('style');
-      });
-      return;
-    }
-    window.addEventListener('scroll', queueSceneUpdate, { passive: true });
-    window.addEventListener('resize', queueSceneUpdate);
-    window.addEventListener('pageshow', queueSceneUpdate);
-    queueSceneUpdate();
-  }
-
-  reduceMotion.addEventListener('change', syncScrollMotion);
-  syncScrollMotion();
+  main.classList.add('has-scroll-scenes');
+  window.addEventListener('scroll', queueSceneUpdate, { passive: true });
+  window.addEventListener('resize', queueSceneUpdate);
+  window.addEventListener('pageshow', queueSceneUpdate);
+  queueSceneUpdate();
 
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');
