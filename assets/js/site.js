@@ -37,19 +37,15 @@
   });
 
   var ticket = document.querySelector('.tear-ticket');
-  var ticketMotion = matchMedia('(prefers-reduced-motion: no-preference)');
   var ticketFrame = 0;
   var lastTicketProgress = -1;
 
   function updateTicket() {
     ticketFrame = 0;
-    var progress = 0;
-    if (ticketMotion.matches) {
-      var bounds = ticket.getBoundingClientRect();
-      var viewport = document.documentElement.clientHeight;
-      var start = Math.min(viewport * 0.72, viewport - bounds.height - 12);
-      progress = Math.max(0, Math.min(1, (start - bounds.top) / (viewport * 0.4)));
-    }
+    var bounds = ticket.getBoundingClientRect();
+    var viewport = document.documentElement.clientHeight;
+    var start = Math.min(viewport * 0.72, viewport - bounds.height - 12);
+    var progress = Math.max(0, Math.min(1, (start - bounds.top) / (viewport * 0.4)));
     if (progress === lastTicketProgress) return;
     lastTicketProgress = progress;
 
@@ -68,7 +64,6 @@
     window.addEventListener('scroll', queueTicketUpdate, { passive: true });
     window.addEventListener('resize', queueTicketUpdate);
     window.addEventListener('pageshow', queueTicketUpdate);
-    ticketMotion.addEventListener('change', queueTicketUpdate);
     queueTicketUpdate();
   }
 

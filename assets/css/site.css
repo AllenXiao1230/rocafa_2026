@@ -322,12 +322,18 @@ main > .cream-section {
 }
 
 .tear-ticket {
-  display: grid;
-  grid-template-columns: 70% 30%;
   max-width: 36rem;
-  min-height: clamp(10rem, 30vw, 14rem);
   margin-inline: auto;
   color: var(--bg-deep);
+}
+
+.tear-ticket-plane {
+  --paper-fibres: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='73' height='61'%3E%3Cpath d='m3 7 2 1m12 4 1-1m23-6 3 1m15 3 2-1M8 31l3-1m14 9 2 1m9-18 2 1m23 3 3-1m-9 20 2 1m9 9 2-1M8 53l2 1m27 3 2-1' stroke='%23775631' stroke-opacity='.18' stroke-width='.65' stroke-linecap='round'/%3E%3C/svg%3E");
+  display: grid;
+  grid-template-columns: 70% 30%;
+  min-height: clamp(10rem, 30vw, 14rem);
+  transform: rotate(calc(-2.5deg + var(--ticket-drop, 0) * 1.25deg));
+  filter: drop-shadow(0 0.7rem 1.15rem rgb(0 0 0 / 30%));
 }
 
 .tear-ticket-body {
@@ -337,11 +343,25 @@ main > .cream-section {
   align-content: center;
   padding: 1rem;
   border-radius: 1rem 0 0 1rem;
-  background: var(--cream-bg);
+  background: var(--paper-fibres), linear-gradient(145deg, #fbf7ef, #e8d9bf);
   mask:
     linear-gradient(#000 0 0) left / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at right, transparent 3px, #000 3.5px) right top / 4px 14px repeat-y;
   transform: translateX(calc(var(--ticket-drop, 0) * 21.4286%));
+}
+
+.tear-ticket-body::after,
+.tear-ticket-stub::after {
+  content: "";
+  position: absolute;
+  inset: 0.5rem;
+  border: 1px solid rgb(101 68 31 / 33%);
+  pointer-events: none;
+}
+
+.tear-ticket-body::after {
+  border-inline-end: 0;
+  border-radius: 0.55rem 0 0 0.55rem;
 }
 
 .tear-ticket-art {
@@ -376,12 +396,13 @@ main > .cream-section {
 }
 
 .tear-ticket-stub {
+  position: relative;
   display: grid;
   justify-items: center;
   align-content: center;
   padding: 0.75rem;
   border-radius: 0 1rem 1rem 0;
-  background: var(--gold);
+  background: var(--paper-fibres), linear-gradient(150deg, #eed7a7, #d4ab70 68%, #c49961);
   mask:
     linear-gradient(#000 0 0) right / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at left, transparent 3px, #000 3.5px) left top / 4px 14px repeat-y;
@@ -390,6 +411,11 @@ main > .cream-section {
     translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
     rotate(calc(var(--ticket-peel, 0) * -9deg - var(--ticket-drop, 0) * 15deg));
   opacity: calc(1 - var(--ticket-drop, 0));
+}
+
+.tear-ticket-stub::after {
+  border-inline-start: 0;
+  border-radius: 0 0.55rem 0.55rem 0;
 }
 
 .tear-ticket-stub img {
