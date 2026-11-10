@@ -247,9 +247,32 @@ main > .cream-section {
 
 /* Hero and key visual */
 
-#hero {
-  --hero-scroll-distance: min(28svh, 15rem);
+.scroll-scene {
+  --scene-height: calc(100dvh - 4rem);
+  --scene-runway: clamp(10rem, 32svh, 18rem);
   padding: 0;
+}
+
+.scene-stage {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-block-size: var(--scene-height);
+}
+
+.scene-stage > .container-narrow { width: 100%; }
+
+.has-scroll-scenes .scroll-scene {
+  min-block-size: calc(var(--scene-height) + var(--scene-runway));
+}
+
+.has-scroll-scenes .scene-stage {
+  position: sticky;
+  top: 4rem;
+}
+
+#hero {
+  --scene-runway: clamp(19rem, 64svh, 34rem);
   overflow-x: clip;
   background:
     radial-gradient(ellipse at 50% 40%, rgb(71 101 163 / 19%), transparent 66%),
@@ -257,20 +280,18 @@ main > .cream-section {
 }
 
 .hero-stage {
-  position: relative;
   isolation: isolate;
-  display: grid;
   place-items: center;
-  min-height: calc(100svh - 4rem);
   padding-block: clamp(2rem, 7svh, 5rem);
 }
 
 .hero-orbit {
   position: absolute;
-  z-index: -1;
+  z-index: var(--hero-logo-layer, -1);
   width: min(81vw, 65svh, 39rem);
   height: auto;
-  opacity: 0.12;
+  opacity: var(--hero-logo-opacity, 0.12);
+  scale: var(--hero-logo-scale, 1);
   pointer-events: none;
 }
 
@@ -319,10 +340,14 @@ main > .cream-section {
 }
 
 .hero-copy {
+  position: relative;
+  z-index: 0;
   display: grid;
   justify-items: center;
   gap: clamp(1.65rem, 4.5svh, 3.25rem);
   text-align: center;
+  opacity: var(--hero-copy-opacity, 1);
+  translate: 0 var(--hero-copy-lift, 0px);
 }
 
 .hero-title {
@@ -333,11 +358,6 @@ main > .cream-section {
   letter-spacing: 0.035em;
   transform-origin: center;
 }
-
-.hero-title > span { display: inline-block; }
-.hero-title-lead { --scatter-x: -0.66em; --scatter-y: -0.2em; --scatter-angle: -6deg; }
-.hero-title-dot { --scatter-x: 0; --scatter-y: -0.52em; --scatter-angle: 0deg; }
-.hero-title-tail { --scatter-x: 0.66em; --scatter-y: -0.15em; --scatter-angle: 6deg; }
 
 .hero-subtitle {
   margin-top: clamp(1rem, 2.6svh, 1.85rem);
@@ -522,12 +542,16 @@ main > .cream-section {
 /* Countdown and shared section headings */
 
 .countdown {
-  padding: 3rem 0;
+  --scene-runway: clamp(7rem, 25svh, 13rem);
   background: linear-gradient(var(--bg-navy), var(--bg-deep));
   text-align: center;
 }
 
-.ticket-section + .countdown { padding-block-start: 2rem; }
+.countdown-stage > .container-narrow {
+  --countdown-entry: var(--scene-entry, 1);
+  scale: calc(0.72 + var(--countdown-entry) * 0.28);
+  opacity: calc(0.2 + var(--countdown-entry) * 0.8);
+}
 
 .countdown-title {
   margin-bottom: 1.5rem;
@@ -540,27 +564,26 @@ main > .cream-section {
   padding: 1.1rem 0.5rem;
 }
 
-.countdown-value {
-  font-size: 2.4rem;
+.countdown-value,
+.countdown-value-seconds {
+  font-size: clamp(1.85rem, 7vw, 5rem);
   font-weight: 700;
   color: var(--gold-light);
   line-height: 1.1;
 }
 
 .countdown-unit {
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   margin-top: 0.25rem;
 }
 
 .countdown-value-seconds {
-  font-size: 2.4rem;
-  font-weight: 700;
   color: var(--gold);
-  line-height: 1.1;
 }
 
 .ball-motto {
+  --scene-runway: clamp(15rem, 48svh, 28rem);
   background:
     radial-gradient(ellipse at center, rgb(var(--gold-rgb) / 10%), transparent 65%),
     var(--bg-deep);
@@ -568,19 +591,29 @@ main > .cream-section {
 }
 
 .motto-text {
+  width: min(100%, 9em);
+  margin-inline: auto;
   color: var(--gold-light);
-  font-size: clamp(1.2rem, 3.4vw, 2.5rem);
+  font-size: clamp(1.5rem, 5vw, 3.5rem);
   font-weight: 600;
   line-height: 1.6;
   letter-spacing: 0.05em;
 }
 
-.motto-line { display: block; }
-.motto-line + .motto-line { margin-top: 0.55em; }
-
-@supports not ((animation-timeline: scroll()) and (animation-range: 0px 100px)) {
-  .motto-line + .motto-line.has-entered { animation-delay: 0.25s; }
+.motto-line {
+  --line-start: 0;
+  --line-reveal: clamp(0, calc((var(--motto-progress, 1) - var(--line-start)) * 4), 1);
+  display: block;
+  text-align: start;
+  opacity: var(--line-reveal);
+  translate: 0 calc((var(--line-reveal) - 1) * 1rem);
 }
+
+.motto-line:nth-child(even) { text-align: end; }
+.motto-line:nth-child(2) { --line-start: 0.2; }
+.motto-line:nth-child(3) { --line-start: 0.4; }
+.motto-line:nth-child(4) { --line-start: 0.6; }
+.motto-line + .motto-line { margin-top: clamp(0.65rem, 2.7svh, 1.6rem); }
 
 #cd-status-note {
   font-size: 0.75rem;
@@ -982,7 +1015,6 @@ main > .cream-section {
 @media (max-width: 560px) {
   section { padding: 3rem 0; }
   .grid-4 { gap: 0.45rem; }
-  .countdown-value, .countdown-value-seconds { font-size: clamp(1.25rem, 7vw, 2.4rem); }
   .schedule-entry { grid-template-columns: minmax(0, 1fr); }
 }
 
@@ -1031,60 +1063,6 @@ main > .cream-section {
     animation: flight-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + 4rem);
-  }
-
-  @media (min-height: 620px) {
-    #hero { min-height: calc(100svh - 4rem + var(--hero-scroll-distance)); }
-    .hero-stage { position: sticky; top: 4rem; }
-  }
-
-  .hero-title {
-    animation: title-recede auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: 0px calc(var(--hero-scroll-distance) * 0.62);
-  }
-
-  .hero-title > span {
-    animation: title-scatter auto ease-out both;
-    animation-timeline: scroll(root block);
-    animation-range: calc(var(--hero-scroll-distance) * 0.62) var(--hero-scroll-distance);
-  }
-
-  .hero-orbit {
-    animation: orbit-recede auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: 0px var(--hero-scroll-distance);
-  }
-
-  .ball-motto .motto-line {
-    animation: motto-arrive auto linear both;
-    animation-timeline: --section-scroll;
-    animation-range: entry 12% entry 62%;
-  }
-
-  .ball-motto .motto-line + .motto-line {
-    animation-delay: 0s;
-    animation-range: entry 45% entry 94%;
-  }
-
-  @keyframes title-recede {
-    from { scale: 1; translate: 0; }
-    to { scale: 0.58; translate: 0 -0.12em; }
-  }
-
-  @keyframes title-scatter {
-    from { opacity: 1; transform: none; }
-    to { opacity: 0; transform: translate(var(--scatter-x), var(--scatter-y)) rotate(var(--scatter-angle)); }
-  }
-
-  @keyframes motto-arrive {
-    from { opacity: 0; translate: 0 0.6rem; }
-    to { opacity: 1; translate: 0; }
-  }
-
-  @keyframes orbit-recede {
-    from { transform: scale(1); opacity: 0.12; }
-    to { transform: scale(0.77) rotate(-9deg); opacity: 0.045; }
   }
 
   @keyframes draw-divider {

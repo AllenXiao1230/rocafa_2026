@@ -9,7 +9,7 @@
   <meta property="og:title" content="越境·寰宇｜2026 空軍官校禮儀示範晚會" />
   <meta property="og:description" content="12 月 24 日於空軍軍官學校舉行。查看活動資訊與報名流程。" />
   <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261110-flight-motto" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261110-scroll-scenes" />
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳至主要內容</a>
@@ -50,8 +50,8 @@
 
   <main id="main-content" tabindex="-1">
     <!-- 1. Hero Section -->
-    <section id="hero">
-      <div class="hero-stage">
+    <section id="hero" class="scroll-scene">
+      <div class="hero-stage scene-stage">
         <img class="hero-orbit" src="assets/images/key-visual.svg" width="256" height="256" alt="" />
         <svg class="star-trails hero-star-trails" viewBox="0 0 1000 460" aria-hidden="true" focusable="false">
           <path class="star-trail" pathLength="1" d="M22 336C94 328 153 360 250 295M741 156C838 90 905 127 978 84" />
@@ -61,7 +61,7 @@
           <div>
             <p class="hero-tagline font-display-en" lang="en">Beyond Borders · Across the Universe</p>
             <div class="hero-title-frame">
-              <h1 class="hero-title font-serif-tc"><span class="hero-title-lead">越境</span> <span class="hero-title-dot">·</span> <span class="hero-title-tail">寰宇</span></h1>
+              <h1 class="hero-title font-serif-tc">越境 · 寰宇</h1>
             </div>
             <p class="hero-subtitle font-serif-tc">2026 空軍官校禮儀示範晚會</p>
           </div>
@@ -101,40 +101,46 @@
     </section>
 
     <!-- 2. Countdown Section -->
-    <section class="countdown">
-      <div class="container-narrow">
-        <h2 class="section-title countdown-title font-serif-tc">晚會倒數</h2>
+    <section class="countdown scroll-scene">
+      <div class="scene-stage countdown-stage">
+        <div class="container-narrow">
+          <h2 class="section-title countdown-title font-serif-tc">晚會倒數</h2>
 
-        <div class="grid-4">
-          <div class="countdown-card card">
-            <div id="cd-days" class="countdown-value font-display-en">—</div>
-            <div class="countdown-unit font-serif-tc">日 Days</div>
+          <div class="grid-4">
+            <div class="countdown-card card">
+              <div id="cd-days" class="countdown-value font-display-en">—</div>
+              <div class="countdown-unit font-serif-tc">日 Days</div>
+            </div>
+            <div class="countdown-card card">
+              <div id="cd-hours" class="countdown-value font-display-en">—</div>
+              <div class="countdown-unit font-serif-tc">時 Hours</div>
+            </div>
+            <div class="countdown-card card">
+              <div id="cd-minutes" class="countdown-value font-display-en">—</div>
+              <div class="countdown-unit font-serif-tc">分 Mins</div>
+            </div>
+            <div class="countdown-card card">
+              <div id="cd-seconds" class="countdown-value-seconds font-display-en">—</div>
+              <div class="countdown-unit font-serif-tc">秒 Secs</div>
+            </div>
           </div>
-          <div class="countdown-card card">
-            <div id="cd-hours" class="countdown-value font-display-en">—</div>
-            <div class="countdown-unit font-serif-tc">時 Hours</div>
-          </div>
-          <div class="countdown-card card">
-            <div id="cd-minutes" class="countdown-value font-display-en">—</div>
-            <div class="countdown-unit font-serif-tc">分 Mins</div>
-          </div>
-          <div class="countdown-card card">
-            <div id="cd-seconds" class="countdown-value-seconds font-display-en">—</div>
-            <div class="countdown-unit font-serif-tc">秒 Secs</div>
-          </div>
+          <p id="cd-status-note">
+            12 月 24 日 18:00 開始
+          </p>
         </div>
-        <p id="cd-status-note">
-          12 月 24 日 18:00 開始
-        </p>
       </div>
     </section>
 
-    <section class="ball-motto" aria-label="舞會題詞">
-      <div class="container-narrow">
-        <p class="motto-text font-serif-tc">
-          <span class="motto-line">以飛行之名，越青春之境；</span>
-          <span class="motto-line">以青春之姿，赴寰宇之約。</span>
-        </p>
+    <section class="ball-motto scroll-scene" aria-label="舞會題詞">
+      <div class="scene-stage motto-stage">
+        <div class="container-narrow">
+          <p class="motto-text font-serif-tc">
+            <span class="motto-line">以飛行之名，</span>
+            <span class="motto-line">越青春之境；</span>
+            <span class="motto-line">以青春之姿，</span>
+            <span class="motto-line">赴寰宇之約。</span>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -440,6 +446,6 @@
     </div>
   </dialog>
 
-  <script src="assets/js/site.js?v=20261110-flight-motto"></script>
+  <script src="assets/js/site.js?v=20261110-scroll-scenes"></script>
 </body>
 </html>

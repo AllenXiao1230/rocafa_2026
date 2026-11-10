@@ -43,6 +43,53 @@
   var ticketFrame = 0;
   var lastTicketProgress = -1;
 
+  var heroScene = document.getElementById('hero');
+  var countdownScene = document.querySelector('.countdown');
+  var mottoScene = document.querySelector('.ball-motto');
+  var heroStage = heroScene.querySelector('.scene-stage');
+  var countdownStage = countdownScene.querySelector('.scene-stage');
+  var mottoStage = mottoScene.querySelector('.scene-stage');
+  var sceneFrame = 0;
+
+  function limitProgress(value) {
+    return Math.max(0, Math.min(1, value));
+  }
+
+  function updateScrollScenes() {
+    sceneFrame = 0;
+    var headerHeight = headerInner.offsetHeight;
+    var heroDistance = Math.max(1, heroScene.clientHeight - heroStage.offsetHeight);
+    var heroProgress = limitProgress((headerHeight - heroScene.getBoundingClientRect().top) / heroDistance);
+    var copyExit = limitProgress(heroProgress / 0.36);
+    var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
+    var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
+    var countdownTop = countdownScene.getBoundingClientRect().top - headerHeight;
+    var countdownEntry = limitProgress(1 - countdownTop / (countdownStage.offsetHeight * 0.65));
+    var mottoTop = mottoScene.getBoundingClientRect().top - headerHeight;
+    var mottoLead = mottoStage.offsetHeight * 0.23;
+    var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoStage.offsetHeight);
+    var mottoProgress = limitProgress((mottoLead - mottoTop) / (mottoDistance + mottoLead));
+
+    heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
+    heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
+    heroStage.style.setProperty('--hero-logo-opacity', (0.12 + 0.82 * logoEnter) * (1 - logoExit));
+    heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
+    heroStage.style.setProperty('--hero-logo-layer', copyExit === 1 ? 1 : -1);
+
+    countdownStage.style.setProperty('--scene-entry', countdownEntry);
+    mottoStage.style.setProperty('--motto-progress', mottoProgress);
+  }
+
+  function queueSceneUpdate() {
+    if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScrollScenes);
+  }
+
+  document.getElementById('main-content').classList.add('has-scroll-scenes');
+  window.addEventListener('scroll', queueSceneUpdate, { passive: true });
+  window.addEventListener('resize', queueSceneUpdate);
+  window.addEventListener('pageshow', queueSceneUpdate);
+  queueSceneUpdate();
+
   function updateTicket() {
     ticketFrame = 0;
     var travel = Math.max(1, ticketSection.clientHeight - ticketStage.offsetHeight);
@@ -202,7 +249,7 @@
 
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
-      '.tear-ticket-plane', '.ticket-star-trails', '.countdown-title', '.countdown-card', '#cd-status-note', '.motto-line',
+      '.tear-ticket-plane', '.ticket-star-trails',
       '.section-heading > *',
       '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
       '.schedule-entry', '.protocol-steps > .card',
