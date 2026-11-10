@@ -137,7 +137,7 @@
       elHours.textContent = '00';
       elMinutes.textContent = '00';
       elSeconds.textContent = '00';
-      elNote.textContent = '晚會倒數已結束。';
+      elNote.textContent = '啟航倒數已結束。';
       clearInterval(countdownTimer);
       return;
     }
