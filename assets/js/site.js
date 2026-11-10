@@ -129,17 +129,14 @@
   });
 
 
-  var scheduleFilters = document.querySelector('.schedule-filters');
   var scheduleList = document.querySelector('.schedule-list');
-  var scheduleButtons = scheduleFilters.querySelectorAll('.sched-tab');
-  var scheduleEntries = Array.from(scheduleList.querySelectorAll('.schedule-event'));
+  var scheduleEntries = scheduleList.querySelectorAll('.schedule-event');
   var scheduleFrame = 0;
 
   function updateScheduleRail() {
     scheduleFrame = 0;
-    var visibleEntries = scheduleEntries.filter(function (entry) { return !entry.hidden; });
-    var first = visibleEntries[0];
-    var last = visibleEntries[visibleEntries.length - 1];
+    var first = scheduleEntries[0];
+    var last = scheduleEntries[scheduleEntries.length - 1];
     var length = last.offsetTop - first.offsetTop;
     var viewport = document.documentElement.clientHeight;
     var distance = viewport * 0.82 - first.getBoundingClientRect().top;
@@ -154,21 +151,6 @@
     if (!scheduleFrame) scheduleFrame = requestAnimationFrame(updateScheduleRail);
   }
 
-  scheduleFilters.hidden = false;
-  scheduleButtons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      var filter = button.dataset.schedFilter;
-      scheduleButtons.forEach(function (option) {
-        var selected = option === button;
-        option.classList.toggle('active', selected);
-        option.setAttribute('aria-pressed', String(selected));
-      });
-      scheduleEntries.forEach(function (entry) {
-        entry.hidden = filter !== 'all' && entry.dataset.schedCat !== filter;
-      });
-      queueScheduleUpdate();
-    });
-  });
   window.addEventListener('scroll', queueScheduleUpdate, { passive: true });
   window.addEventListener('resize', queueScheduleUpdate);
   window.addEventListener('pageshow', queueScheduleUpdate);
@@ -221,9 +203,9 @@
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
       '.tear-ticket-plane', '.ticket-star-trails', '.countdown-title', '.countdown-card', '#cd-status-note',
-      '.section-heading > *', '.compact-section-heading > *', '.journal-heading > *',
+      '.section-heading > *',
       '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
-      '.schedule-filters > button', '.schedule-entry', '.protocol-steps > .card',
+      '.schedule-entry', '.protocol-steps > .card',
       '.faq-item', '.footer-inner > *'
     ].join(','));
     var entranceObserver = new IntersectionObserver(function (entries) {

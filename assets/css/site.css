@@ -150,12 +150,6 @@ main > section + section::after {
   flex-direction: column;
   justify-content: space-between;
 }
-.tab-btn {
-  padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
-  background: var(--bg-card); color: var(--text-secondary); border: 1px solid rgb(var(--gold-rgb) / 30%);
-  transition: background-color 0.2s ease;
-}
-.tab-btn.active { background: var(--gold); color: var(--bg-deep); font-weight: 600; border-color: var(--gold); }
 
 /* Cream FAQ Section */
 .cream-section { background: var(--cream-bg); color: var(--ink-on-cream); }
@@ -336,9 +330,11 @@ main > .cream-section {
 }
 
 .hero-tagline {
-  margin-top: 0.3rem;
+  margin-bottom: clamp(0.55rem, 1.5vw, 1rem);
   color: var(--gold);
-  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-size: clamp(1.125rem, 2.35vw, 1.65rem);
+  line-height: 1.3;
+  text-wrap: balance;
   font-style: italic;
 }
 
@@ -517,8 +513,6 @@ main > .cream-section {
 .ticket-section + .countdown { padding-block-start: 2rem; }
 
 .countdown-title {
-  font-size: 1.75rem;
-  font-weight: 600;
   margin-bottom: 1.5rem;
 }
 
@@ -557,14 +551,23 @@ main > .cream-section {
 
 .section-heading {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.25rem;
 }
 
 .section-title {
   font-size: clamp(1.75rem, 3vw, 2.15rem);
   font-weight: 600;
   line-height: 1.35;
-  margin-top: 0.25rem;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.item-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .section-description {
@@ -584,12 +587,6 @@ main > .cream-section {
 }
 
 #info { background: linear-gradient(var(--bg-navy), var(--bg-twilight)); }
-
-.info-card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 0.4rem;
-}
 
 .info-card-summary {
   font-size: 0.9rem;
@@ -629,15 +626,6 @@ main > .cream-section {
   background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
-.journal-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
 .journal-account { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; }
 
 .journal-list {
@@ -657,7 +645,7 @@ main > .cream-section {
 
 .journal-entry-body { flex: 1; padding: 1.1rem 1.15rem 1rem; }
 .journal-meta { font-size: 0.875rem; color: var(--text-muted); }
-.journal-entry-title { margin-top: 0.2rem; font-size: 1.3rem; line-height: 1.35; }
+.journal-entry-body .item-title { margin-top: 0.2rem; }
 .journal-entry-copy { margin-top: 0.45rem; color: var(--text-secondary); }
 
 .journal-media {
@@ -688,25 +676,6 @@ main > .cream-section {
   background: linear-gradient(var(--bg-twilight), var(--bg-navy));
 }
 
-.compact-section-heading {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.schedule-intro {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 0.35rem;
-}
-
-.schedule-filters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.75rem;
-}
-
 .schedule-list {
   position: relative;
   --timeline-inset: 0.875rem;
@@ -721,11 +690,11 @@ main > .cream-section {
   padding-inline-start: clamp(1.9rem, 5vw, 3.2rem);
 }
 
-.schedule-event:has(~ .schedule-event:not([hidden])) .schedule-entry {
+.schedule-event:not(:last-child) .schedule-entry {
   min-height: clamp(6rem, 17svh, 8.5rem);
 }
 
-.schedule-event:has(~ .schedule-event:not([hidden]))::before {
+.schedule-event:not(:last-child)::before {
   content: "";
   position: absolute;
   inset-block: var(--timeline-inset) calc(-1 * var(--timeline-inset));
@@ -796,15 +765,11 @@ main > .cream-section {
 
 .schedule-event-opening .schedule-time { color: var(--gold-light); }
 
-.schedule-entry-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
 .schedule-entry-copy {
   margin-top: 0.15rem;
   font-size: 0.875rem;
   color: var(--text-secondary);
+  text-align: center;
 }
 
 /* Registration */
@@ -860,19 +825,12 @@ main > .cream-section {
 .protocol-step-footer .protocol-note + a { margin-top: 0.65rem; }
 .brand-emblem { flex-shrink: 0; }
 #modal-body p + p { margin-top: 0.75rem; }
-.btn-gold, .btn-outline, .tab-btn, .mobile-toggle, .mobile-menu a, #close-modal-btn {
+.btn-gold, .btn-outline, .mobile-toggle, .mobile-menu a, #close-modal-btn {
   min-height: 44px;
 }
 .mobile-toggle, #close-modal-btn { min-width: 44px; }
 
 
-.faq-title {
-  font-size: clamp(1.75rem, 3vw, 2.15rem);
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--ink-on-cream);
-  margin-top: 0.25rem;
-}
 
 /* Footer and dialog */
 
@@ -917,13 +875,16 @@ main > .cream-section {
 }
 
 .modal-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: start;
+  text-align: center;
   border-bottom: 1px solid rgba(148,163,184,0.2);
   padding-bottom: 0.75rem;
   margin-bottom: 1rem;
 }
+
+.modal-heading > div { grid-column: 2; }
 
 #modal-subtitle {
   font-size: 11px;
@@ -932,9 +893,6 @@ main > .cream-section {
 }
 
 #modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #fff;
   margin-top: 0.15rem;
 }
 
@@ -1003,7 +961,7 @@ main > .cream-section {
 }
 
 .hero-subtitle { animation-delay: 0.24s; }
-.hero-tagline { animation-delay: 0.3s; }
+.hero-tagline { animation-delay: 0.08s; }
 .hero-details { animation-delay: 0.36s; }
 
 @keyframes title-arrive {
@@ -1069,7 +1027,7 @@ main > .cream-section {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn-gold, .btn-outline, .tab-btn { transition: none; }
+  .btn-gold, .btn-outline { transition: none; }
   .schedule-list::after {
     opacity: 1;
     transform: translateX(-50%);
