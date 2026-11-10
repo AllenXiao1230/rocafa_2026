@@ -7,6 +7,14 @@
 }
 
 @font-face {
+  font-family: "Noto Serif TC Event";
+  src: url("../fonts/notoseriftc-motto.woff2") format("woff2");
+  font-weight: 500 700;
+  font-display: swap;
+  unicode-range: U+4E4B, U+59FF, U+6625, U+7D04, U+9752, U+FF1B;
+}
+
+@font-face {
   font-family: "Noto Sans TC Event";
   src: url("../fonts/notosanstc-event.woff2") format("woff2");
   font-weight: 400 700;
@@ -128,14 +136,14 @@ main > section + section::before {
   width: min(72%, 32rem);
   height: 1px;
   translate: -50%;
-  background: linear-gradient(90deg, transparent, var(--divider-ink) 47%, transparent 47% 53%, var(--divider-ink) 53%, transparent);
+  background: linear-gradient(90deg, transparent, var(--divider-ink) calc(50% - 1rem), transparent calc(50% - 1rem) calc(50% + 1rem), var(--divider-ink) calc(50% + 1rem), transparent);
 }
 main > section + section::after {
-  width: 0.44rem;
-  height: 0.44rem;
-  border: 1px solid var(--divider-ink);
+  width: 1.3rem;
+  height: 1.3rem;
+  background: var(--divider-ink);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1c.8 0 1.4 1.4 1.4 3v4l8.3 6.1v1.9l-8.3-2.5v4.6l2.5 2.5v1.4L12 20.8l-3.9 1.2v-1.4l2.5-2.5v-4.6l-8.3 2.5v-1.9L10.6 8V4c0-1.6.6-3 1.4-3Z'/%3E%3C/svg%3E") center / contain no-repeat;
   translate: -50% -50%;
-  rotate: 45deg;
 }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 640px; margin: 0 auto; }
@@ -242,7 +250,10 @@ main > .cream-section {
 #hero {
   --hero-scroll-distance: min(28svh, 15rem);
   padding: 0;
-  background: linear-gradient(var(--bg-deep), var(--bg-navy));
+  overflow-x: clip;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgb(71 101 163 / 19%), transparent 66%),
+    linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
 .hero-stage {
@@ -310,7 +321,7 @@ main > .cream-section {
 .hero-copy {
   display: grid;
   justify-items: center;
-  gap: clamp(1.1rem, 3svh, 2.25rem);
+  gap: clamp(1.65rem, 4.5svh, 3.25rem);
   text-align: center;
 }
 
@@ -323,8 +334,13 @@ main > .cream-section {
   transform-origin: center;
 }
 
+.hero-title > span { display: inline-block; }
+.hero-title-lead { --scatter-x: -0.66em; --scatter-y: -0.2em; --scatter-angle: -6deg; }
+.hero-title-dot { --scatter-x: 0; --scatter-y: -0.52em; --scatter-angle: 0deg; }
+.hero-title-tail { --scatter-x: 0.66em; --scatter-y: -0.15em; --scatter-angle: 6deg; }
+
 .hero-subtitle {
-  margin-top: 0.75rem;
+  margin-top: clamp(1rem, 2.6svh, 1.85rem);
   color: var(--text-main);
   font-size: clamp(1rem, 2.1vw, 1.6rem);
 }
@@ -377,6 +393,7 @@ main > .cream-section {
   display: grid;
   align-content: center;
   min-block-size: var(--ticket-stage-height);
+  background: radial-gradient(ellipse at center, rgb(var(--gold-rgb) / 9%), transparent 68%);
 }
 
 .ticket-stage > .container-narrow { width: 100%; padding-inline: 0; }
@@ -543,6 +560,28 @@ main > .cream-section {
   line-height: 1.1;
 }
 
+.ball-motto {
+  background:
+    radial-gradient(ellipse at center, rgb(var(--gold-rgb) / 10%), transparent 65%),
+    var(--bg-deep);
+  text-align: center;
+}
+
+.motto-text {
+  color: var(--gold-light);
+  font-size: clamp(1.2rem, 3.4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+}
+
+.motto-line { display: block; }
+.motto-line + .motto-line { margin-top: 0.55em; }
+
+@supports not ((animation-timeline: scroll()) and (animation-range: 0px 100px)) {
+  .motto-line + .motto-line.has-entered { animation-delay: 0.25s; }
+}
+
 #cd-status-note {
   font-size: 0.75rem;
   color: var(--text-muted);
@@ -673,7 +712,9 @@ main > .cream-section {
 /* Timeline */
 
 #schedule {
-  background: linear-gradient(var(--bg-twilight), var(--bg-navy));
+  background:
+    radial-gradient(ellipse at 38% 47%, rgb(87 113 165 / 12%), transparent 67%),
+    linear-gradient(var(--bg-twilight), var(--bg-navy));
 }
 
 .schedule-list {
@@ -987,7 +1028,7 @@ main > .cream-section {
   }
 
   main > section + section::after {
-    animation: glint-arrive auto linear both;
+    animation: flight-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + 4rem);
   }
@@ -995,23 +1036,50 @@ main > .cream-section {
   @media (min-height: 620px) {
     #hero { min-height: calc(100svh - 4rem + var(--hero-scroll-distance)); }
     .hero-stage { position: sticky; top: 4rem; }
+  }
 
-    .hero-title {
-      animation: title-recede auto linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0px var(--hero-scroll-distance);
-    }
+  .hero-title {
+    animation: title-recede auto linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0px calc(var(--hero-scroll-distance) * 0.62);
+  }
 
-    .hero-orbit {
-      animation: orbit-recede auto linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0px var(--hero-scroll-distance);
-    }
+  .hero-title > span {
+    animation: title-scatter auto ease-out both;
+    animation-timeline: scroll(root block);
+    animation-range: calc(var(--hero-scroll-distance) * 0.62) var(--hero-scroll-distance);
+  }
+
+  .hero-orbit {
+    animation: orbit-recede auto linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0px var(--hero-scroll-distance);
+  }
+
+  .ball-motto .motto-line {
+    animation: motto-arrive auto linear both;
+    animation-timeline: --section-scroll;
+    animation-range: entry 12% entry 62%;
+  }
+
+  .ball-motto .motto-line + .motto-line {
+    animation-delay: 0s;
+    animation-range: entry 45% entry 94%;
   }
 
   @keyframes title-recede {
-    from { scale: 1; }
-    to { scale: 0.58; }
+    from { scale: 1; translate: 0; }
+    to { scale: 0.58; translate: 0 -0.12em; }
+  }
+
+  @keyframes title-scatter {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translate(var(--scatter-x), var(--scatter-y)) rotate(var(--scatter-angle)); }
+  }
+
+  @keyframes motto-arrive {
+    from { opacity: 0; translate: 0 0.6rem; }
+    to { opacity: 1; translate: 0; }
   }
 
   @keyframes orbit-recede {
@@ -1020,8 +1088,13 @@ main > .cream-section {
   }
 
   @keyframes draw-divider {
-    from { scale: 0.24 1; opacity: 0.35; }
-    to { scale: 1 1; opacity: 1; }
+    from { clip-path: inset(0 38%); opacity: 0.35; }
+    to { clip-path: inset(0); opacity: 1; }
+  }
+
+  @keyframes flight-divider {
+    from { opacity: 0.4; scale: 0.75; }
+    to { opacity: 1; scale: 1; }
   }
 }
 
