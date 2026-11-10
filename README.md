@@ -19,7 +19,7 @@ rocafa_2026/
 ```
 
 - `index.html` 是網站入口，包含頁面結構、文案與活動流程。
-- `assets/css/site.css` 管理樣式與響應式版面。`assets/js/site.js` 管理導覽、倒數、篩選、彈窗、報名檢核、私訊範本與行事曆下載。
+- `assets/css/site.css` 管理樣式與響應式版面。`assets/js/site.js` 管理導覽、倒數、流程篩選、彈窗與行事曆下載。
 - `assets/images/` 放置品牌徽章與主視覺 SVG。
 - `rocafa_2026_ball.html` 是拆分前的獨立單檔備份，可單獨分享。日常維護以 `index.html` 和 `assets/` 為準。
 - 規格與審查報告收錄活動文案、設計規範與原版設計審查。

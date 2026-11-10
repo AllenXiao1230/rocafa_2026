@@ -98,7 +98,7 @@
 
   var scheduleFilters = document.querySelector('.schedule-filters');
   var scheduleButtons = scheduleFilters.querySelectorAll('.sched-tab');
-  var scheduleEntries = document.querySelectorAll('.sched-card');
+  var scheduleEntries = document.querySelectorAll('.schedule-event');
   scheduleFilters.hidden = false;
   scheduleButtons.forEach(function (button) {
     button.addEventListener('click', function () {
@@ -112,79 +112,6 @@
         entry.hidden = filter !== 'all' && entry.dataset.schedCat !== filter;
       });
     });
-  });
-
-  var prepChecks = Array.from(document.querySelectorAll('.prep-check'));
-  var progressBadge = document.getElementById('checklist-progress');
-  var checklistKey = 'rocafa-2026-preparation-v1';
-
-  function updateChecklist() {
-    var count = prepChecks.filter(function (item) { return item.checked; }).length;
-    progressBadge.textContent = count === prepChecks.length
-      ? '行前準備完成，可前往填表'
-      : '已準備 ' + count + ' / ' + prepChecks.length + ' 項';
-  }
-
-  try {
-    var savedChecks = sessionStorage.getItem(checklistKey);
-    if (savedChecks && /^[01]{4}$/.test(savedChecks)) {
-      prepChecks.forEach(function (item, index) { item.checked = savedChecks[index] === '1'; });
-    }
-  } catch {
-    // The checklist still works when browser storage is unavailable.
-  }
-  updateChecklist();
-  progressBadge.hidden = false;
-  prepChecks.forEach(function (item) {
-    item.addEventListener('change', function () {
-      updateChecklist();
-      try {
-        sessionStorage.setItem(checklistKey, prepChecks.map(function (check) {
-          return check.checked ? '1' : '0';
-        }).join(''));
-      } catch {
-        // Keep the current state on the page.
-      }
-    });
-  });
-
-  var guestNameInput = document.getElementById('guest-name-input');
-  var dmTemplateText = document.getElementById('dm-template-text');
-  var copyButton = document.getElementById('copy-dm-btn');
-  var copyStatus = document.getElementById('copy-toast');
-  var defaultMessage = dmTemplateText.value;
-  var copying = false;
-  guestNameInput.hidden = false;
-  guestNameInput.labels[0].hidden = false;
-  copyButton.hidden = false;
-  guestNameInput.addEventListener('input', function () {
-    var name = guestNameInput.value.trim();
-    dmTemplateText.value = name
-      ? defaultMessage.replace('您好！', function () { return '您好！我是' + name + '。'; })
-      : defaultMessage;
-    copyStatus.textContent = '';
-  });
-  copyButton.addEventListener('click', async function () {
-    if (copying) return;
-    copying = true;
-    var message = dmTemplateText.value;
-    copyStatus.textContent = '';
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(message);
-      } else {
-        dmTemplateText.select();
-        if (!document.execCommand('copy')) throw new Error('Copy failed');
-        copyButton.focus({ preventScroll: true });
-      }
-      copyStatus.textContent = message === dmTemplateText.value
-        ? '已複製，可到 Instagram 貼上訊息。'
-        : '範本已更新，請再複製一次。';
-    } catch {
-      copyStatus.textContent = '無法自動複製，請選取上方範本並手動複製。';
-    } finally {
-      copying = false;
-    }
   });
 
   var modal = document.getElementById('info-modal');

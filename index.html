@@ -9,7 +9,7 @@
   <meta property="og:title" content="越境·寰宇｜2026 空軍官校禮儀示範晚會" />
   <meta property="og:description" content="12 月 24 日於空軍軍官學校舉行。查看活動資訊與報名流程。" />
   <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261110-header" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261110-timeline" />
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳至主要內容</a>
@@ -208,30 +208,28 @@
           <button type="button" aria-pressed="false" data-sched-filter="finale" class="sched-tab tab-btn">平安夜賦歸</button>
         </div>
 
-        <div class="schedule-list">
-          <div data-sched-cat="reception" class="sched-card card">
+        <ol class="schedule-list" role="list">
+          <li data-sched-cat="reception" class="schedule-event">
             <div class="schedule-entry">
-              <span class="schedule-time font-display-en">17:00–18:00</span>
+              <span class="schedule-time font-display-en"><time datetime="17:00">17:00</time>–<time datetime="18:00">18:00</time></span>
               <div>
                 <h3 class="schedule-entry-title font-serif-tc">迎賓與入場</h3>
                 <p class="schedule-entry-copy">接駁車抵達、身分查驗與拍照。</p>
               </div>
             </div>
-            <span class="schedule-phase">迎賓階段</span>
-          </div>
+          </li>
 
-          <div data-sched-cat="ceremony" class="schedule-card-opening sched-card card">
+          <li data-sched-cat="ceremony" class="schedule-event schedule-event-opening">
             <div class="schedule-entry">
-              <span class="schedule-time-opening font-display-en">18:00</span>
+              <time class="schedule-time font-display-en" datetime="18:00">18:00</time>
               <div>
                 <h3 class="schedule-entry-title font-serif-tc">晚會開場</h3>
                 <p class="schedule-entry-copy">樂隊演出、致詞與禮儀示範開舞。</p>
               </div>
             </div>
-            <span class="schedule-phase-opening">核心時刻</span>
-          </div>
+          </li>
 
-          <div data-sched-cat="ceremony" class="sched-card card">
+          <li data-sched-cat="ceremony" class="schedule-event">
             <div class="schedule-entry">
               <span class="schedule-time font-display-en">待公告</span>
               <div>
@@ -239,24 +237,22 @@
                 <p class="schedule-entry-copy">社團演出、特邀表演與跨校共舞。</p>
               </div>
             </div>
-            <span class="schedule-phase-pending">敬請期待</span>
-          </div>
+          </li>
 
-          <div data-sched-cat="finale" class="sched-card card">
+          <li data-sched-cat="finale" class="schedule-event">
             <div class="schedule-entry">
-              <span class="schedule-time font-display-en">22:00</span>
+              <time class="schedule-time font-display-en" datetime="22:00">22:00</time>
               <div>
                 <h3 class="schedule-entry-title font-serif-tc">晚會結束</h3>
                 <p class="schedule-entry-copy">合影後搭接駁車或自行離場。</p>
               </div>
             </div>
-            <span class="schedule-phase">賦歸時刻</span>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- 7. Protocol & Interactive Registration Flow -->
+    <!-- 7. Registration Flow -->
     <section id="protocol">
       <div class="container">
         <div class="section-heading">
@@ -310,48 +306,6 @@
                 官方接受訊息後，在同一個對話傳送形象照，完成禮賓對接。報名結果以主辦方通知為準。
               </p>
             </div>
-          </div>
-        </div>
-
-        <!-- Self-check & DM Copy Box -->
-        <div class="featured-panel protocol-box">
-          <div>
-            <div class="checklist-header">
-              <h3 class="checklist-title font-serif-tc">報名前檢查</h3>
-              <span id="checklist-progress" role="status" hidden>已準備 0 / 4 項</span>
-            </div>
-            <div class="checklist-items">
-              <label class="checklist-item">
-                <input type="checkbox" class="prep-check" />
-                <span>可全程出席晚會</span>
-              </label>
-              <label class="checklist-item">
-                <input type="checkbox" class="prep-check" />
-                <span>已備妥門禁資料與地址</span>
-              </label>
-              <label class="checklist-item">
-                <input type="checkbox" class="prep-check" />
-                <span>已備妥符合規定的服裝</span>
-              </label>
-              <label class="checklist-item">
-                <input type="checkbox" class="prep-check" />
-                <span>已備妥形象照，填表後會先私訊</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="dm-panel">
-            <div class="dm-header">
-              <label class="dm-title" for="dm-template-text">IG 私訊範本</label>
-            </div>
-            <label class="guest-name-label" for="guest-name-input" hidden>姓名（選填）</label>
-            <input type="text" id="guest-name-input" autocomplete="off" hidden />
-            <textarea id="dm-template-text" rows="4" readonly>您好！我已填寫《越境·寰宇》報名表。等您接受訊息後，我會補傳形象照，謝謝！</textarea>
-            <div class="dm-actions">
-              <button type="button" id="copy-dm-btn" hidden class="btn-gold">複製私訊</button>
-              <a class="dm-ig-link btn-outline" href="https://www.instagram.com/rocafa_2026/" target="_blank" rel="noopener noreferrer">前往 IG ↗</a>
-            </div>
-            <p id="copy-toast" role="status"></p>
           </div>
         </div>
       </div>
@@ -426,6 +380,6 @@
     </div>
   </dialog>
 
-  <script src="assets/js/site.js"></script>
+  <script src="assets/js/site.js?v=20261110-timeline"></script>
 </body>
 </html>
