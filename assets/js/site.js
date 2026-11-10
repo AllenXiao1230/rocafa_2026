@@ -128,8 +128,30 @@
 
 
   var scheduleFilters = document.querySelector('.schedule-filters');
+  var scheduleList = document.querySelector('.schedule-list');
   var scheduleButtons = scheduleFilters.querySelectorAll('.sched-tab');
-  var scheduleEntries = document.querySelectorAll('.schedule-event');
+  var scheduleEntries = Array.from(scheduleList.querySelectorAll('.schedule-event'));
+  var scheduleFrame = 0;
+
+  function updateScheduleRail() {
+    scheduleFrame = 0;
+    var visibleEntries = scheduleEntries.filter(function (entry) { return !entry.hidden; });
+    var first = visibleEntries[0];
+    var last = visibleEntries[visibleEntries.length - 1];
+    var length = last.offsetTop - first.offsetTop;
+    var viewport = document.documentElement.clientHeight;
+    var distance = viewport * 0.82 - first.getBoundingClientRect().top;
+    var progress = Math.max(0, Math.min(1, distance / (length + viewport * 0.37)));
+
+    scheduleList.style.setProperty('--schedule-rail-length', length + 'px');
+    scheduleList.style.setProperty('--schedule-progress', progress);
+    scheduleList.style.setProperty('--schedule-rail-opacity', Math.min(1, progress * 10));
+  }
+
+  function queueScheduleUpdate() {
+    if (!scheduleFrame) scheduleFrame = requestAnimationFrame(updateScheduleRail);
+  }
+
   scheduleFilters.hidden = false;
   scheduleButtons.forEach(function (button) {
     button.addEventListener('click', function () {
@@ -142,8 +164,14 @@
       scheduleEntries.forEach(function (entry) {
         entry.hidden = filter !== 'all' && entry.dataset.schedCat !== filter;
       });
+      queueScheduleUpdate();
     });
   });
+  window.addEventListener('scroll', queueScheduleUpdate, { passive: true });
+  window.addEventListener('resize', queueScheduleUpdate);
+  window.addEventListener('pageshow', queueScheduleUpdate);
+  if ('ResizeObserver' in window) new ResizeObserver(queueScheduleUpdate).observe(scheduleList);
+  queueScheduleUpdate();
 
   var modal = document.getElementById('info-modal');
   var modalTitle = document.getElementById('modal-title');

@@ -691,35 +691,54 @@ main > .cream-section {
 }
 
 .schedule-list {
-  max-width: 39rem;
+  position: relative;
+  --timeline-inset: 0.875rem;
+  --timeline-axis: 0.5rem;
+  max-width: 44rem;
   margin-inline: auto;
   list-style: none;
 }
 
 .schedule-event {
   position: relative;
-  --timeline-inset: 0.875rem;
-  padding-inline-start: 2rem;
+  padding-inline-start: clamp(1.9rem, 5vw, 3.2rem);
 }
 
-.schedule-event:has(~ .schedule-event:not([hidden])) {
-  padding-block-end: 1.75rem;
+.schedule-event:has(~ .schedule-event:not([hidden])) .schedule-entry {
+  min-height: clamp(6rem, 17svh, 8.5rem);
 }
 
 .schedule-event:has(~ .schedule-event:not([hidden]))::before {
   content: "";
   position: absolute;
   inset-block: var(--timeline-inset) calc(-1 * var(--timeline-inset));
-  inset-inline-start: 0.375rem;
-  width: 1px;
+  inset-inline-start: var(--timeline-axis);
+  width: 2px;
+  translate: -50%;
   background: var(--rule);
+}
+
+.schedule-list::after {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--timeline-inset);
+  inset-inline-start: var(--timeline-axis);
+  width: 2px;
+  height: var(--schedule-rail-length, 0px);
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, var(--gold-deep), var(--gold) 60%, var(--gold-light));
+  opacity: var(--schedule-rail-opacity, 0);
+  transform: translateX(-50%) scaleY(var(--schedule-progress, 0));
+  transform-origin: top;
+  pointer-events: none;
 }
 
 .schedule-event::after {
   content: "";
   position: absolute;
+  z-index: 1;
   inset-block-start: var(--timeline-inset);
-  inset-inline-start: 0.375rem;
+  inset-inline-start: var(--timeline-axis);
   width: 0.5rem;
   height: 0.5rem;
   border: 1px solid var(--gold);
@@ -735,16 +754,27 @@ main > .cream-section {
 
 .schedule-entry {
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
+  grid-template-columns: minmax(9rem, 35%) minmax(0, 1fr);
+  align-content: start;
   align-items: baseline;
   gap: 0.15rem 1.25rem;
 }
 
 .schedule-time {
-  font-size: 1.4rem;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
   font-weight: 700;
   line-height: 1.25;
   color: var(--gold);
+}
+
+@media (min-width: 561px) {
+  .schedule-time {
+    position: sticky;
+    top: 5.5rem;
+    align-self: start;
+  }
+
+  .schedule-entry { align-content: stretch; }
 }
 
 .schedule-event-opening .schedule-time { color: var(--gold-light); }
@@ -1023,4 +1053,8 @@ main > .cream-section {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .btn-gold, .btn-outline, .tab-btn { transition: none; }
+  .schedule-list::after {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
 }
