@@ -314,6 +314,107 @@ main > .cream-section {
   text-underline-offset: 0.2em;
 }
 
+/* Scroll ticket */
+
+.ticket-section {
+  overflow-x: clip;
+  background: var(--bg-navy);
+}
+
+.tear-ticket {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  max-width: 36rem;
+  min-height: clamp(10rem, 30vw, 14rem);
+  margin-inline: auto;
+  color: var(--bg-deep);
+}
+
+.tear-ticket-body {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  padding: 1rem;
+  border-radius: 1rem 0 0 1rem;
+  background: var(--cream-bg);
+  mask:
+    linear-gradient(#000 0 0) left / calc(100% - 4px) 100% no-repeat,
+    radial-gradient(circle at right, transparent 3px, #000 3.5px) right top / 4px 14px repeat-y;
+  transform: translateX(calc(var(--ticket-drop, 0) * 21.4286%));
+}
+
+.tear-ticket-art {
+  position: absolute;
+  z-index: -1;
+  inset: 50% 0.5rem auto auto;
+  width: min(62%, 12rem);
+  height: auto;
+  opacity: 0.48;
+  translate: 0 -50%;
+}
+
+.tear-ticket-title {
+  font-size: clamp(1.6rem, 6vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.tear-ticket-event {
+  margin-top: 0.45rem;
+  font-size: clamp(0.75rem, 2.4vw, 1rem);
+}
+
+.tear-ticket-date {
+  width: fit-content;
+  margin-top: 0.95rem;
+  border-top: 1px solid #b49568;
+  padding-top: 0.45rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.09em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tear-ticket-stub {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  padding: 0.75rem;
+  border-radius: 0 1rem 1rem 0;
+  background: var(--gold);
+  mask:
+    linear-gradient(#000 0 0) right / calc(100% - 4px) 100% no-repeat,
+    radial-gradient(circle at left, transparent 3px, #000 3.5px) left top / 4px 14px repeat-y;
+  transform-origin: top left;
+  transform:
+    translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
+    rotate(calc(var(--ticket-peel, 0) * -9deg - var(--ticket-drop, 0) * 15deg));
+  opacity: calc(1 - var(--ticket-drop, 0));
+}
+
+.tear-ticket-stub img {
+  box-sizing: content-box;
+  margin-bottom: 0.65rem;
+  border-radius: 50%;
+  padding: 0.3rem;
+  background: var(--bg-navy);
+}
+
+.tear-ticket-stub p {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.tear-ticket-stub span {
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  line-height: 1.1;
+}
+
+@media (min-width: 561px) {
+  .tear-ticket-body { padding: 2.5rem; }
+}
+
 /* Countdown and shared section headings */
 
 .countdown {

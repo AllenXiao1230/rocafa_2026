@@ -36,6 +36,42 @@
     if (!event.matches) setMobileMenu(false);
   });
 
+  var ticket = document.querySelector('.tear-ticket');
+  var ticketMotion = matchMedia('(prefers-reduced-motion: no-preference)');
+  var ticketFrame = 0;
+  var lastTicketProgress = -1;
+
+  function updateTicket() {
+    ticketFrame = 0;
+    var progress = 0;
+    if (ticketMotion.matches) {
+      var bounds = ticket.getBoundingClientRect();
+      var viewport = document.documentElement.clientHeight;
+      var start = Math.min(viewport * 0.72, viewport - bounds.height - 12);
+      progress = Math.max(0, Math.min(1, (start - bounds.top) / (viewport * 0.4)));
+    }
+    if (progress === lastTicketProgress) return;
+    lastTicketProgress = progress;
+
+    // First pull against the perforation, then let the stub fall away.
+    var peel = Math.min(1, progress / 0.52);
+    var drop = Math.max(0, (progress - 0.52) / 0.48);
+    ticket.style.setProperty('--ticket-peel', peel);
+    ticket.style.setProperty('--ticket-drop', drop);
+  }
+
+  function queueTicketUpdate() {
+    if (!ticketFrame) ticketFrame = requestAnimationFrame(updateTicket);
+  }
+
+  if (ticket) {
+    window.addEventListener('scroll', queueTicketUpdate, { passive: true });
+    window.addEventListener('resize', queueTicketUpdate);
+    window.addEventListener('pageshow', queueTicketUpdate);
+    ticketMotion.addEventListener('change', queueTicketUpdate);
+    queueTicketUpdate();
+  }
+
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');
   var elHours = document.getElementById('cd-hours');
