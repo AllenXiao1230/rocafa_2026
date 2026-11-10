@@ -428,7 +428,7 @@ main > .cream-section {
   --paper-fibres: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='73' height='61'%3E%3Cpath d='m3 7 2 1m12 4 1-1m23-6 3 1m15 3 2-1M8 31l3-1m14 9 2 1m9-18 2 1m23 3 3-1m-9 20 2 1m9 9 2-1M8 53l2 1m27 3 2-1' stroke='%23775631' stroke-opacity='.18' stroke-width='.65' stroke-linecap='round'/%3E%3C/svg%3E");
   display: grid;
   grid-template-columns: 70% 30%;
-  min-height: clamp(10rem, 30vw, 14rem);
+  min-height: clamp(10.5rem, 30vw, 14.5rem);
   transform: rotate(calc(-2.5deg + var(--ticket-drop, 0) * 1.25deg));
   filter: drop-shadow(0 0.7rem 1.15rem rgb(0 0 0 / 30%));
 }
@@ -438,9 +438,12 @@ main > .cream-section {
   isolation: isolate;
   display: grid;
   align-content: center;
-  padding: 1rem;
-  border-radius: 1rem 0 0 1rem;
-  background: var(--paper-fibres), linear-gradient(145deg, #fbf7ef, #e8d9bf);
+  padding: 1.25rem 1.1rem;
+  border-radius: 0.75rem 0 0 0.75rem;
+  background:
+    var(--paper-fibres),
+    radial-gradient(ellipse at 16% 8%, #fffaf0, transparent 70%),
+    linear-gradient(145deg, #f4e9d6, #e5d0ac);
   mask:
     linear-gradient(#000 0 0) left / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at right, transparent 3px, #000 3.5px) right top / 4px 14px repeat-y;
@@ -451,23 +454,25 @@ main > .cream-section {
 .tear-ticket-stub::after {
   content: "";
   position: absolute;
-  inset: 0.5rem;
-  border: 1px solid rgb(101 68 31 / 33%);
+  inset: 0.44rem;
+  border: 1px solid rgb(114 76 36 / 46%);
   pointer-events: none;
 }
 
 .tear-ticket-body::after {
   border-inline-end: 0;
-  border-radius: 0.55rem 0 0 0.55rem;
+  border-radius: 0.4rem 0 0 0.4rem;
+  box-shadow: inset 0 1px rgb(255 255 255 / 58%);
 }
 
 .tear-ticket-art {
   position: absolute;
   z-index: -1;
-  inset: 50% 0.5rem auto auto;
-  width: min(62%, 12rem);
+  inset: 50% 0.25rem auto auto;
+  width: min(72%, 14rem);
   height: auto;
-  opacity: 0.48;
+  opacity: 0.28;
+  filter: brightness(0.72) saturate(0.8);
   translate: 0 -50%;
 }
 
@@ -475,20 +480,24 @@ main > .cream-section {
   font-size: clamp(1.6rem, 6vw, 3.25rem);
   font-weight: 700;
   line-height: 1.15;
+  letter-spacing: 0.035em;
 }
 
 .tear-ticket-event {
   margin-top: 0.45rem;
-  font-size: clamp(0.75rem, 2.4vw, 1rem);
+  font-size: clamp(0.72rem, 2.25vw, 0.95rem);
+  color: var(--ink-on-cream);
 }
 
 .tear-ticket-date {
   width: fit-content;
-  margin-top: 0.95rem;
-  border-top: 1px solid #b49568;
-  padding-top: 0.45rem;
+  margin-top: clamp(0.7rem, 2vw, 1.15rem);
+  border-top: 1px solid #a6814d;
+  padding-top: 0.4rem;
+  color: var(--bronze);
   font-size: 0.75rem;
-  letter-spacing: 0.09em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -498,8 +507,11 @@ main > .cream-section {
   justify-items: center;
   align-content: center;
   padding: 0.75rem;
-  border-radius: 0 1rem 1rem 0;
-  background: var(--paper-fibres), linear-gradient(150deg, #eed7a7, #d4ab70 68%, #c49961);
+  border-radius: 0 0.75rem 0.75rem 0;
+  background:
+    var(--paper-fibres),
+    linear-gradient(150deg, #344664, #243653 62%, #1b2a45);
+  color: var(--gold-light);
   mask:
     linear-gradient(#000 0 0) right / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at left, transparent 3px, #000 3.5px) left top / 4px 14px repeat-y;
@@ -512,27 +524,40 @@ main > .cream-section {
 }
 
 .tear-ticket-stub::after {
+  border-color: rgb(var(--gold-rgb) / 54%);
   border-inline-start: 0;
-  border-radius: 0 0.55rem 0.55rem 0;
+  border-radius: 0 0.4rem 0.4rem 0;
 }
 
 .tear-ticket-stub img {
   box-sizing: content-box;
-  margin-bottom: 0.65rem;
+  margin-bottom: clamp(0.4rem, 1.1vw, 0.75rem);
+  border: 1px solid rgb(var(--gold-rgb) / 62%);
   border-radius: 50%;
-  padding: 0.3rem;
-  background: var(--bg-navy);
+  padding: 0.35rem;
+  background: #172641;
 }
 
 .tear-ticket-stub p {
-  font-size: 0.7rem;
+  font-size: clamp(0.55rem, 1.45vw, 0.68rem);
   font-weight: 600;
   letter-spacing: 0.12em;
 }
 
-.tear-ticket-stub span {
+.tear-ticket-edition {
   font-size: clamp(1.5rem, 5vw, 2.25rem);
   line-height: 1.1;
+}
+
+.tear-ticket-stub-type {
+  margin-top: 0.45rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid rgb(var(--gold-rgb) / 50%);
+  font-size: clamp(0.48rem, 1.3vw, 0.62rem);
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 @media (min-width: 561px) {
