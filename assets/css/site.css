@@ -2,6 +2,7 @@
   --bg-deep: #090e1a;
   --bg-navy: #111b2d;
   --bg-card: #152238;
+  --bg-twilight: #171f2f;
   --cream-bg: #f5f0e6;
   --cream-card: #ede5d5;
   --gold: #d8b47c;
@@ -10,6 +11,7 @@
   --text-muted: #94a3b8;
   --text-secondary: #cbd5e1;
   --rule: rgba(216, 180, 124, 0.28);
+  --warm-transition: clamp(3.5rem, 8vw, 7rem);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
@@ -87,6 +89,32 @@ button { font-family: inherit; cursor: pointer; background: none; border: none; 
 
 /* Sections & Grid */
 section { padding: 4.5rem 0; }
+main > section + section {
+  position: relative;
+  --divider-ink: var(--gold);
+  --divider-offset: 0px;
+}
+main > section + section::before,
+main > section + section::after {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--divider-offset);
+  inset-inline-start: 50%;
+  pointer-events: none;
+}
+main > section + section::before {
+  width: min(72%, 32rem);
+  height: 1px;
+  translate: -50%;
+  background: linear-gradient(90deg, transparent, var(--divider-ink) 47%, transparent 47% 53%, var(--divider-ink) 53%, transparent);
+}
+main > section + section::after {
+  width: 0.44rem;
+  height: 0.44rem;
+  border: 1px solid var(--divider-ink);
+  translate: -50% -50%;
+  rotate: 45deg;
+}
 .hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2.5rem; align-items: center; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 640px; margin: 0 auto; }
@@ -122,6 +150,21 @@ section { padding: 4.5rem 0; }
 
 /* Cream FAQ Section */
 .cream-section { background: var(--cream-bg); color: #182232; }
+main > .cream-section {
+  --divider-ink: #866134;
+  --divider-offset: var(--warm-transition);
+  padding-top: 3rem;
+}
+.cream-section > .container-narrow { padding-top: var(--warm-transition); }
+.cream-section > .container-narrow::before,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--warm-transition);
+  background: linear-gradient(var(--bg-deep), var(--cream-bg));
+  pointer-events: none;
+}
 .faq-item { background: var(--cream-card); border: 1px solid #d5c7b0; border-radius: 1rem; margin-bottom: 0.75rem; }
 .faq-btn { width: 100%; padding: 1.1rem 1.5rem; text-align: left; display: flex; align-items: center; justify-content: space-between; font-size: 1.05rem; font-weight: 600; color: #121c2e; }
 .faq-btn { cursor: pointer; gap: 1rem; list-style: none; }
@@ -205,6 +248,7 @@ section { padding: 4.5rem 0; }
 
 #hero {
   padding-block: clamp(3rem, 8vw, 7rem);
+  background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
 .hero-copy {
@@ -291,9 +335,7 @@ section { padding: 4.5rem 0; }
 
 .countdown {
   padding: 3rem 0;
-  background: rgba(12,20,36,0.78);
-  border-top: 1px solid rgba(216,180,124,0.15);
-  border-bottom: 1px solid rgba(216,180,124,0.15);
+  background: linear-gradient(var(--bg-navy), var(--bg-deep));
   text-align: center;
 }
 
@@ -352,6 +394,7 @@ section { padding: 4.5rem 0; }
 }
 
 /* Event information */
+#info { background: linear-gradient(var(--bg-deep), var(--bg-navy)); }
 
 .info-card-title {
   font-size: 1.25rem;
@@ -394,8 +437,7 @@ section { padding: 4.5rem 0; }
 
 /* Journal */
 #journal {
-  background: var(--bg-navy);
-  border-block: 1px solid var(--rule);
+  background: linear-gradient(var(--bg-navy), var(--bg-twilight));
 }
 
 .journal-heading {
@@ -454,8 +496,7 @@ section { padding: 4.5rem 0; }
 /* Timeline */
 
 #schedule {
-  background: rgba(11,18,32,0.78);
-  border-top: 1px solid rgba(216,180,124,0.15);
+  background: linear-gradient(var(--bg-twilight), var(--bg-navy));
 }
 
 .compact-section-heading {
@@ -560,6 +601,25 @@ section { padding: 4.5rem 0; }
 }
 
 /* Registration and guest tools */
+
+#protocol { background: linear-gradient(var(--bg-navy), var(--bg-deep)); }
+
+.registration-status {
+  width: fit-content;
+  margin: 1rem auto 0.75rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.registration-status-label {
+  color: var(--gold-light);
+  font-size: 1rem;
+  font-weight: 700;
+}
 
 .protocol-steps {
   margin-bottom: 2.5rem;
@@ -726,12 +786,13 @@ section { padding: 4.5rem 0; }
 /* Footer and dialog */
 
 .site-footer {
-  border-top: 1px solid rgba(216,180,124,0.2);
-  background: #060a12;
-  padding: 2.5rem 0;
+  position: relative;
+  background: var(--bg-deep);
+  padding: calc(var(--warm-transition) + 2rem) 0 2.5rem;
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+.site-footer::before { background: linear-gradient(var(--cream-bg), var(--bg-deep)); }
 
 .footer-inner {
   display: flex;
@@ -845,6 +906,37 @@ section { padding: 4.5rem 0; }
   @keyframes hero-arrival {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) {
+    #hero { view-timeline-name: --hero-scroll; }
+
+    .key-visual-emblem {
+      animation: emblem-flight auto linear both;
+      animation-timeline: --hero-scroll;
+      animation-range: exit 0% exit 90%;
+    }
+
+    main > section + section { view-timeline-name: --section-scroll; }
+
+    main > section + section::before {
+      animation: draw-divider auto linear both;
+      animation-timeline: --section-scroll;
+      animation-range: entry 0% cover 30%;
+    }
+
+    @keyframes emblem-flight {
+      0% { transform: translateY(0) scale(1) rotate(0deg); }
+      48% { transform: translateY(-0.5rem) scale(1.09) rotate(-8deg); }
+      100% { transform: translateY(1rem) scale(0.87) rotate(-16deg); }
+    }
+
+    @keyframes draw-divider {
+      from { scale: 0.24 1; opacity: 0.35; }
+      to { scale: 1 1; opacity: 1; }
+    }
   }
 }
 
