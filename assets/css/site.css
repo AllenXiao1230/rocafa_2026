@@ -102,7 +102,6 @@ button { font-family: inherit; cursor: pointer; background: none; border: none; 
 .site-header {
   position: sticky; top: 0; z-index: 40;
   background: var(--bg-deep);
-  border-bottom: 1px solid rgb(var(--gold-rgb) / 20%);
 }
 .header-inner { height: 4rem; display: flex; align-items: center; justify-content: space-between; }
 .brand-link { display: flex; align-items: center; gap: 0.75rem; }
