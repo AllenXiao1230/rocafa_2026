@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>越境·寰宇｜2026 空軍官校禮儀示範晚會 ROCAFA Annual Ball</title>
+  <style>
+    :root {
+      --bg-deep: #090e1a;
+      --bg-navy: #111b2d;
+      --bg-card: #152238;
+      --cream-bg: #f5f0e6;
+      --cream-card: #ede5d5;
+      --gold: #d8b47c;
+      --gold-light: #f1dcb8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(216, 180, 124, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 82% 18%, rgba(99, 144, 214, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(224, 159, 156, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #090e1a 0%, #111b2d 50%, #0d1524 100%);
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+    .font-serif-tc { font-family: "Songti TC", "Noto Serif TC", "PMingLiU", Georgia, serif; }
+    .font-display-en { font-family: "Cormorant Garamond", "Baskerville", "Times New Roman", Georgia, serif; }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fff6e5 0%, #d8b47c 50%, #e5c391 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d8b47c 0%, #c49a5c 100%);
+      color: #090e1a;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #e5c592 0%, #d3aa6c 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(216, 180, 124, 0.32);
+    }
+    .btn-outline {
+      border: 1px solid rgba(216, 180, 124, 0.45);
+      color: var(--gold-light);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .btn-outline:hover { background: rgba(216, 180, 124, 0.15); }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+    .container-narrow { max-width: 920px; margin: 0 auto; padding: 0 1.25rem; }
+    .hidden { display: none !important; }
+
+    /* Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(12px);
+      background: rgba(9, 14, 26, 0.88);
+      border-bottom: 1px solid rgba(216, 180, 124, 0.2);
+    }
+    .header-inner { height: 4rem; display: flex; align-items: center; justify-content: space-between; }
+    .brand-link { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-emblem {
+      width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+      background: #152238; border: 1px solid rgba(216, 180, 124, 0.5);
+      display: flex; align-items: center; justify-content: center; color: var(--gold);
+    }
+    .desktop-nav { display: flex; align-items: center; gap: 1.5rem; font-size: 0.875rem; color: #cbd5e1; }
+    .desktop-nav a:hover { color: var(--gold); }
+    .mobile-toggle { display: none; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(216, 180, 124, 0.3); color: var(--gold); }
+    .mobile-menu { background: rgba(12, 20, 34, 0.96); border-bottom: 1px solid rgba(216, 180, 124, 0.2); padding: 0.75rem 1.25rem 1.25rem; }
+    .mobile-menu a { display: block; padding: 0.55rem 0; color: #e2e8f0; font-size: 0.9rem; }
+
+    /* Sections & Grid */
+    section { padding: 4.5rem 0; }
+    .hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 2.5rem; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 640px; margin: 0 auto; }
+    .protocol-box { display: grid; grid-template-columns: 7fr 5fr; gap: 2rem; align-items: center; }
+
+    /* Cards & Badges */
+    .card {
+      background: rgba(21, 34, 56, 0.92);
+      border: 1px solid rgba(216, 180, 124, 0.22);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-glow {
+      background: #152238;
+      border: 1px solid rgba(216, 180, 124, 0.38);
+      box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(216, 180, 124, 0.1);
+      border-radius: 1rem;
+    }
+    .pill-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.9rem; border-radius: 9999px;
+      background: rgba(21, 34, 56, 0.9); border: 1px solid rgba(216, 180, 124, 0.35);
+      font-size: 0.75rem; color: var(--gold-light); letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .info-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem; border-radius: 0.75rem;
+      background: rgba(21, 34, 56, 0.9); border: 1px solid rgba(216, 180, 124, 0.3);
+      font-size: 0.85rem; color: #e2e8f0;
+    }
+    .tab-btn {
+      padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+      background: #152238; color: #cbd5e1; border: 1px solid rgba(216, 180, 124, 0.3);
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active { background: var(--gold); color: #090e1a; font-weight: 600; border-color: var(--gold); }
+
+    /* Cream FAQ Section */
+    .cream-section { background: var(--cream-bg); color: #182232; }
+    .faq-item { background: var(--cream-card); border: 1px solid #d5c7b0; border-radius: 1rem; overflow: hidden; margin-bottom: 0.75rem; }
+    .faq-btn { width: 100%; padding: 1.1rem 1.5rem; text-align: left; display: flex; align-items: center; justify-content: space-between; font-size: 1.05rem; font-weight: 600; color: #121c2e; }
+    .faq-body { padding: 0 1.5rem 1.25rem; font-size: 0.9rem; color: #334155; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-panel {
+      width: 100%; max-width: 520px; border-radius: 1rem;
+      background: #142034; border: 1px solid rgba(216, 180, 124, 0.4);
+      padding: 1.5rem; color: #f1f5f9; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .grid-3, .protocol-box { grid-template-columns: 1fr; }
+      .desktop-nav { display: none; }
+      .mobile-toggle { display: inline-flex; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Top Navigation Bar -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#hero" class="brand-link">
+        <div class="brand-emblem">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="8" stroke-opacity="0.7"/>
+            <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(-24 12 12)" />
+            <path d="M12 4v16M4 12h16" stroke-opacity="0.35"/>
+            <path d="M15.5 8.5L19 7l-1.5 3.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <span class="font-serif-tc" style="font-weight:600;font-size:1.05rem;letter-spacing:0.06em;color:#f7ebd9;">越境·寰宇</span>
+            <span style="font-size:11px;letter-spacing:0.1em;padding:2px 8px;border-radius:9999px;background:rgba(216,180,124,0.15);color:#d8b47c;border:1px solid rgba(216,180,124,0.3);">ROCAFA 2026</span>
+          </div>
+          <p style="font-size:11px;color:#94a3b8;">2026 空軍官校禮儀示範晚會</p>
+        </div>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="#info">舞會情報</a>
+        <a href="#journal">舞會手記</a>
+        <a href="#schedule">當日流程</a>
+        <a href="#protocol">禮賓對接</a>
+        <a href="#faq">入場須知</a>
+        <a href="#protocol" class="btn-gold" style="padding:0.45rem 1rem;border-radius:9999px;font-size:0.78rem;letter-spacing:0.05em;">前往報名檢核</a>
+      </nav>
+
+      <button id="mobile-menu-btn" type="button" aria-label="開啟導覽選單" class="mobile-toggle">
+        <span id="menu-icon-open">☰</span>
+        <span id="menu-icon-close" class="hidden">✕</span>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu hidden">
+      <a href="#info" class="mobile-nav-link">舞會情報</a>
+      <a href="#journal" class="mobile-nav-link">舞會手記</a>
+      <a href="#schedule" class="mobile-nav-link">當日流程</a>
+      <a href="#protocol" class="mobile-nav-link">禮賓對接流程</a>
+      <a href="#faq" class="mobile-nav-link">報名與入場須知</a>
+      <div style="padding-top:0.5rem;">
+        <a href="#protocol" class="mobile-nav-link btn-gold" style="width:100%;padding:0.6rem;border-radius:9999px;font-size:0.8rem;">前往報名與禮賓檢核</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Hero Section -->
+    <section id="hero" style="padding-top:3rem;padding-bottom:4.5rem;">
+      <div class="container hero-grid">
+        <div style="display:flex;flex-direction:column;gap:1.35rem;">
+          <div>
+            <span class="pill-badge">
+              <span style="width:8px;height:8px;border-radius:9999px;background:#d8b47c;display:inline-block;"></span>
+              <span>R.O.C. Air Force Academy Ball 2026</span>
+            </span>
+          </div>
+
+          <div>
+            <p class="font-display-en" style="font-style:italic;font-size:1.45rem;color:#d8b47c;">Beyond Borders · Across the Universe</p>
+            <h1 class="font-serif-tc gold-gradient-text" style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;letter-spacing:0.12em;line-height:1.2;margin-top:0.25rem;">越境 · 寰宇</h1>
+            <p class="font-serif-tc" style="font-size:1.25rem;color:#e2e8f0;margin-top:0.4rem;">2026 空軍官校禮儀示範晚會</p>
+          </div>
+
+          <p style="color:#cbd5e1;font-size:0.98rem;max-width:560px;">
+            把這一刻，留給翱翔天際的青春。在平安夜的璀璨星河下，跨越疆界與日常軌跡，邀你盛裝步入空軍軍官學校，共譜一場橫跨寰宇的浪漫華爾滋。
+          </p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+            <div class="info-pill">
+              <span style="color:#d8b47c;">📅</span>
+              <span>2026 / 12.24（四）18:00–22:00</span>
+            </div>
+            <div class="info-pill">
+              <span style="color:#d8b47c;">📍</span>
+              <span>高雄市岡山區介壽西路 1 號（空軍軍官學校）</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:1rem;padding-top:0.4rem;">
+            <a href="#protocol" class="btn-gold" style="padding:0.85rem 1.75rem;border-radius:9999px;font-size:0.9rem;letter-spacing:0.05em;">
+              <span>前往報名與禮賓檢核 ↓</span>
+            </a>
+            <a href="#schedule" class="btn-outline" style="padding:0.85rem 1.5rem;border-radius:9999px;font-size:0.9rem;">
+              <span>看當日流程 →</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Framed Key Visual Card -->
+        <div style="display:flex;justify-content:center;">
+          <div class="card-glow" style="max-width:380px;width:100%;padding:0.85rem;background:#111b2d;">
+            <div style="border-radius:0.75rem;border:1px solid rgba(216,180,124,0.3);background:linear-gradient(180deg,#0e1627 0%,#162744 55%,#0d1525 100%);padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:410px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:11px;letter-spacing:0.14em;color:#d8b47c;text-transform:uppercase;">ROCAFA GALA 2026</span>
+                <span style="font-size:11px;padding:2px 10px;border-radius:9999px;background:rgba(216,180,124,0.2);color:#f1dcb8;">Christmas Eve</span>
+              </div>
+
+              <div style="text-align:center;padding:1.25rem 0;">
+                <svg width="176" height="176" viewBox="0 0 160 160" fill="none" style="margin:0 auto;display:block;color:#d8b47c;">
+                  <circle cx="80" cy="80" r="72" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 4"/>
+                  <circle cx="80" cy="80" r="56" stroke="currentColor" stroke-width="1.6"/>
+                  <ellipse cx="80" cy="80" rx="74" ry="24" transform="rotate(-26 80 80)" stroke="#f1dcb8" stroke-width="1.5"/>
+                  <ellipse cx="80" cy="80" rx="74" ry="24" transform="rotate(26 80 80)" stroke="currentColor" stroke-width="1" stroke-opacity="0.5"/>
+                  <circle cx="80" cy="80" r="38" stroke="currentColor" stroke-width="1" stroke-opacity="0.4"/>
+                  <path d="M80 8v144M8 80h144" stroke="currentColor" stroke-opacity="0.3"/>
+                  <path d="M136 50l10-4-5 9-2-3-3-2z" fill="#f1dcb8"/>
+                  <circle cx="74" cy="62" r="5" fill="#f7ebd9"/>
+                  <path d="M68 70c4-2 8-2 12 0l-3 18h-6l-3-18z" fill="#f7ebd9"/>
+                  <circle cx="86" cy="64" r="4.5" fill="#d8b47c"/>
+                  <path d="M82 72c4-1 8-1 11 0l6 24h-22l5-24z" fill="#d8b47c"/>
+                </svg>
+                <p class="font-serif-tc" style="font-size:1.2rem;font-weight:700;color:#f7ebd9;margin-top:0.75rem;">越境·寰宇</p>
+                <p class="font-display-en" style="font-style:italic;font-size:0.85rem;color:#d8b47c;">Beyond Borders · Universe</p>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.2);font-size:0.75rem;">
+                <div>
+                  <p style="color:#94a3b8;font-size:11px;">空軍官校禮儀示範晚會</p>
+                  <p class="font-serif-tc" style="color:#fff;font-weight:600;">2026.12.24 岡山基地</p>
+                </div>
+                <button type="button" id="open-kv-modal-btn" class="btn-outline" style="padding:4px 12px;border-radius:9999px;font-size:11px;">理念賞析</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Countdown Section -->
+    <section style="padding:3rem 0;background:rgba(12,20,36,0.78);border-top:1px solid rgba(216,180,124,0.15);border-bottom:1px solid rgba(216,180,124,0.15);text-align:center;">
+      <div class="container-narrow">
+        <p style="font-size:0.75rem;letter-spacing:0.25em;color:#d8b47c;text-transform:uppercase;">Countdown to Departure</p>
+        <h2 class="font-serif-tc" style="font-size:1.75rem;font-weight:600;margin-top:0.25rem;">距離啟航相遇，還有</h2>
+        <p style="font-size:0.85rem;color:#94a3b8;margin-top:0.25rem;margin-bottom:1.5rem;">「把平安夜留白，把最璀璨的期待留給這一晚。」</p>
+
+        <div class="grid-4">
+          <div class="card" style="text-align:center;padding:1.1rem 0.5rem;">
+            <div id="cd-days" class="font-display-en" style="font-size:2.4rem;font-weight:700;color:#f1dcb8;line-height:1.1;">45</div>
+            <div class="font-serif-tc" style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">日 Days</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1.1rem 0.5rem;">
+            <div id="cd-hours" class="font-display-en" style="font-size:2.4rem;font-weight:700;color:#f1dcb8;line-height:1.1;">00</div>
+            <div class="font-serif-tc" style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">時 Hours</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1.1rem 0.5rem;">
+            <div id="cd-minutes" class="font-display-en" style="font-size:2.4rem;font-weight:700;color:#f1dcb8;line-height:1.1;">00</div>
+            <div class="font-serif-tc" style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">分 Mins</div>
+          </div>
+          <div class="card" style="text-align:center;padding:1.1rem 0.5rem;">
+            <div id="cd-seconds" class="font-display-en" style="font-size:2.4rem;font-weight:700;color:#d8b47c;line-height:1.1;">00</div>
+            <div class="font-serif-tc" style="font-size:0.75rem;color:#94a3b8;margin-top:0.25rem;">秒 Secs</div>
+          </div>
+        </div>
+        <p id="cd-status-note" style="font-size:0.75rem;color:#94a3b8;margin-top:1.25rem;">
+          目標時刻：2026 年 12 月 24 日（星期四）18:00 臺灣時間（GMT+8）
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. Event Information Cards -->
+    <section id="info">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:2.5rem;">
+          <p style="font-size:0.75rem;letter-spacing:0.25em;color:#d8b47c;text-transform:uppercase;">Ball Information</p>
+          <h2 class="font-serif-tc" style="font-size:2rem;font-weight:600;margin-top:0.25rem;">舞會情報</h2>
+          <p style="font-size:0.9rem;color:#94a3b8;margin-top:0.35rem;">匯集《越境·寰宇》2026 空軍官校禮儀示範晚會之核心時地、接駁與服裝規範</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div>
+              <p style="font-size:0.75rem;letter-spacing:0.15em;color:#d8b47c;text-transform:uppercase;">Date &amp; Time</p>
+              <h3 class="font-serif-tc" style="font-size:1.25rem;font-weight:600;margin-top:0.4rem;">2026 年 12 月 24 日（四）</h3>
+              <p style="font-size:0.9rem;color:#cbd5e1;margin-top:0.3rem;">民國 115 年 · 平安夜 18:00–22:00（臺灣時間）</p>
+              <p style="font-size:0.8rem;color:#94a3b8;margin-top:0.6rem;">建議提前於 17:00–17:45 抵達配合軍事基地門禁查驗與迎賓入場。</p>
+            </div>
+            <div style="margin-top:1.25rem;">
+              <button type="button" id="download-ics-btn" class="btn-outline" style="width:100%;padding:0.6rem;border-radius:0.75rem;font-size:0.8rem;">
+                📅 加入行事曆（下載 .ics）
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <p style="font-size:0.75rem;letter-spacing:0.15em;color:#d8b47c;text-transform:uppercase;">Venue &amp; Transit</p>
+              <h3 class="font-serif-tc" style="font-size:1.25rem;font-weight:600;margin-top:0.4rem;">空軍軍官學校</h3>
+              <p style="font-size:0.9rem;color:#cbd5e1;margin-top:0.3rem;">高雄市岡山區介壽西路 1 號</p>
+              <p style="font-size:0.8rem;color:#94a3b8;margin-top:0.6rem;">報名表單提供<strong style="color:#f1dcb8;">「自行前往」</strong>或<strong style="color:#f1dcb8;">「接駁車（岡山高醫捷運站）」</strong>兩種交通選擇。</p>
+            </div>
+            <div style="margin-top:1.25rem;display:flex;gap:0.5rem;">
+              <button type="button" id="open-transit-modal-btn" class="btn-outline" style="width:100%;padding:0.6rem;border-radius:0.75rem;font-size:0.8rem;">
+                查看交通與接駁說明
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <p style="font-size:0.75rem;letter-spacing:0.15em;color:#d8b47c;text-transform:uppercase;">Dress Code &amp; Entry</p>
+              <h3 class="font-serif-tc" style="font-size:1.25rem;font-weight:600;margin-top:0.4rem;">盛裝出席 · 門禁實名查驗</h3>
+              <p style="font-size:0.9rem;color:#cbd5e1;margin-top:0.3rem;">正裝、晚禮服或典雅洋裝</p>
+              <p style="font-size:0.8rem;color:#94a3b8;margin-top:0.6rem;">請勿穿著拖鞋或短褲。入場須攜帶身分證件正本以供軍事基地門禁查驗。</p>
+            </div>
+            <div style="margin-top:1.25rem;">
+              <a href="#protocol" class="btn-outline" style="width:100%;padding:0.6rem;border-radius:0.75rem;font-size:0.8rem;">
+                前往禮賓對接檢核 →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Poetic Interlude -->
+    <section style="padding:2.5rem 0;">
+      <div class="container-narrow">
+        <div style="text-align:center;padding:2.25rem 1.5rem;border-radius:1.5rem;border:1px solid rgba(216,180,124,0.22);background:linear-gradient(90deg,rgba(17,27,45,0.6) 0%,rgba(24,38,62,0.85) 50%,rgba(17,27,45,0.6) 100%);">
+          <span style="font-size:0.75rem;letter-spacing:0.28em;color:#d8b47c;text-transform:uppercase;">Across the Starlit Horizon</span>
+          <p class="font-serif-tc" style="font-size:1.35rem;color:#f7ebd9;margin:0.85rem 0;">
+            「在日常的航線之外，拾起一段屬於我們的璀璨星河。<br/>跨越天際與邊境，讓青春在平安夜的樂聲裡相遇。」
+          </p>
+          <span class="font-display-en" style="font-style:italic;font-size:0.9rem;color:#d8b47c;">ROCAFA 2026 · Beyond Borders</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Social Journal Section -->
+    <section id="journal">
+      <div class="container">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2rem;">
+          <div>
+            <p style="font-size:0.75rem;letter-spacing:0.25em;color:#d8b47c;text-transform:uppercase;">Ball Journal · @rocafa_2026</p>
+            <h2 class="font-serif-tc" style="font-size:2rem;font-weight:600;margin-top:0.2rem;">舞會手記</h2>
+            <p style="font-size:0.85rem;color:#94a3b8;">來自官方 Instagram @rocafa_2026 的形象寫真與主視覺紀錄</p>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" role="tablist" aria-label="舞會手記分類">
+            <button type="button" role="tab" aria-selected="true" data-journal-filter="all" class="journal-tab tab-btn active">全部貼文</button>
+            <button type="button" role="tab" aria-selected="false" data-journal-filter="emblem" class="journal-tab tab-btn">主視覺徽章</button>
+            <button type="button" role="tab" aria-selected="false" data-journal-filter="portrait" class="journal-tab tab-btn">形象寫真</button>
+            <button type="button" role="tab" aria-selected="false" data-journal-filter="gala" class="journal-tab tab-btn">晚會氛圍</button>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article data-journal-category="emblem" class="journal-card card">
+            <div>
+              <div style="padding:1.25rem;border-radius:0.75rem;background:#0b1220;border:1px solid rgba(216,180,124,0.2);text-align:center;margin-bottom:1rem;">
+                <span style="font-size:11px;color:#d8b47c;letter-spacing:0.1em;">OFFICIAL EMBLEM</span>
+                <p class="font-serif-tc" style="font-size:1.15rem;font-weight:700;color:#f7ebd9;margin-top:0.35rem;">越境·寰宇 主題徽章</p>
+                <p style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem;">地球經緯 · 環球航道 · 雙人共舞</p>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">《越境·寰宇》主視覺徽章亮相</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                以地球經緯、環球航道與共舞剪影交織，象徵空軍官校學生跨越疆界、翱翔天際的胸懷，在平安夜與你共赴一場環宇之約。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.15);display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;">
+              <button type="button" data-post-id="post-1" class="open-post-modal-btn" style="color:#d8b47c;font-weight:500;">展開完整貼文 →</button>
+              <a class="ext-ig-link" href="#protocol" style="color:#94a3b8;">@rocafa_2026 ↗</a>
+            </div>
+          </article>
+
+          <article data-journal-category="portrait" class="journal-card card">
+            <div>
+              <div style="padding:1.25rem;border-radius:0.75rem;background:#0b1220;border:1px solid rgba(216,180,124,0.2);text-align:center;margin-bottom:1rem;">
+                <span style="font-size:11px;color:#d8b47c;letter-spacing:0.1em;">PORTRAIT SERIES</span>
+                <p class="font-serif-tc" style="font-size:1.15rem;font-weight:700;color:#f7ebd9;margin-top:0.35rem;">台北天際線形象寫真</p>
+                <p style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem;">空軍軍常服 · 飛行墨鏡 · 都會暮色</p>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">暮色天際線下的堅定步伐</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                身著挺拔空軍軍常服、配戴飛行墨鏡，從台北 101 城市街頭走向岡山校區舞池——青春像一場浪漫的航行，期待與你並肩同行。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.15);display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;">
+              <button type="button" data-post-id="post-2" class="open-post-modal-btn" style="color:#d8b47c;font-weight:500;">展開完整貼文 →</button>
+              <a class="ext-ig-link" href="#protocol" style="color:#94a3b8;">@rocafa_2026 ↗</a>
+            </div>
+          </article>
+
+          <article data-journal-category="gala" class="journal-card card">
+            <div>
+              <div style="padding:1.25rem;border-radius:0.75rem;background:#0b1220;border:1px solid rgba(216,180,124,0.2);text-align:center;margin-bottom:1rem;">
+                <span style="font-size:11px;color:#d8b47c;letter-spacing:0.1em;">CHRISTMAS EVE GALA</span>
+                <p class="font-serif-tc" style="font-size:1.15rem;font-weight:700;color:#f7ebd9;margin-top:0.35rem;">平安夜禮儀示範晚會</p>
+                <p style="font-size:0.75rem;color:#94a3b8;margin-top:0.2rem;">水晶吊燈 · 軍樂交響 · 華爾滋開舞</p>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">平安夜，走進璀璨的禮儀示範晚會</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                傳承空軍官校年度禮儀示範舞會傳統，在溫暖水晶燈光與管樂交響下，展現軍校生優雅風範與跨校交流的熱情活力。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.15);display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;">
+              <button type="button" data-post-id="post-3" class="open-post-modal-btn" style="color:#d8b47c;font-weight:500;">展開完整貼文 →</button>
+              <a class="ext-ig-link" href="#protocol" style="color:#94a3b8;">@rocafa_2026 ↗</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Schedule & Performer Section -->
+    <section id="schedule" style="background:rgba(11,18,32,0.78);border-top:1px solid rgba(216,180,124,0.15);">
+      <div class="container-narrow">
+        <div style="text-align:center;margin-bottom:2rem;">
+          <p style="font-size:0.75rem;letter-spacing:0.25em;color:#d8b47c;text-transform:uppercase;">Evening Timeline</p>
+          <h2 class="font-serif-tc" style="font-size:2rem;font-weight:600;margin-top:0.25rem;">當日流程｜從暮色降臨，到星河長明</h2>
+          <p style="font-size:0.85rem;color:#94a3b8;margin-top:0.35rem;">晚會正式時段為 <strong style="color:#f1dcb8;">18:00 – 22:00</strong>；細部舞台節目表將隨 @rocafa_2026 最新貼文同步更新</p>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;margin-bottom:1.75rem;" role="tablist" aria-label="流程階段篩選">
+          <button type="button" role="tab" aria-selected="true" data-sched-filter="all" class="sched-tab tab-btn active">全時段總覽</button>
+          <button type="button" role="tab" aria-selected="false" data-sched-filter="reception" class="sched-tab tab-btn">迎賓與入場</button>
+          <button type="button" role="tab" aria-selected="false" data-sched-filter="ceremony" class="sched-tab tab-btn">開舞與舞台時刻</button>
+          <button type="button" role="tab" aria-selected="false" data-sched-filter="finale" class="sched-tab tab-btn">平安夜賦歸</button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div data-sched-cat="reception" class="sched-card card" style="flex-direction:row;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:1.25rem;flex:1;min-width:240px;">
+              <span class="font-display-en" style="font-size:1.5rem;font-weight:700;color:#d8b47c;min-width:110px;">17:00–18:00</span>
+              <div>
+                <h3 class="font-serif-tc" style="font-size:1.1rem;font-weight:600;">星光迎賓與門禁查驗入場</h3>
+                <p style="font-size:0.82rem;color:#cbd5e1;">岡山高醫捷運站接駁專車抵達、軍事基地實名門禁查驗、主題背板拍照留念</p>
+              </div>
+            </div>
+            <span style="font-size:11px;padding:4px 12px;border-radius:9999px;background:rgba(216,180,124,0.15);color:#f1dcb8;border:1px solid rgba(216,180,124,0.3);">迎賓階段</span>
+          </div>
+
+          <div data-sched-cat="ceremony" class="sched-card card" style="flex-direction:row;align-items:center;gap:1rem;flex-wrap:wrap;border-color:rgba(216,180,124,0.45);">
+            <div style="display:flex;align-items:center;gap:1.25rem;flex:1;min-width:240px;">
+              <span class="font-display-en" style="font-size:1.5rem;font-weight:700;color:#f1dcb8;min-width:110px;">18:00</span>
+              <div>
+                <h3 class="font-serif-tc" style="font-size:1.1rem;font-weight:600;">越境啟航 · 晚會正式開始</h3>
+                <p style="font-size:0.82rem;color:#cbd5e1;">開場樂隊演出、長官致詞與空軍官校禮儀示範開舞儀式</p>
+              </div>
+            </div>
+            <span style="font-size:11px;padding:4px 12px;border-radius:9999px;background:#d8b47c;color:#090e1a;font-weight:600;">核心時刻</span>
+          </div>
+
+          <div data-sched-cat="ceremony" class="sched-card card" style="flex-direction:row;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:1.25rem;flex:1;min-width:240px;">
+              <span class="font-display-en" style="font-size:1.5rem;font-weight:700;color:#d8b47c;min-width:110px;">待公告</span>
+              <div>
+                <h3 class="font-serif-tc" style="font-size:1.1rem;font-weight:600;">寰宇共舞 · 舞台時刻與交流活動</h3>
+                <p style="font-size:0.82rem;color:#cbd5e1;">社團展演（熱舞、輕音樂、DJ 等）、特邀演出名單與跨校自由共舞時段即將公布</p>
+              </div>
+            </div>
+            <span style="font-size:11px;padding:4px 12px;border-radius:9999px;background:#1e293b;color:#cbd5e1;border:1px solid #334155;">敬請期待</span>
+          </div>
+
+          <div data-sched-cat="finale" class="sched-card card" style="flex-direction:row;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:1.25rem;flex:1;min-width:240px;">
+              <span class="font-display-en" style="font-size:1.5rem;font-weight:700;color:#d8b47c;min-width:110px;">22:00</span>
+              <div>
+                <h3 class="font-serif-tc" style="font-size:1.1rem;font-weight:600;">晚安，天際線 · 舞會圓滿落幕</h3>
+                <p style="font-size:0.82rem;color:#cbd5e1;">平安夜終曲、合影道別，搭乘接駁車或自行平安賦歸</p>
+              </div>
+            </div>
+            <span style="font-size:11px;padding:4px 12px;border-radius:9999px;background:rgba(216,180,124,0.15);color:#f1dcb8;border:1px solid rgba(216,180,124,0.3);">賦歸時刻</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Protocol & Interactive Registration Flow -->
+    <section id="protocol">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:2.5rem;">
+          <p style="font-size:0.75rem;letter-spacing:0.25em;color:#d8b47c;text-transform:uppercase;">Registration &amp; Protocol Stepper</p>
+          <h2 class="font-serif-tc" style="font-size:2rem;font-weight:600;margin-top:0.25rem;">報名與「禮賓對接」三步驟</h2>
+          <p style="font-size:0.9rem;color:#94a3b8;margin-top:0.35rem;">為配合空軍官校軍事基地門禁審核與禮賓接待，填寫報名表單後請務必完成官方 IG 私訊對接</p>
+        </div>
+
+        <div class="grid-3" style="margin-bottom:2.5rem;">
+          <div class="card card-glow">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                <span style="width:28px;height:28px;border-radius:9999px;background:#d8b47c;color:#090e1a;font-weight:700;font-size:0.85rem;display:inline-flex;align-items:center;justify-content:center;">1</span>
+                <span style="font-size:11px;letter-spacing:0.12em;color:#d8b47c;font-weight:600;">STEP 01</span>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">填寫官方報名表單</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                備妥<strong style="color:#f1dcb8;">姓名、出生年月日、性別、法定身分證件號碼、居住地址、聯絡電話、交通方式</strong>（自行前往／岡山高醫捷運站接駁車）及個人 <strong style="color:#f1dcb8;">IG 帳號</strong>。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.2);">
+              <a class="ext-form-link btn-gold" href="#register-cta" style="width:100%;padding:0.6rem;border-radius:0.75rem;font-size:0.8rem;">前往官方 Google 報名表單 ↗</a>
+            </div>
+          </div>
+
+          <div class="card card-glow">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                <span style="width:28px;height:28px;border-radius:9999px;background:#d8b47c;color:#090e1a;font-weight:700;font-size:0.85rem;display:inline-flex;align-items:center;justify-content:center;">2</span>
+                <span style="font-size:11px;letter-spacing:0.12em;color:#d8b47c;font-weight:600;">STEP 02</span>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">私訊官方 IG 打招呼</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                因 IG 隱私設定限制陌生帳號直接傳送圖片，填表後請先主動私訊 <strong style="color:#d8b47c;">@rocafa_2026</strong> 打招呼，等待籌備團隊接收訊息。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.2);">
+              <a class="ext-ig-link btn-outline" href="#register-cta" style="width:100%;padding:0.6rem;border-radius:0.75rem;font-size:0.8rem;">前往官方 IG @rocafa_2026 ↗</a>
+            </div>
+          </div>
+
+          <div class="card card-glow">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                <span style="width:28px;height:28px;border-radius:9999px;background:#d8b47c;color:#090e1a;font-weight:700;font-size:0.85rem;display:inline-flex;align-items:center;justify-content:center;">3</span>
+                <span style="font-size:11px;letter-spacing:0.12em;color:#d8b47c;font-weight:600;">STEP 03</span>
+              </div>
+              <h3 class="font-serif-tc" style="font-size:1.15rem;font-weight:600;">傳送個人形象照完成對接</h3>
+              <p style="font-size:0.82rem;color:#cbd5e1;margin-top:0.5rem;">
+                待官方回覆確認後，於 IG 私訊傳送您的<strong style="color:#f1dcb8;">個人形象照</strong>，即完成禮賓對接與當日軍事基地門禁審核建檔。
+              </p>
+            </div>
+            <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.2);">
+              <div style="padding:0.6rem;border-radius:0.75rem;background:rgba(9,14,26,0.7);color:#d8b47c;font-size:0.8rem;text-align:center;border:1px solid rgba(216,180,124,0.3);">完成對接建檔</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Self-check & DM Copy Box -->
+        <div class="card-glow protocol-box" style="padding:1.75rem;background:#111c30;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+              <h3 class="font-serif-tc" style="font-size:1.25rem;font-weight:600;color:#f1dcb8;">報名前自我檢核清單</h3>
+              <span id="checklist-progress" style="font-size:0.75rem;padding:4px 10px;border-radius:9999px;background:rgba(216,180,124,0.2);color:#d8b47c;">已完成 0 / 4 項</span>
+            </div>
+            <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:0.85rem;">勾選確認以下項目，確保您的報名與門禁審核順暢無誤：</p>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;font-size:0.85rem;">
+              <label style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem;border-radius:0.75rem;background:#0b1220;border:1px solid #1e293b;cursor:pointer;">
+                <input type="checkbox" class="prep-check" />
+                <span>已確認可於 <strong>2026/12/24（四）18:00–22:00</strong> 全程參與晚會</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem;border-radius:0.75rem;background:#0b1220;border:1px solid #1e293b;cursor:pointer;">
+                <input type="checkbox" class="prep-check" />
+                <span>已備妥<strong>實名門禁查驗資料與居住地址</strong>（僅供當日軍事基地門禁審核使用）</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem;border-radius:0.75rem;background:#0b1220;border:1px solid #1e293b;cursor:pointer;">
+                <input type="checkbox" class="prep-check" />
+                <span>當日服裝符合<strong>正裝、晚禮服或典雅洋裝</strong>規範（不穿拖鞋、短褲）</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem;border-radius:0.75rem;background:#0b1220;border:1px solid #1e293b;cursor:pointer;">
+                <input type="checkbox" class="prep-check" />
+                <span>已準備好<strong>個人形象照</strong>，並了解填表後須先私訊 <strong>@rocafa_2026</strong> 打招呼</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="padding:1.25rem;border-radius:0.85rem;background:#090e1a;border:1px solid rgba(216,180,124,0.3);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.65rem;">
+              <span style="font-size:0.75rem;font-weight:600;color:#d8b47c;letter-spacing:0.08em;">IG 禮賓對接私訊範本</span>
+              <span id="copy-toast" class="hidden" style="font-size:11px;color:#34d399;">✓ 已複製到剪貼簿</span>
+            </div>
+            <input type="text" id="guest-name-input" placeholder="輸入您的姓名（選填，自動帶入範本）" style="width:100%;padding:0.55rem 0.75rem;border-radius:0.5rem;background:#152238;border:1px solid #334155;color:#fff;font-size:0.8rem;margin-bottom:0.5rem;" />
+            <textarea id="dm-template-text" rows="4" readonly style="width:100%;padding:0.65rem;border-radius:0.5rem;background:rgba(21,34,56,0.7);border:1px solid #1e293b;color:#e2e8f0;font-size:0.8rem;line-height:1.5;margin-bottom:0.65rem;">您好！我是已完成《越境·寰宇》2026 空軍官校禮儀示範晚會報名表單的來賓，特此私訊打招呼，待您回覆確認後將傳送個人形象照進行禮賓對接，謝謝您！</textarea>
+            <div style="display:flex;gap:0.5rem;">
+              <button type="button" id="copy-dm-btn" class="btn-gold" style="flex:1;padding:0.6rem;border-radius:0.5rem;font-size:0.8rem;">複製打招呼訊息</button>
+              <a class="ext-ig-link btn-outline" href="#register-cta" style="padding:0.6rem 0.85rem;border-radius:0.5rem;font-size:0.8rem;">前往 IG ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Warm Cream FAQ Accordion Section -->
+    <section id="faq" class="cream-section">
+      <div class="container-narrow">
+        <div style="text-align:center;margin-bottom:2rem;">
+          <p style="font-size:0.75rem;letter-spacing:0.25em;color:#8c6b3f;font-weight:600;text-transform:uppercase;">Before We Meet</p>
+          <h2 class="font-serif-tc" style="font-size:2rem;font-weight:700;color:#121c2e;margin-top:0.25rem;">相遇之前｜報名與入場須知</h2>
+          <p style="font-size:0.9rem;color:#475569;margin-top:0.3rem;">報名前請詳閱以下規範，讓平安夜的相聚更加從容美好</p>
+        </div>
+
+        <div id="faq-accordion">
+          <div class="faq-item">
+            <button type="button" class="faq-toggle faq-btn font-serif-tc" aria-expanded="true">
+              <span>一、門禁審核與個人資料用途說明</span>
+              <span class="faq-icon" style="color:#8c6b3f;font-size:1.25rem;">−</span>
+            </button>
+            <div class="faq-content faq-body">
+              <p>由於空軍軍官學校為軍事基地，所有校外來賓皆須完成實名制門禁造冊審核。報名表單所蒐集之個人實名資料與聯絡電話，僅供當日軍事基地門禁審核與禮賓接待核對使用，籌備團隊將嚴格保密。活動當日入場時，請務必隨身攜帶法定身分證件正本以供查驗。</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-toggle faq-btn font-serif-tc" aria-expanded="false">
+              <span>二、服裝儀容規範（Dress Code）</span>
+              <span class="faq-icon" style="color:#8c6b3f;font-size:1.25rem;">+</span>
+            </button>
+            <div class="faq-content faq-body hidden">
+              <p>本活動為空軍官校年度禮儀示範晚會，來賓請穿著<strong>正裝（西裝、襯衫領帶／領結）、晚禮服或典雅洋裝</strong>出席。嚴禁穿著拖鞋、涼鞋或短褲入場。</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-toggle faq-btn font-serif-tc" aria-expanded="false">
+              <span>三、交通方式與捷運站接駁車安排</span>
+              <span class="faq-icon" style="color:#8c6b3f;font-size:1.25rem;">+</span>
+            </button>
+            <div class="faq-content faq-body hidden">
+              <p>活動地點位於<strong>空軍軍官學校（高雄市岡山區介壽西路 1 號）</strong>。於官方報名表單中可選擇於高雄捷運紅線「岡山高醫站（R24）」搭乘大會接駁專車往返，或自行前往。</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-toggle faq-btn font-serif-tc" aria-expanded="false">
+              <span>四、為何填完表單還需要私訊 IG 傳送形象照？</span>
+              <span class="faq-icon" style="color:#8c6b3f;font-size:1.25rem;">+</span>
+            </button>
+            <div class="faq-content faq-body hidden">
+              <p>為協助禮賓人員與舞伴對接及入場核對，報名來賓須提供個人形象照。因 Instagram 隱私機制限制陌生帳號第一則訊息直接傳送圖片，請先傳送文字訊息向 <strong>@rocafa_2026</strong> 打招呼，待官方帳號接受訊息後再補傳照片即可完成報名程序。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Bottom Call-to-Action Section -->
+    <section id="register-cta" style="text-align:center;padding:5rem 0;">
+      <div class="container-narrow">
+        <p class="font-display-en" style="font-style:italic;font-size:1.75rem;color:#d8b47c;">2026 · 12.24 Christmas Eve</p>
+        <h2 class="font-serif-tc gold-gradient-text" style="font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-top:0.35rem;">把平安夜，留給《越境·寰宇》</h2>
+        <p style="font-size:0.95rem;color:#cbd5e1;max-width:580px;margin:0.85rem auto 1.75rem;">
+          校外來賓請填寫官方 Google 報名表單，並於填表後私訊官方 Instagram 完成禮賓對接；報名資格與相關規定均以官方表單與最新公告為準。
+        </p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;">
+          <a class="ext-form-link btn-gold" href="#protocol" style="padding:0.9rem 2rem;border-radius:9999px;font-size:0.9rem;">前往官方 Google 報名表單 ↗</a>
+          <a class="ext-ig-link btn-outline" href="#protocol" style="padding:0.9rem 1.75rem;border-radius:9999px;font-size:0.9rem;">追蹤官方 IG @rocafa_2026 ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="border-top:1px solid rgba(216,180,124,0.2);background:#060a12;padding:2.5rem 0;font-size:0.78rem;color:#94a3b8;">
+    <div class="container" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+      <div>
+        <p class="font-serif-tc" style="font-size:0.92rem;font-weight:600;color:#f7ebd9;">越境·寰宇｜2026 空軍官校禮儀示範晚會</p>
+        <p style="margin-top:0.2rem;">主辦單位：中華民國空軍軍官學校 舞會籌備團隊（@rocafa_2026）</p>
+        <p style="margin-top:0.15rem;">活動地點：高雄市岡山區介壽西路 1 號｜© 2026 ROCAFA Ball. All Rights Reserved.</p>
+      </div>
+      <button type="button" id="back-to-top-btn" class="btn-outline" style="padding:0.5rem 1rem;border-radius:9999px;font-size:0.78rem;">回到頂端 ↑</button>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="info-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-panel">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(148,163,184,0.2);padding-bottom:0.75rem;margin-bottom:1rem;">
+        <div>
+          <p id="modal-subtitle" style="font-size:11px;letter-spacing:0.15em;color:#d8b47c;">ROCAFA 2026</p>
+          <h3 id="modal-title" class="font-serif-tc" style="font-size:1.25rem;font-weight:600;color:#fff;margin-top:0.15rem;">詳細資訊</h3>
+        </div>
+        <button type="button" id="close-modal-btn" aria-label="關閉視窗 (Esc)" style="font-size:1.2rem;color:#94a3b8;padding:0 0.4rem;">✕</button>
+      </div>
+      <div id="modal-body" style="font-size:0.88rem;color:#cbd5e1;line-height:1.65;"></div>
+      <div style="margin-top:1.25rem;padding-top:0.75rem;border-top:1px solid rgba(148,163,184,0.2);display:flex;justify-content:flex-end;gap:0.5rem;">
+        <button type="button" id="modal-ok-btn" class="btn-gold" style="padding:0.45rem 1.1rem;border-radius:0.5rem;font-size:0.8rem;">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var igUrl = ['https:', '', 'www.instagram.com', 'rocafa_2026'].join('/');
+      var formUrl = ['https:', '', 'docs.google.com', 'forms', 'd', 'e', '1FAIpQLSfoJ6wk85NshcKoN-W9an7NjDU1-Q6USu9ARC0B8YKi7dxaQg', 'viewform'].join('/');
+      document.querySelectorAll('.ext-ig-link').forEach(function (a) {
+        a.href = igUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      });
+      document.querySelectorAll('.ext-form-link').forEach(function (a) {
+        a.href = formUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      });
+
+      var mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      var mobileMenu = document.getElementById('mobile-menu');
+      var iconOpen = document.getElementById('menu-icon-open');
+      var iconClose = document.getElementById('menu-icon-close');
+
+      function toggleMobileMenu(forceClose) {
+        var isHidden = mobileMenu.classList.contains('hidden');
+        var shouldOpen = forceClose ? false : isHidden;
+        if (shouldOpen) {
+          mobileMenu.classList.remove('hidden');
+          iconOpen.classList.add('hidden');
+          iconClose.classList.remove('hidden');
+        } else {
+          mobileMenu.classList.add('hidden');
+          iconOpen.classList.remove('hidden');
+          iconClose.classList.add('hidden');
+        }
+      }
+      mobileMenuBtn.addEventListener('click', function () { toggleMobileMenu(false); });
+      document.querySelectorAll('.mobile-nav-link').forEach(function (link) {
+        link.addEventListener('click', function () { toggleMobileMenu(true); });
+      });
+
+      var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
+      var elDays = document.getElementById('cd-days');
+      var elHours = document.getElementById('cd-hours');
+      var elMinutes = document.getElementById('cd-minutes');
+      var elSeconds = document.getElementById('cd-seconds');
+      var elNote = document.getElementById('cd-status-note');
+
+      function pad2(n) { return String(n).padStart(2, '0'); }
+      function updateCountdown() {
+        var diff = targetTime - Date.now();
+        if (diff <= 0) {
+          elDays.textContent = '00';
+          elHours.textContent = '00';
+          elMinutes.textContent = '00';
+          elSeconds.textContent = '00';
+          elNote.textContent = '《越境·寰宇》2026 空軍官校禮儀示範晚會已璀璨啟航！';
+          return;
+        }
+        elDays.textContent = pad2(Math.floor(diff / 86400000));
+        elHours.textContent = pad2(Math.floor((diff / 3600000) % 24));
+        elMinutes.textContent = pad2(Math.floor((diff / 60000) % 60));
+        elSeconds.textContent = pad2(Math.floor((diff / 1000) % 60));
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      document.getElementById('download-ics-btn').addEventListener('click', function () {
+        var icsLines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//ROCAFA 2026//Beyond Borders Ball//ZH',
+          'BEGIN:VEVENT',
+          'UID:rocafa-2026-ball@rocafa.edu.tw',
+          'DTSTAMP:20261109T000000Z',
+          'DTSTART:20261224T100000Z',
+          'DTEND:20261224T140000Z',
+          'SUMMARY:2026空軍官校禮儀示範晚會《越境·寰宇》',
+          'LOCATION:空軍軍官學校（高雄市岡山區介壽西路1號）',
+          'DESCRIPTION:主題：《越境·寰宇》\\n時間：2026年12月24日 18:00-22:00\\n服裝規範：正裝、晚禮服或典雅洋裝（禁拖鞋/短褲）',
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ].join('\r\n');
+        var blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'ROCAFA_2026_Ball_1224.ics';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      var journalTabs = document.querySelectorAll('.journal-tab');
+      var journalCards = document.querySelectorAll('.journal-card');
+      journalTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var filter = tab.getAttribute('data-journal-filter');
+          journalTabs.forEach(function (t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          journalCards.forEach(function (card) {
+            var cat = card.getAttribute('data-journal-category');
+            if (filter === 'all' || cat === filter) card.classList.remove('hidden');
+            else card.classList.add('hidden');
+          });
+        });
+      });
+
+      var schedTabs = document.querySelectorAll('.sched-tab');
+      var schedCards = document.querySelectorAll('.sched-card');
+      schedTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var filter = tab.getAttribute('data-sched-filter');
+          schedTabs.forEach(function (t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          schedCards.forEach(function (card) {
+            var cat = card.getAttribute('data-sched-cat');
+            if (filter === 'all' || cat === filter) card.classList.remove('hidden');
+            else card.classList.add('hidden');
+          });
+        });
+      });
+
+      var prepChecks = document.querySelectorAll('.prep-check');
+      var progressBadge = document.getElementById('checklist-progress');
+      prepChecks.forEach(function (c) {
+        c.addEventListener('change', function () {
+          var count = 0;
+          prepChecks.forEach(function (item) { if (item.checked) count++; });
+          if (count === prepChecks.length) {
+            progressBadge.textContent = '✓ 4 項全數完成！可進行填表與對接';
+          } else {
+            progressBadge.textContent = '已完成 ' + count + ' / ' + prepChecks.length + ' 項';
+          }
+        });
+      });
+
+      var guestNameInput = document.getElementById('guest-name-input');
+      var dmTemplateText = document.getElementById('dm-template-text');
+      var copyToast = document.getElementById('copy-toast');
+      guestNameInput.addEventListener('input', function () {
+        var name = guestNameInput.value.trim();
+        var intro = name ? '您好！我是「' + name + '」，已完成' : '您好！我是已完成';
+        dmTemplateText.value = intro + '《越境·寰宇》2026 空軍官校禮儀示範晚會報名表單的來賓，特此私訊打招呼，待您回覆確認後將傳送個人形象照進行禮賓對接，謝謝您！';
+      });
+      document.getElementById('copy-dm-btn').addEventListener('click', function () {
+        dmTemplateText.select();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(dmTemplateText.value);
+        } else {
+          document.execCommand('copy');
+        }
+        copyToast.classList.remove('hidden');
+        setTimeout(function () { copyToast.classList.add('hidden'); }, 2500);
+      });
+
+      document.querySelectorAll('.faq-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var content = btn.nextElementSibling;
+          var icon = btn.querySelector('.faq-icon');
+          var isOpen = !content.classList.contains('hidden');
+          if (isOpen) {
+            content.classList.add('hidden');
+            icon.textContent = '+';
+            btn.setAttribute('aria-expanded', 'false');
+          } else {
+            content.classList.remove('hidden');
+            icon.textContent = '−';
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      var modal = document.getElementById('info-modal');
+      var modalTitle = document.getElementById('modal-title');
+      var modalSubtitle = document.getElementById('modal-subtitle');
+      var modalBody = document.getElementById('modal-body');
+      var closeModalBtn = document.getElementById('close-modal-btn');
+
+      var postDetails = {
+        'post-1': {
+          subtitle: 'OFFICIAL EMBLEM · @rocafa_2026',
+          title: '《越境·寰宇》主視覺徽章設計理念',
+          body: '<p>2026 空軍官校禮儀示範晚會以<strong>《越境·寰宇》</strong>為題，徽章設計融合地球經緯線、環球飛行航軌與雙人共舞姿態，象徵空軍官校學生以無懼視野跨越疆界，在平安夜邀請嘉賓共度星河之夜。</p>'
+        },
+        'post-2': {
+          subtitle: 'PORTRAIT SERIES · @rocafa_2026',
+          title: '城市天際線 · 空軍官校形象寫真',
+          body: '<p>由空軍官校學生身著筆挺深藍軍常服、配戴飛行墨鏡於台北 101 城市街頭取景拍攝，展現從繁華都會天際線邁向岡山基地跑道的自信風采。</p>'
+        },
+        'post-3': {
+          subtitle: 'CHRISTMAS EVE GALA · 2026.12.24',
+          title: '平安夜禮儀示範晚會傳統與亮點',
+          body: '<p>空軍官校禮儀示範舞會為每年歲末最具代表性的校園盛事。2026 年特別選於 12 月 24 日（星期四）平安夜 18:00–22:00 舉行，結合傳統開舞儀式、跨校交流共舞與社團演出。</p>'
+        }
+      };
+
+      function openModal(subtitle, title, htmlContent) {
+        modalSubtitle.textContent = subtitle;
+        modalTitle.textContent = title;
+        modalBody.innerHTML = htmlContent;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        closeModalBtn.focus();
+      }
+      function closeModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.open-post-modal-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var data = postDetails[btn.getAttribute('data-post-id')];
+          if (data) openModal(data.subtitle, data.title, data.body);
+        });
+      });
+      document.getElementById('open-kv-modal-btn').addEventListener('click', function () {
+        openModal('KEY VISUAL · ROCAFA 2026', '《越境·寰宇》2026 空軍官校禮儀示範晚會主視覺', '<p>主視覺以午夜深藍星河與香檳金星軌為基底，描繪空軍官校學生與舞伴於環球星軌間優雅共舞，呼應「越境·寰宇」跨越天際、相聚平安夜的核心主題。</p>');
+      });
+      document.getElementById('open-transit-modal-btn').addEventListener('click', function () {
+        openModal('TRANSIT & SHUTTLE GUIDE', '交通方式與岡山高醫捷運站接駁說明', '<p><strong>1. 大會接駁專車：</strong>於報名表單勾選「接駁車（岡山高醫捷運站）」，當日可於高雄捷運紅線 R24 岡山高醫站搭乘專車直達空軍軍官學校。<br/><br/><strong>2. 自行前往：</strong>導航設定「高雄市岡山區介壽西路 1 號（空軍軍官學校）」，抵達校門時請出示法定身分證件正本配合查驗入場。</p>');
+      });
+
+      closeModalBtn.addEventListener('click', closeModal);
+      document.getElementById('modal-ok-btn').addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+      });
+
+      document.getElementById('back-to-top-btn').addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
