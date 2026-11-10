@@ -246,6 +246,50 @@ main > .cream-section {
   pointer-events: none;
 }
 
+.star-trails {
+  position: absolute;
+  z-index: -1;
+  inset: 50% auto auto 50%;
+  width: min(96%, 72rem);
+  height: auto;
+  translate: -50% -50%;
+  color: var(--gold);
+  fill: none;
+  pointer-events: none;
+}
+
+.star-trails path {
+  stroke: currentColor;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.ticket-star-trails { height: min(100%, 29rem); }
+
+.star-trail { opacity: 0.22; }
+.star-glint { opacity: 0.62; }
+
+.hero-star-trails .star-trail,
+.ticket-star-trails.has-entered .star-trail {
+  animation: trace-stars 1.4s cubic-bezier(0.2, 0.75, 0.25, 1) backwards;
+}
+
+.hero-star-trails .star-glint,
+.ticket-star-trails.has-entered .star-glint {
+  animation: glint-arrive 0.9s ease-out 0.22s backwards;
+}
+
+@keyframes trace-stars {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; opacity: 0.22; }
+}
+
+@keyframes glint-arrive {
+  0% { opacity: 0; }
+  50% { opacity: 0.85; }
+  100% { opacity: 0.62; }
+}
+
 .hero-copy {
   display: grid;
   justify-items: center;
@@ -298,6 +342,7 @@ main > .cream-section {
 /* Scroll ticket */
 
 .ticket-section {
+  isolation: isolate;
   padding-block: clamp(5rem, 11vw, 10rem);
   overflow-x: clip;
   background: var(--bg-navy);
@@ -881,7 +926,7 @@ main > .cream-section {
   .mobile-menu > *, .hero-subtitle, .hero-tagline, .hero-details,
   #info-modal[open] .modal-panel, .faq-item[open] .faq-body
 ),
-.has-entered:not(:focus-within) {
+.has-entered:not(.star-trails, :focus-within) {
   animation: settle-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
@@ -909,6 +954,12 @@ main > .cream-section {
     animation: draw-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + clamp(4rem, 15svh, 8rem));
+  }
+
+  main > section + section::after {
+    animation: glint-arrive auto linear both;
+    animation-timeline: --section-scroll;
+    animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + 4rem);
   }
 
   @media (min-height: 620px) {

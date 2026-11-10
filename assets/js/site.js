@@ -190,7 +190,7 @@
 
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
-      '.tear-ticket-plane', '.countdown-title', '.countdown-card', '#cd-status-note',
+      '.tear-ticket-plane', '.ticket-star-trails', '.countdown-title', '.countdown-card', '#cd-status-note',
       '.section-heading > *', '.compact-section-heading > *', '.journal-heading > *',
       '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
       '.schedule-filters > button', '.schedule-entry', '.protocol-steps > .card',
