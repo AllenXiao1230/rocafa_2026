@@ -456,10 +456,11 @@ main > .cream-section {
   mask:
     linear-gradient(#000 0 0) right / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at left, transparent 3px, #000 3.5px) left top / 4px 14px repeat-y;
-  transform-origin: top left;
+  /* Anchor the last perforation while the seam opens from the top. */
+  transform-origin: bottom left;
   transform:
     translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
-    rotate(calc(var(--ticket-peel, 0) * -9deg - var(--ticket-drop, 0) * 15deg));
+    rotate(calc(var(--ticket-peel, 0) * 9deg + var(--ticket-drop, 0) * 15deg));
   opacity: calc(1 - var(--ticket-drop, 0));
 }
 
