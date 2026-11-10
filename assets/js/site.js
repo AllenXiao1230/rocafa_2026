@@ -40,8 +40,6 @@
   var ticketStage = document.querySelector('.ticket-stage');
   var ticketSection = document.querySelector('.ticket-section');
   var headerInner = document.querySelector('.header-inner');
-  var ticketFrame = 0;
-  var lastTicketProgress = -1;
 
   var heroScene = document.getElementById('hero');
   var countdownScene = document.querySelector('.countdown');
@@ -55,6 +53,13 @@
     return Math.max(0, Math.min(1, value));
   }
 
+  function setSceneEntrance(stage, distance, height) {
+    var approach = limitProgress(distance / height);
+    stage.style.setProperty('--scene-entry', 1 - approach);
+    // Counter most of the natural scroll so the entrance starts near the lower third.
+    stage.style.setProperty('--scene-entry-offset', (-approach * height * 5 / 6) + 'px');
+  }
+
   function updateScrollScenes() {
     sceneFrame = 0;
     var headerHeight = headerInner.offsetHeight;
@@ -63,8 +68,14 @@
     var copyExit = limitProgress(heroProgress / 0.36);
     var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
     var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
+    var ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
+    var ticketHeight = ticketStage.offsetHeight;
+    var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight);
+    var ticketProgress = limitProgress(-ticketTop / ticketDistance);
+    var tearEnd = 0.8;
+    var tearProgress = limitProgress(ticketProgress / tearEnd);
     var countdownTop = countdownScene.getBoundingClientRect().top - headerHeight;
-    var countdownEntry = limitProgress(1 - countdownTop / (countdownStage.offsetHeight * 0.65));
+    var countdownHeight = countdownStage.offsetHeight;
     var mottoTop = mottoScene.getBoundingClientRect().top - headerHeight;
     var mottoLead = mottoStage.offsetHeight * 0.23;
     var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoStage.offsetHeight);
@@ -76,7 +87,11 @@
     heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
     heroStage.style.setProperty('--hero-logo-layer', copyExit === 1 ? 1 : -1);
 
-    countdownStage.style.setProperty('--scene-entry', countdownEntry);
+    setSceneEntrance(ticketStage, ticketTop, ticketHeight);
+    ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
+    ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
+    ticket.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
+    setSceneEntrance(countdownStage, countdownTop, countdownHeight);
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
   }
 
@@ -89,32 +104,6 @@
   window.addEventListener('resize', queueSceneUpdate);
   window.addEventListener('pageshow', queueSceneUpdate);
   queueSceneUpdate();
-
-  function updateTicket() {
-    ticketFrame = 0;
-    var travel = Math.max(1, ticketSection.clientHeight - ticketStage.offsetHeight);
-    var distance = headerInner.offsetHeight - ticketSection.getBoundingClientRect().top;
-    var progress = Math.max(0, Math.min(1, distance / travel));
-    if (progress === lastTicketProgress) return;
-    lastTicketProgress = progress;
-
-    // First pull against the perforation, then let the stub fall away.
-    var peel = Math.min(1, progress / 0.52);
-    var drop = Math.max(0, (progress - 0.52) / 0.48);
-    ticket.style.setProperty('--ticket-peel', peel);
-    ticket.style.setProperty('--ticket-drop', drop);
-  }
-
-  function queueTicketUpdate() {
-    if (!ticketFrame) ticketFrame = requestAnimationFrame(updateTicket);
-  }
-
-  if (ticket && ticketStage && ticketSection) {
-    window.addEventListener('scroll', queueTicketUpdate, { passive: true });
-    window.addEventListener('resize', queueTicketUpdate);
-    window.addEventListener('pageshow', queueTicketUpdate);
-    queueTicketUpdate();
-  }
 
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');
@@ -249,7 +238,7 @@
 
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
-      '.tear-ticket-plane', '.ticket-star-trails',
+      '.ticket-star-trails',
       '.section-heading > *',
       '#info .card', '.journal-entry-body', '.journal-media', '.journal-link',
       '.schedule-entry', '.protocol-steps > .card',

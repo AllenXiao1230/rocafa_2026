@@ -398,7 +398,7 @@ main > .cream-section {
 
 .ticket-section {
   --ticket-stage-height: calc(100dvh - 4rem);
-  --ticket-scroll-distance: clamp(9rem, 28svh, 16rem);
+  --ticket-scroll-distance: clamp(11rem, 35svh, 20rem);
   isolation: isolate;
   min-block-size: calc(var(--ticket-stage-height) + var(--ticket-scroll-distance));
   padding: 0 1.25rem;
@@ -422,6 +422,8 @@ main > .cream-section {
   max-width: 36rem;
   margin-inline: auto;
   color: var(--bg-deep);
+  opacity: calc(var(--scene-entry, 1) * (1 - var(--ticket-exit, 0)));
+  translate: 0 calc(var(--scene-entry-offset, 0px) - var(--ticket-exit, 0) * 3.5rem);
 }
 
 .tear-ticket-plane {
@@ -575,7 +577,8 @@ main > .cream-section {
 .countdown-stage > .container-narrow {
   --countdown-entry: var(--scene-entry, 1);
   scale: calc(0.72 + var(--countdown-entry) * 0.28);
-  opacity: calc(0.2 + var(--countdown-entry) * 0.8);
+  opacity: var(--countdown-entry);
+  translate: 0 var(--scene-entry-offset, 0px);
 }
 
 .countdown-title {
