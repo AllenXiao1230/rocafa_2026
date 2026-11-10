@@ -717,6 +717,7 @@ main > .cream-section {
   border-top: 1px solid var(--rule);
   border-radius: 0;
   padding-inline: 0.4rem;
+  text-align: center;
 }
 
 #info { background: linear-gradient(var(--bg-navy), var(--bg-twilight)); }
@@ -888,16 +889,6 @@ main > .cream-section {
   color: var(--gold);
 }
 
-@media (min-width: 561px) {
-  .schedule-time {
-    position: sticky;
-    top: 5.5rem;
-    align-self: start;
-  }
-
-  .schedule-entry { align-content: stretch; }
-}
-
 .schedule-event-opening .schedule-time { color: var(--gold-light); }
 
 .schedule-entry-copy {
@@ -930,7 +921,7 @@ main > .cream-section {
 
 .protocol-step-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 0.75rem;
 }
