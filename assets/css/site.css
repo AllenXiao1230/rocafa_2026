@@ -134,11 +134,7 @@ button:disabled { cursor: default; opacity: 0.55; }
 .header-inner { height: 4rem; display: flex; align-items: center; gap: 1.5rem; }
 .header-actions { display: flex; align-items: center; gap: 0.5rem; }
 .brand-link { display: flex; align-items: center; gap: 0.75rem; }
-.brand-emblem {
-  width: 2.25rem; height: 2.25rem; border-radius: 9999px;
-  background: var(--bg-card); border: 1px solid rgb(var(--gold-rgb) / 50%);
-  display: flex; align-items: center; justify-content: center; color: var(--gold);
-}
+.brand-emblem { display: block; flex-shrink: 0; }
 .desktop-nav { display: flex; align-items: center; gap: 1.5rem; margin-inline-start: auto; font-size: 0.875rem; color: var(--text-secondary); }
 .desktop-nav a:not(.btn-gold):hover { color: var(--gold); }
 .mobile-toggle { display: none; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgb(var(--gold-rgb) / 30%); color: var(--gold); }
@@ -820,6 +816,7 @@ main > .cream-section {
 
 .journal-list {
   display: grid;
+  align-items: start;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.25rem;
 }
@@ -841,12 +838,12 @@ main > .cream-section {
 .journal-media {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
   height: auto;
-  object-fit: contain;
   border-radius: 0 0 1rem 1rem;
   background: var(--bg-deep);
 }
+
+video.journal-media { aspect-ratio: 16 / 9; }
 
 .journal-link {
   display: flex;
@@ -1002,7 +999,6 @@ main > .cream-section {
 
 /* FAQ and final registration links */
 
-.brand-emblem { flex-shrink: 0; }
 #modal-body p + p { margin-top: 0.75rem; }
 .btn-gold, .btn-outline, .mobile-toggle, .mobile-menu a, #close-modal-btn {
   min-height: 44px;
