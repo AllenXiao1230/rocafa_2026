@@ -156,8 +156,8 @@
     var mottoReveal = mottoPhase.enterEnd + (mottoPhase.exitStart - mottoPhase.enterEnd) * 0.58;
     mottoStage.style.setProperty('--motto-progress', limitProgress((position - mottoPhase.start) / (mottoReveal - mottoPhase.start)));
     if (takeoffRenderer) {
-      var flightDistance = takeoffPhase.exitStart - takeoffPhase.enterEnd;
-      var flight = limitProgress((position - takeoffPhase.enterEnd - flightDistance * 0.10) / (flightDistance * 0.90));
+      var flightStart = takeoffPhase.enterEnd + (takeoffPhase.exitStart - takeoffPhase.enterEnd) * 0.10;
+      var flight = limitProgress((position - flightStart) / (takeoffPhase.end - flightStart));
       takeoffCaption.style.setProperty('--caption-opacity', easeScene((flight - 0.65) / 0.17));
       takeoffRenderer.update(flight, takeoffPhase.opacity > 0, openingWidth, openingHeight);
     }

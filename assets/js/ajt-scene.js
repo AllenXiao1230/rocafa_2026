@@ -90,7 +90,7 @@ function createAjtRenderer(canvas, exhaustCanvas, colors) {
       state.altitudeFt = 0;
     } else {
       const t = (p - 0.65) / 0.35;
-      state.altitudeFt = 475 * Math.pow(t, 1.94);
+      state.altitudeFt = 620 * Math.pow(t, 1.94);
     }
 
     // Tricycle landing gear retraction after liftoff
@@ -1196,7 +1196,7 @@ function createAjtRenderer(canvas, exhaustCanvas, colors) {
     const pitch = -0.165 + climbLagY * .006;
     const cam = {
       x: acPos.x + chaseOffset,
-      y: acPos.y + 3.4 - climbLagY * .22 - 1.15 * smoothstep(.78, 1, state.progress),
+      y: acPos.y + 3.4 - climbLagY * .22 - 2.75 * smoothstep(.76, 1, state.progress),
       z: acPos.z - chaseDistance,
       yaw,
       cosYaw: Math.cos(yaw),
