@@ -618,6 +618,17 @@ main > .cream-section {
 .has-touch-opening .ticket-section.opening-revealed .scene-arrival { opacity: 1; }
 .has-touch-opening .ticket-section.opening-passed .scene-arrival { opacity: 0; }
 
+.has-touch-opening .countdown-stage .scene-arrival {
+  animation: none;
+  opacity: 0;
+  transform: none;
+  scale: 1;
+  transition: opacity 0.22s ease-out;
+}
+
+.has-touch-opening .countdown.opening-revealed .scene-arrival { opacity: 1; }
+.has-touch-opening .countdown.opening-settled .scene-arrival { transition-duration: 0s; }
+
 .has-touch-opening .tear-ticket-tab {
   animation: none;
   opacity: 1;

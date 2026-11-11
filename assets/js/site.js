@@ -60,12 +60,14 @@
   var mottoScene = document.querySelector('.ball-motto');
   var heroStage = heroScene.querySelector('.scene-stage');
   var countdownStage = countdownScene.querySelector('.scene-stage');
+  var countdownContent = countdownStage.querySelector('.container');
   var mottoStage = mottoScene.querySelector('.scene-stage');
   var sceneFrame = 0;
   var scenesIdle = false;
   var openingRanges;
   var touchOpening = matchMedia('(hover: none) and (pointer: coarse)');
   var touchTear;
+  var touchTearDuration = 620;
   var nativeSceneArrival = CSS.supports('animation-timeline: view()') &&
     CSS.supports('animation-timeline: scroll(root block)') &&
     CSS.supports('animation-range: entry 0% entry 100%') &&
@@ -90,8 +92,9 @@
 
   function measureOpeningRanges() {
     var header = headerInner.offsetHeight;
-    var heroStart = window.scrollY + heroScene.getBoundingClientRect().top - header;
-    var ticketStart = window.scrollY + ticketSection.getBoundingClientRect().top - header;
+    var scroll = window.scrollY;
+    var heroStart = scroll + heroScene.getBoundingClientRect().top - header;
+    var ticketStart = scroll + ticketSection.getBoundingClientRect().top - header;
     var ticketHeight = ticketStage.offsetHeight;
     var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
     openingRanges = {
@@ -101,6 +104,13 @@
       ticketHeight: ticketHeight,
       ticketRunway: Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset),
     };
+    if (touchOpening.matches) {
+      var countdownStart = scroll + countdownScene.getBoundingClientRect().top - header;
+      // Measure against the same stable viewport used by the sticky stages.
+      var countdownEntry = countdownStart + countdownContent.offsetTop - countdownStage.offsetHeight;
+      openingRanges.countdownStart = countdownStart;
+      openingRanges.countdownEntry = countdownEntry;
+    }
     if (nativeSceneArrival && !touchOpening.matches) {
       heroScene.style.setProperty('--opening-start', heroStart + 'px');
       heroScene.style.setProperty('--opening-runway', openingRanges.heroRunway + 'px');
@@ -138,12 +148,23 @@
           { transform: 'translate3d(0, 0, 0) rotate(0)', opacity: 1, easing: 'ease-in-out' },
           { transform: 'translate3d(0, 0, 0) rotate(9deg)', opacity: 1, offset: 0.52, easing: 'ease-in-out' },
           { transform: 'translate3d(80%, 44%, 0) rotate(24deg)', opacity: 0 },
-        ], { duration: 620, fill: 'both' });
+        ], { duration: touchTearDuration, fill: 'both' });
         touchTear.onfinish = queueSceneUpdate;
       }
     }
-    var tearFinished = touchTear && touchTear.playbackRate > 0 && touchTear.playState === 'finished';
-    var fadeStart = tearFinished ? ticketStart + ticketRunway * 0.82 : Infinity;
+    var tearFinished = touchTear && !touchTear.pending && touchTear.playbackRate > 0 &&
+      touchTear.currentTime === touchTearDuration && touchTear.playState === 'finished';
+    // A flick can leave the pinned range before the timed tear completes.
+    if (touchTear && scroll >= ticketStart + ticketRunway && !tearFinished) {
+      touchTear.playbackRate = 1;
+      touchTear.finish();
+      tearFinished = true;
+    }
+
+    var countdownEntry = openingRanges.countdownEntry;
+    setTouchPhase(countdownScene, 'opening-revealed', scroll, countdownEntry - 48);
+    setTouchPhase(countdownScene, 'opening-settled', scroll, openingRanges.countdownStart);
+    var fadeStart = tearFinished ? countdownEntry + 24 : Infinity;
     setTouchPhase(ticketSection, 'opening-passed', scroll, fadeStart);
   }
 
@@ -201,7 +222,7 @@
       ticket.style.setProperty('--ticket-drop', easeScene((tearProgress - 0.52) / 0.48));
       ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
     }
-    if (!nativeSceneArrival) setSceneEntrance(countdownStage, countdownTop, countdownHeight);
+    if (!nativeSceneArrival && !touchOpening.matches) setSceneEntrance(countdownStage, countdownTop, countdownHeight);
     countdownStage.style.setProperty('--countdown-exit', countdownExit);
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
     mottoStage.style.setProperty('--motto-exit', mottoExit);
@@ -235,7 +256,7 @@
   touchOpening.addEventListener('change', syncOpeningMode);
   if ('ResizeObserver' in window) {
     var openingObserver = new ResizeObserver(measureOpeningRanges);
-    [headerInner.parentElement, heroScene, heroStage, ticketSection, ticketStage].forEach(function (element) {
+    [headerInner.parentElement, heroScene, heroStage, ticketSection, ticketStage, countdownStage, countdownContent].forEach(function (element) {
       openingObserver.observe(element);
     });
   } else {
