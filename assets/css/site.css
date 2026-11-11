@@ -443,8 +443,7 @@ main > .cream-section {
 
 .ticket-section {
   --ticket-inset: 1rem;
-  --arrival-inset: calc(2 * var(--ticket-inset));
-  --ticket-stage-height: calc(100svh - 4rem - var(--arrival-inset));
+  --ticket-stage-height: calc(100svh - 4rem - 2 * var(--ticket-inset));
   --arrival-height: var(--ticket-stage-height);
   --ticket-scroll-distance: clamp(10rem, 28svh, 15rem);
   isolation: isolate;
@@ -483,17 +482,17 @@ main > .cream-section {
   translate: 0 calc(var(--ticket-exit, 0) * -3.5rem);
 }
 
-@supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) and (animation-range: contain 0% contain 100%) and (view-timeline-inset: 4rem 0px) {
-  .has-scroll-scenes :is(#hero, .ticket-section, .countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
+@supports (animation-timeline: view()) and (animation-timeline: scroll(root block)) and (animation-range: entry 0% entry 100%) and (animation-range: 0px 100px) and (view-timeline-inset: 4rem 0px) {
+  .has-scroll-scenes :is(.countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
     view-timeline-name: --arrival;
     /* Keep the timeline aligned with the stage when mobile browser controls retract. */
     view-timeline-inset: 4rem max(0px, calc(100dvh - 100svh));
   }
 
-  .has-scroll-scenes .scene-arrival {
+  .has-scroll-scenes .countdown-stage .scene-arrival {
     animation: scene-arrive auto linear both;
     animation-timeline: --arrival;
-    animation-range: entry var(--arrival-inset, 0px) entry 100%;
+    animation-range: entry 0% entry 100%;
   }
 
   @keyframes scene-arrive {
@@ -516,23 +515,28 @@ main > .cream-section {
     to { transform: none; }
   }
 
+  /* Document offsets keep the opening independent of the changing visual viewport. */
+  .has-scroll-scenes :is(#hero, .ticket-section) {
+    --opening-end: calc(var(--opening-start) + var(--opening-runway));
+  }
+
   .has-scroll-scenes .hero-copy {
     animation: hero-copy-depart auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 0% contain 36%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--opening-start) calc(var(--opening-start) + var(--opening-runway) * 0.36);
   }
 
   .has-scroll-scenes .hero-orbit {
     animation: hero-orbit-pass auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 0% contain 100%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--opening-start) var(--opening-end);
   }
 
   .has-scroll-scenes .hero-stage::before,
   .has-scroll-scenes .hero-star-trails {
     animation: hero-light-pass auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 0% contain 100%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--opening-start) var(--opening-end);
   }
 
   @keyframes hero-copy-depart {
@@ -553,28 +557,33 @@ main > .cream-section {
     96%, 100% { opacity: 0; transform: translateY(-2rem); }
   }
 
+  .has-scroll-scenes .ticket-section {
+    --ticket-peel-end: calc(var(--opening-start) + var(--opening-runway) * 0.416);
+    --ticket-tear-end: calc(var(--opening-start) + var(--opening-runway) * 0.8);
+  }
+
   .has-scroll-scenes .ticket-stage .scene-arrival {
     animation: scene-arrive auto linear both, ticket-depart auto linear forwards;
-    animation-timeline: --arrival, --arrival;
-    animation-range: entry var(--arrival-inset) entry 100%, contain 80% contain 100%;
+    animation-timeline: scroll(root block), scroll(root block);
+    animation-range: var(--opening-entry) var(--opening-start), var(--ticket-tear-end) var(--opening-end);
   }
 
   .has-scroll-scenes .tear-ticket-plane {
     animation: ticket-level auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 41.6% contain 80%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--ticket-peel-end) var(--ticket-tear-end);
   }
 
   .has-scroll-scenes .tear-ticket-main {
     animation: ticket-recenter auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 41.6% contain 80%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--ticket-peel-end) var(--ticket-tear-end);
   }
 
   .has-scroll-scenes .tear-ticket-tab {
     animation: ticket-tear auto linear both;
-    animation-timeline: --arrival;
-    animation-range: contain 0% contain 80%;
+    animation-timeline: scroll(root block);
+    animation-range: var(--opening-start) var(--ticket-tear-end);
   }
 
   @keyframes ticket-level {

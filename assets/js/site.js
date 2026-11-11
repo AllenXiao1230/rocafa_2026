@@ -62,9 +62,11 @@
   var mottoStage = mottoScene.querySelector('.scene-stage');
   var sceneFrame = 0;
   var scenesIdle = false;
+  var openingRanges;
   var nativeSceneArrival = CSS.supports('animation-timeline: view()') &&
+    CSS.supports('animation-timeline: scroll(root block)') &&
     CSS.supports('animation-range: entry 0% entry 100%') &&
-    CSS.supports('animation-range: contain 0% contain 100%') &&
+    CSS.supports('animation-range: 0px 100px') &&
     CSS.supports('view-timeline-inset: 4rem 0px');
 
   function limitProgress(value) {
@@ -83,6 +85,29 @@
     return progress * progress * (3 - 2 * progress);
   }
 
+  function measureOpeningRanges() {
+    var header = headerInner.offsetHeight;
+    var heroStart = window.scrollY + heroScene.getBoundingClientRect().top - header;
+    var ticketStart = window.scrollY + ticketSection.getBoundingClientRect().top - header;
+    var ticketHeight = ticketStage.offsetHeight;
+    var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
+    openingRanges = {
+      heroStart: heroStart,
+      heroRunway: Math.max(1, heroScene.clientHeight - heroStage.offsetHeight),
+      ticketStart: ticketStart,
+      ticketHeight: ticketHeight,
+      ticketRunway: Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset),
+    };
+    if (nativeSceneArrival) {
+      heroScene.style.setProperty('--opening-start', heroStart + 'px');
+      heroScene.style.setProperty('--opening-runway', openingRanges.heroRunway + 'px');
+      ticketSection.style.setProperty('--opening-entry', (ticketStart - ticketHeight) + 'px');
+      ticketSection.style.setProperty('--opening-start', ticketStart + 'px');
+      ticketSection.style.setProperty('--opening-runway', openingRanges.ticketRunway + 'px');
+    }
+    queueSceneUpdate();
+  }
+
   function updateScrollScenes() {
     sceneFrame = 0;
     var headerHeight = headerInner.offsetHeight;
@@ -92,16 +117,6 @@
     if (beforeCountdown && scenesIdle) return;
     scenesIdle = beforeCountdown;
 
-    var heroProgress, ticketTop, ticketHeight, ticketProgress;
-    if (!nativeSceneArrival) {
-      var heroDistance = Math.max(1, heroScene.clientHeight - heroStage.offsetHeight);
-      heroProgress = limitProgress((headerHeight - heroScene.getBoundingClientRect().top) / heroDistance);
-      ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
-      ticketHeight = ticketStage.offsetHeight;
-      var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
-      var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset);
-      ticketProgress = limitProgress(-ticketTop / ticketDistance);
-    }
     var countdownHeight = countdownStage.offsetHeight;
     var countdownDistance = countdownScene.clientHeight - countdownHeight;
     var countdownExit = limitProgress((-countdownTop - countdownDistance) / (countdownHeight * 0.58));
@@ -125,6 +140,8 @@
     var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoHeight * 0.6));
 
     if (!nativeSceneArrival) {
+      var scroll = Math.max(0, window.scrollY);
+      var heroProgress = limitProgress((scroll - openingRanges.heroStart) / openingRanges.heroRunway);
       var copyExit = limitProgress(heroProgress / 0.36);
       var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
       var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
@@ -137,8 +154,11 @@
       heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
 
       var tearEnd = 0.8;
+      var ticketTop = openingRanges.ticketStart - scroll;
+      var ticketProgress = limitProgress(-ticketTop / openingRanges.ticketRunway);
       var tearProgress = limitProgress(ticketProgress / tearEnd);
-      setSceneEntrance(ticketStage, ticketTop, ticketHeight);
+      // Fade near the lower third as the ticket moves naturally with the page.
+      ticketStage.style.setProperty('--scene-entry', easeScene(1 - ticketTop / (openingRanges.ticketHeight / 6)));
       ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
       ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
       ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
@@ -162,10 +182,18 @@
   }
 
   main.classList.add('has-scroll-scenes');
+  measureOpeningRanges();
+  if ('ResizeObserver' in window) {
+    var openingObserver = new ResizeObserver(measureOpeningRanges);
+    [headerInner.parentElement, heroScene, heroStage, ticketSection, ticketStage].forEach(function (element) {
+      openingObserver.observe(element);
+    });
+  } else {
+    window.addEventListener('resize', measureOpeningRanges);
+  }
   window.addEventListener('scroll', queueSceneUpdate, { passive: true });
   window.addEventListener('resize', queueSceneUpdate);
-  window.addEventListener('pageshow', queueSceneUpdate);
-  queueSceneUpdate();
+  window.addEventListener('pageshow', measureOpeningRanges);
 
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');
