@@ -61,8 +61,10 @@
   var countdownStage = countdownScene.querySelector('.scene-stage');
   var mottoStage = mottoScene.querySelector('.scene-stage');
   var sceneFrame = 0;
+  var scenesIdle = false;
   var nativeSceneArrival = CSS.supports('animation-timeline: view()') &&
     CSS.supports('animation-range: entry 0% entry 100%') &&
+    CSS.supports('animation-range: contain 0% contain 100%') &&
     CSS.supports('view-timeline-inset: 4rem 0px');
 
   function limitProgress(value) {
@@ -84,20 +86,22 @@
   function updateScrollScenes() {
     sceneFrame = 0;
     var headerHeight = headerInner.offsetHeight;
-    var heroDistance = Math.max(1, heroScene.clientHeight - heroStage.offsetHeight);
-    var heroProgress = limitProgress((headerHeight - heroScene.getBoundingClientRect().top) / heroDistance);
-    var copyExit = limitProgress(heroProgress / 0.36);
-    var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
-    var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
-    var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
-    var ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
-    var ticketHeight = ticketStage.offsetHeight;
-    var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
-    var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset);
-    var ticketProgress = limitProgress(-ticketTop / ticketDistance);
-    var tearEnd = 0.8;
-    var tearProgress = limitProgress(ticketProgress / tearEnd);
     var countdownTop = countdownScene.getBoundingClientRect().top - headerHeight;
+    // Native animations cover everything before the countdown pins.
+    var beforeCountdown = nativeSceneArrival && countdownTop > 0;
+    if (beforeCountdown && scenesIdle) return;
+    scenesIdle = beforeCountdown;
+
+    var heroProgress, ticketTop, ticketHeight, ticketProgress;
+    if (!nativeSceneArrival) {
+      var heroDistance = Math.max(1, heroScene.clientHeight - heroStage.offsetHeight);
+      heroProgress = limitProgress((headerHeight - heroScene.getBoundingClientRect().top) / heroDistance);
+      ticketTop = ticketSection.getBoundingClientRect().top - headerHeight;
+      ticketHeight = ticketStage.offsetHeight;
+      var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
+      var ticketDistance = Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset);
+      ticketProgress = limitProgress(-ticketTop / ticketDistance);
+    }
     var countdownHeight = countdownStage.offsetHeight;
     var countdownDistance = countdownScene.clientHeight - countdownHeight;
     var countdownExit = limitProgress((-countdownTop - countdownDistance) / (countdownHeight * 0.58));
@@ -120,21 +124,26 @@
     var mottoProgress = limitProgress((mottoLead - mottoTop) / (mottoDistance + mottoLead));
     var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoHeight * 0.6));
 
-    heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
-    heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
-    heroStage.style.setProperty('--hero-logo-opacity', logoOpacity);
-    heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
-    heroStage.style.setProperty('--hero-logo-layer', copyExit === 1 ? 1 : -1);
-    heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
-    heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
-
     if (!nativeSceneArrival) {
+      var copyExit = limitProgress(heroProgress / 0.36);
+      var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
+      var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
+      var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
+      heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
+      heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
+      heroStage.style.setProperty('--hero-logo-opacity', logoOpacity);
+      heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
+      heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
+      heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
+
+      var tearEnd = 0.8;
+      var tearProgress = limitProgress(ticketProgress / tearEnd);
       setSceneEntrance(ticketStage, ticketTop, ticketHeight);
+      ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
+      ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
+      ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
       setSceneEntrance(countdownStage, countdownTop, countdownHeight);
     }
-    ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
-    ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
-    ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
     countdownStage.style.setProperty('--countdown-exit', countdownExit);
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
     mottoStage.style.setProperty('--motto-exit', mottoExit);
@@ -228,15 +237,19 @@
   var scheduleList = document.querySelector('.schedule-list');
   var scheduleEntries = scheduleList.querySelectorAll('.schedule-event');
   var scheduleFrame = 0;
+  var scheduleIdle = false;
 
   function updateScheduleRail() {
     scheduleFrame = 0;
     var first = scheduleEntries[0];
+    var viewport = document.documentElement.clientHeight;
+    var distance = viewport * 0.74 - first.getBoundingClientRect().top;
+    if (distance < 0 && scheduleIdle) return;
+    scheduleIdle = distance < 0;
+
     var start = first.offsetTop;
     var offsets = Array.from(scheduleEntries, function (entry) { return entry.offsetTop - start; });
     var length = offsets[offsets.length - 1];
-    var viewport = document.documentElement.clientHeight;
-    var distance = viewport * 0.74 - first.getBoundingClientRect().top;
     var progress = limitProgress(distance / Math.max(1, length));
 
     scheduleList.style.setProperty('--schedule-rail-length', length + 'px');

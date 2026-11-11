@@ -320,7 +320,7 @@ main > .cream-section {
 
 .hero-orbit {
   position: absolute;
-  z-index: var(--hero-logo-layer, -1);
+  z-index: -1;
   width: min(81vw, 65svh, 39rem);
   height: auto;
   opacity: var(--hero-logo-opacity, 0.12);
@@ -353,8 +353,6 @@ main > .cream-section {
 
 .ticket-star-trails {
   height: min(100%, 29rem);
-  opacity: var(--ticket-presence);
-  translate: -50% calc(-50% + var(--ticket-offset));
 }
 
 .star-trail { opacity: 0.22; }
@@ -458,11 +456,7 @@ main > .cream-section {
 }
 
 .ticket-stage {
-  --ticket-presence: calc(1 - var(--ticket-exit, 0));
-  --ticket-offset: calc(var(--ticket-exit, 0) * -3.5rem);
   --scene-glow: rgb(var(--gold-rgb) / 12%);
-  --scene-glow-opacity: var(--ticket-presence);
-  --scene-glow-offset: var(--ticket-offset);
   position: sticky;
   top: calc(4rem + var(--ticket-inset));
   isolation: isolate;
@@ -484,8 +478,13 @@ main > .cream-section {
 
 .scene-arrival > .container { width: 100%; }
 
-@supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) and (view-timeline-inset: 4rem 0px) {
-  .has-scroll-scenes :is(.ticket-section, .countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
+.ticket-stage .scene-arrival {
+  opacity: calc(var(--scene-entry, 1) * (1 - var(--ticket-exit, 0)));
+  translate: 0 calc(var(--ticket-exit, 0) * -3.5rem);
+}
+
+@supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) and (animation-range: contain 0% contain 100%) and (view-timeline-inset: 4rem 0px) {
+  .has-scroll-scenes :is(#hero, .ticket-section, .countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
     view-timeline-name: --arrival;
     /* Keep the timeline aligned with the stage when mobile browser controls retract. */
     view-timeline-inset: 4rem max(0px, calc(100dvh - 100svh));
@@ -516,14 +515,94 @@ main > .cream-section {
     from { transform: translateY(var(--approach-travel)); }
     to { transform: none; }
   }
+
+  .has-scroll-scenes .hero-copy {
+    animation: hero-copy-depart auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 0% contain 36%;
+  }
+
+  .has-scroll-scenes .hero-orbit {
+    animation: hero-orbit-pass auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 0% contain 100%;
+  }
+
+  .has-scroll-scenes .hero-stage::before,
+  .has-scroll-scenes .hero-star-trails {
+    animation: hero-light-pass auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 0% contain 100%;
+  }
+
+  @keyframes hero-copy-depart {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translateY(-4.5rem); }
+  }
+
+  @keyframes hero-orbit-pass {
+    0%, 22% { opacity: 0.12; transform: scale(1); }
+    49%, 60% { opacity: 0.94; transform: scale(1.1); }
+    96%, 100% { opacity: 0; transform: scale(1.1); }
+  }
+
+  @keyframes hero-light-pass {
+    0% { opacity: 1; transform: none; }
+    26.6% { opacity: 0.26; transform: none; }
+    49%, 60% { opacity: 0.94; transform: none; }
+    96%, 100% { opacity: 0; transform: translateY(-2rem); }
+  }
+
+  .has-scroll-scenes .ticket-stage .scene-arrival {
+    animation: scene-arrive auto linear both, ticket-depart auto linear forwards;
+    animation-timeline: --arrival, --arrival;
+    animation-range: entry var(--arrival-inset) entry 100%, contain 80% contain 100%;
+  }
+
+  .has-scroll-scenes .tear-ticket-plane {
+    animation: ticket-level auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 41.6% contain 80%;
+  }
+
+  .has-scroll-scenes .tear-ticket-main {
+    animation: ticket-recenter auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 41.6% contain 80%;
+  }
+
+  .has-scroll-scenes .tear-ticket-tab {
+    animation: ticket-tear auto linear both;
+    animation-timeline: --arrival;
+    animation-range: contain 0% contain 80%;
+  }
+
+  @keyframes ticket-level {
+    from { transform: rotate(-2.5deg); }
+    to { transform: rotate(-1.25deg); }
+  }
+
+  @keyframes ticket-recenter {
+    from { transform: translateX(0); }
+    to { transform: translateX(21.4286%); }
+  }
+
+  @keyframes ticket-tear {
+    0% { opacity: 1; transform: translate(0, 0) rotate(0); }
+    52% { opacity: 1; transform: translate(0, 0) rotate(9deg); }
+    100% { opacity: 0; transform: translate(80%, 44%) rotate(24deg); }
+  }
+
+  @keyframes ticket-depart {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translateY(-3.5rem); }
+  }
 }
 
 .tear-ticket {
   max-width: 36rem;
   margin-inline: auto;
   color: var(--bg-deep);
-  opacity: var(--ticket-presence);
-  translate: 0 var(--ticket-offset);
 }
 
 .tear-ticket-plane {
@@ -532,7 +611,34 @@ main > .cream-section {
   grid-template-columns: 70% 30%;
   min-height: clamp(10.5rem, 30vw, 14.5rem);
   transform: rotate(calc(-2.5deg + var(--ticket-drop, 0) * 1.25deg));
-  filter: drop-shadow(0 0.7rem 1.15rem var(--ticket-shadow));
+}
+
+.tear-ticket-piece {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+}
+
+.tear-ticket-piece::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0.3rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 0.7rem 1.15rem var(--ticket-shadow);
+}
+
+.tear-ticket-main {
+  transform: translateX(calc(var(--ticket-drop, 0) * 21.4286%));
+}
+
+.tear-ticket-tab {
+  /* Anchor the last perforation while the seam opens from the top. */
+  transform-origin: bottom left;
+  transform:
+    translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
+    rotate(calc(var(--ticket-peel, 0) * 9deg + var(--ticket-drop, 0) * 15deg));
+  opacity: calc(1 - var(--ticket-drop, 0));
 }
 
 .tear-ticket-body {
@@ -550,7 +656,6 @@ main > .cream-section {
   mask:
     linear-gradient(var(--paper-mask) 0 0) left / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at right, transparent 3px, var(--paper-mask) 3.5px) right top / 4px 14px repeat-y;
-  transform: translateX(calc(var(--ticket-drop, 0) * 21.4286%));
 }
 
 .tear-ticket-body::after,
@@ -617,12 +722,6 @@ main > .cream-section {
   mask:
     linear-gradient(var(--paper-mask) 0 0) right / calc(100% - 4px) 100% no-repeat,
     radial-gradient(circle at left, transparent 3px, var(--paper-mask) 3.5px) left top / 4px 14px repeat-y;
-  /* Anchor the last perforation while the seam opens from the top. */
-  transform-origin: bottom left;
-  transform:
-    translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
-    rotate(calc(var(--ticket-peel, 0) * 9deg + var(--ticket-drop, 0) * 15deg));
-  opacity: calc(1 - var(--ticket-drop, 0));
 }
 
 .tear-ticket-stub::after {
