@@ -584,6 +584,51 @@ main > .cream-section {
   }
 }
 
+/* Touch scrolling carries these scenes in document flow. Their effects run on time. */
+.has-touch-opening #hero,
+.has-touch-opening .ticket-section { min-block-size: 0; }
+
+.has-touch-opening .hero-stage,
+.has-touch-opening .ticket-stage {
+  position: relative;
+  top: auto;
+}
+
+.has-touch-opening .hero-copy,
+.has-touch-opening .hero-orbit,
+.has-touch-opening .hero-stage::before,
+.has-touch-opening .hero-star-trails,
+.has-touch-opening .ticket-stage .scene-arrival {
+  animation: none;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.has-touch-opening .hero-copy { opacity: 1; translate: none; }
+.has-touch-opening .hero-orbit { opacity: 0.12; }
+.has-touch-opening .hero-stage::before,
+.has-touch-opening .hero-star-trails { opacity: 1; }
+
+.has-touch-opening #hero.opening-revealed .hero-copy { opacity: 0; }
+.has-touch-opening #hero.opening-revealed .hero-orbit { opacity: 0.94; }
+.has-touch-opening #hero.opening-passed .hero-orbit,
+.has-touch-opening #hero.opening-passed .hero-stage::before,
+.has-touch-opening #hero.opening-passed .hero-star-trails { opacity: 0; }
+
+.has-touch-opening .ticket-stage .scene-arrival {
+  opacity: 0;
+  transform: none;
+  translate: none;
+}
+
+.has-touch-opening .ticket-section.opening-revealed .scene-arrival { opacity: 1; }
+.has-touch-opening .ticket-section.opening-passed .scene-arrival { opacity: 0; }
+
+.has-touch-opening .tear-ticket-tab {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 .tear-ticket {
   max-width: 36rem;
   margin-inline: auto;
