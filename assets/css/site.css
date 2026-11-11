@@ -302,7 +302,6 @@ main > .cream-section {
   inset: 8% 0;
   background: radial-gradient(ellipse at center, var(--scene-glow), transparent 69%);
   opacity: var(--scene-glow-opacity, 1);
-  translate: 0 var(--scene-glow-offset, 0px);
   pointer-events: none;
 }
 
@@ -324,7 +323,6 @@ main > .cream-section {
   width: min(81vw, 65svh, 39rem);
   height: auto;
   opacity: var(--hero-logo-opacity, 0.12);
-  scale: var(--hero-logo-scale, 1);
   pointer-events: none;
 }
 
@@ -342,8 +340,9 @@ main > .cream-section {
 
 .hero-star-trails {
   opacity: var(--scene-glow-opacity, 1);
-  translate: -50% calc(-50% + var(--scene-glow-offset, 0px));
 }
+
+.has-scroll-scenes .hero-orbit { will-change: opacity; }
 
 .star-trails path {
   stroke: currentColor;
@@ -527,7 +526,7 @@ main > .cream-section {
   }
 
   .has-scroll-scenes .hero-orbit {
-    animation: hero-orbit-pass auto linear both;
+    animation: hero-orbit-pass auto ease-in-out both;
     animation-timeline: scroll(root block);
     animation-range: var(--opening-start) var(--opening-end);
   }
@@ -545,20 +544,19 @@ main > .cream-section {
   }
 
   @keyframes hero-orbit-pass {
-    0%, 22% { opacity: 0.12; transform: scale(1); }
-    49%, 60% { opacity: 0.94; transform: scale(1.1); }
-    96%, 100% { opacity: 0; transform: scale(1.1); }
+    0%, 22% { opacity: 0.12; }
+    49%, 60% { opacity: 0.94; }
+    96%, 100% { opacity: 0; }
   }
 
   @keyframes hero-light-pass {
-    0% { opacity: 1; transform: none; }
-    26.6% { opacity: 0.26; transform: none; }
-    49%, 60% { opacity: 0.94; transform: none; }
-    96%, 100% { opacity: 0; transform: translateY(-2rem); }
+    0% { opacity: 1; }
+    26.6% { opacity: 0.26; }
+    49%, 60% { opacity: 0.94; }
+    96%, 100% { opacity: 0; }
   }
 
   .has-scroll-scenes .ticket-section {
-    --ticket-peel-end: calc(var(--opening-start) + var(--opening-runway) * 0.416);
     --ticket-tear-end: calc(var(--opening-start) + var(--opening-runway) * 0.8);
   }
 
@@ -568,38 +566,16 @@ main > .cream-section {
     animation-range: var(--opening-entry) var(--opening-start), var(--ticket-tear-end) var(--opening-end);
   }
 
-  .has-scroll-scenes .tear-ticket-plane {
-    animation: ticket-level auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--ticket-peel-end) var(--ticket-tear-end);
-  }
-
-  .has-scroll-scenes .tear-ticket-main {
-    animation: ticket-recenter auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--ticket-peel-end) var(--ticket-tear-end);
-  }
-
   .has-scroll-scenes .tear-ticket-tab {
-    animation: ticket-tear auto linear both;
+    animation: ticket-tear auto ease-in-out both;
     animation-timeline: scroll(root block);
     animation-range: var(--opening-start) var(--ticket-tear-end);
   }
 
-  @keyframes ticket-level {
-    from { transform: rotate(-2.5deg); }
-    to { transform: rotate(-1.25deg); }
-  }
-
-  @keyframes ticket-recenter {
-    from { transform: translateX(0); }
-    to { transform: translateX(21.4286%); }
-  }
-
   @keyframes ticket-tear {
-    0% { opacity: 1; transform: translate(0, 0) rotate(0); }
-    52% { opacity: 1; transform: translate(0, 0) rotate(9deg); }
-    100% { opacity: 0; transform: translate(80%, 44%) rotate(24deg); }
+    0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); }
+    52% { opacity: 1; transform: translate3d(0, 0, 0) rotate(9deg); }
+    100% { opacity: 0; transform: translate3d(80%, 44%, 0) rotate(24deg); }
   }
 
   @keyframes ticket-depart {
@@ -619,7 +595,7 @@ main > .cream-section {
   display: grid;
   grid-template-columns: 70% 30%;
   min-height: clamp(10.5rem, 30vw, 14.5rem);
-  transform: rotate(calc(-2.5deg + var(--ticket-drop, 0) * 1.25deg));
+  transform: rotate(-2.5deg);
 }
 
 .tear-ticket-piece {
@@ -637,18 +613,16 @@ main > .cream-section {
   box-shadow: 0 0.7rem 1.15rem var(--ticket-shadow);
 }
 
-.tear-ticket-main {
-  transform: translateX(calc(var(--ticket-drop, 0) * 21.4286%));
-}
-
 .tear-ticket-tab {
   /* Anchor the last perforation while the seam opens from the top. */
   transform-origin: bottom left;
   transform:
-    translate(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%))
+    translate3d(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%), 0)
     rotate(calc(var(--ticket-peel, 0) * 9deg + var(--ticket-drop, 0) * 15deg));
   opacity: calc(1 - var(--ticket-drop, 0));
 }
+
+.has-scroll-scenes .tear-ticket-tab { will-change: transform, opacity; }
 
 .tear-ticket-body {
   position: relative;

@@ -143,15 +143,13 @@
       var scroll = Math.max(0, window.scrollY);
       var heroProgress = limitProgress((scroll - openingRanges.heroStart) / openingRanges.heroRunway);
       var copyExit = limitProgress(heroProgress / 0.36);
-      var logoEnter = limitProgress((heroProgress - 0.22) / 0.27);
-      var logoExit = limitProgress((heroProgress - 0.6) / 0.36);
+      var logoEnter = easeScene((heroProgress - 0.22) / 0.27);
+      var logoExit = easeScene((heroProgress - 0.6) / 0.36);
       var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
       heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
       heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
       heroStage.style.setProperty('--hero-logo-opacity', logoOpacity);
-      heroStage.style.setProperty('--hero-logo-scale', 1 + 0.1 * logoEnter);
       heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
-      heroStage.style.setProperty('--scene-glow-offset', (-2 * logoExit) + 'rem');
 
       var tearEnd = 0.8;
       var ticketTop = openingRanges.ticketStart - scroll;
@@ -159,8 +157,8 @@
       var tearProgress = limitProgress(ticketProgress / tearEnd);
       // Fade near the lower third as the ticket moves naturally with the page.
       ticketStage.style.setProperty('--scene-entry', easeScene(1 - ticketTop / (openingRanges.ticketHeight / 6)));
-      ticket.style.setProperty('--ticket-peel', limitProgress(tearProgress / 0.52));
-      ticket.style.setProperty('--ticket-drop', limitProgress((tearProgress - 0.52) / 0.48));
+      ticket.style.setProperty('--ticket-peel', easeScene(tearProgress / 0.52));
+      ticket.style.setProperty('--ticket-drop', easeScene((tearProgress - 0.52) / 0.48));
       ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
       setSceneEntrance(countdownStage, countdownTop, countdownHeight);
     }
