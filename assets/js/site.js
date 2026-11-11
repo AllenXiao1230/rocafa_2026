@@ -42,47 +42,41 @@
     setMobileMenu(false);
   });
 
-  var ticket = document.querySelector('.tear-ticket');
-  var ticketTab = ticket.querySelector('.tear-ticket-tab');
-  var ticketStage = document.querySelector('.ticket-stage');
-  var ticketSection = document.querySelector('.ticket-section');
+  var opening = document.getElementById('hero');
+  var openingStage = opening.querySelector('.opening-stage');
   var headerInner = document.querySelector('.header-inner');
-
-  var heroScene = document.getElementById('hero');
-  var countdownScene = document.querySelector('.countdown');
-  var takeoffScene = document.querySelector('.takeoff-scene');
-  var takeoffStage = takeoffScene.querySelector('.takeoff-stage');
+  var heroStage = opening.querySelector('.hero-stage');
+  var ticketTab = opening.querySelector('.tear-ticket-tab');
+  var ticketArrival = opening.querySelector('.ticket-stage .scene-arrival');
+  var countdownArrival = opening.querySelector('.countdown-stage .scene-arrival');
+  var takeoffScene = opening.querySelector('.takeoff-scene');
+  var mottoScene = opening.querySelector('.ball-motto');
+  var mottoStage = mottoScene.querySelector('.motto-stage');
   var takeoffRenderer = typeof createAjtScene === 'function' && createAjtScene(
-    takeoffStage.querySelector('.takeoff-flight'),
-    takeoffStage.querySelector('.takeoff-exhaust')
+    takeoffScene.querySelector('.takeoff-flight'),
+    takeoffScene.querySelector('.takeoff-exhaust')
   );
   takeoffScene.hidden = !takeoffRenderer;
-  var mottoScene = document.querySelector('.ball-motto');
-  var heroStage = heroScene.querySelector('.scene-stage');
-  var countdownStage = countdownScene.querySelector('.scene-stage');
-  var countdownContent = countdownStage.querySelector('.container');
-  var mottoStage = mottoScene.querySelector('.scene-stage');
+
+  // Distances are expressed as fractions of one stable stage height.
+  var titlePhase = { layer: opening.querySelector('.hero-copy'), enter: 0, hold: 0.14, exit: 0.24 };
+  var logoPhase = { layer: opening.querySelector('.hero-orbit'), enter: 0.58, hold: 0.22, exit: 0.58 };
+  var ticketPhase = { layer: opening.querySelector('.ticket-section'), enter: 0.22, hold: 0.66, exit: 0.24 };
+  var countdownPhase = { layer: opening.querySelector('.countdown'), enter: 0.24, hold: 0.40, exit: 0.24 };
+  var takeoffPhase = { layer: takeoffScene, enter: 0.25, hold: 0.99, exit: 0.25 };
+  var mottoPhase = { layer: mottoScene, enter: 0.25, hold: 0.52, exit: 0.22 };
+  var openingPhases = [titlePhase, logoPhase, ticketPhase, countdownPhase];
+  if (takeoffRenderer) openingPhases.push(takeoffPhase);
+  openingPhases.push(mottoPhase);
+
   var sceneFrame = 0;
-  var scenesIdle = false;
-  var openingRanges;
-  var touchOpening = matchMedia('(hover: none) and (pointer: coarse)');
-  var touchTear;
-  var touchTearDuration = 620;
-  var nativeSceneArrival = CSS.supports('animation-timeline: view()') &&
-    CSS.supports('animation-timeline: scroll(root block)') &&
-    CSS.supports('animation-range: entry 0% entry 100%') &&
-    CSS.supports('animation-range: 0px 100px') &&
-    CSS.supports('view-timeline-inset: 4rem 0px');
+  var openingStart = 0;
+  var openingWidth = 0;
+  var openingHeight = 0;
+  var lastPosition;
 
   function limitProgress(value) {
     return Math.max(0, Math.min(1, value));
-  }
-
-  function setSceneEntrance(stage, distance, height) {
-    var approach = limitProgress(distance / height);
-    stage.style.setProperty('--scene-entry', 1 - approach);
-    // Counter most of the natural scroll so the entrance starts near the lower third.
-    stage.style.setProperty('--scene-entry-offset', (-approach * height * 5 / 6) + 'px');
   }
 
   function easeScene(value) {
@@ -90,149 +84,75 @@
     return progress * progress * (3 - 2 * progress);
   }
 
-  function measureOpeningRanges() {
-    var header = headerInner.offsetHeight;
-    var scroll = window.scrollY;
-    var heroStart = scroll + heroScene.getBoundingClientRect().top - header;
-    var ticketStart = scroll + ticketSection.getBoundingClientRect().top - header;
-    var ticketHeight = ticketStage.offsetHeight;
-    var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
-    openingRanges = {
-      heroStart: heroStart,
-      heroRunway: Math.max(1, heroScene.clientHeight - heroStage.offsetHeight),
-      ticketStart: ticketStart,
-      ticketHeight: ticketHeight,
-      ticketRunway: Math.max(1, ticketSection.clientHeight - ticketHeight - 2 * ticketInset),
-    };
-    if (touchOpening.matches) {
-      var countdownStart = scroll + countdownScene.getBoundingClientRect().top - header;
-      // Measure against the same stable viewport used by the sticky stages.
-      var countdownEntry = countdownStart + countdownContent.offsetTop - countdownStage.offsetHeight;
-      openingRanges.countdownStart = countdownStart;
-      openingRanges.countdownEntry = countdownEntry;
-    }
-    if (nativeSceneArrival && !touchOpening.matches) {
-      heroScene.style.setProperty('--opening-start', heroStart + 'px');
-      heroScene.style.setProperty('--opening-runway', openingRanges.heroRunway + 'px');
-      ticketSection.style.setProperty('--opening-entry', (ticketStart - ticketHeight) + 'px');
-      ticketSection.style.setProperty('--opening-start', ticketStart + 'px');
-      ticketSection.style.setProperty('--opening-runway', openingRanges.ticketRunway + 'px');
-    }
+  function measureOpening() {
+    openingStart = window.scrollY + opening.getBoundingClientRect().top - headerInner.offsetHeight;
+    openingWidth = openingStage.clientWidth;
+    openingHeight = openingStage.clientHeight;
+    var distance = Math.max(280, Math.min(820, openingHeight));
+    var position = 0;
+    openingPhases.forEach(function (phase) {
+      phase.start = position;
+      phase.enterEnd = position + phase.enter * distance;
+      phase.exitStart = phase.enterEnd + phase.hold * distance;
+      phase.end = phase.exitStart + phase.exit * distance;
+      position = phase.end;
+    });
+    opening.style.setProperty('--opening-length', Math.ceil(openingHeight + position) + 'px');
+    lastPosition = undefined;
     queueSceneUpdate();
   }
 
-  function setTouchPhase(scene, name, scroll, threshold) {
-    var active = scene.classList.contains(name);
-    // Small reversals near a trigger should not replay its animation.
-    var next = scroll >= threshold - (active ? 20 : 0);
-    if (next !== active) scene.classList.toggle(name, next);
-    return next !== active;
+  function departure(phase, position) {
+    return easeScene((position - phase.exitStart) / (phase.end - phase.exitStart));
   }
 
-  function updateTouchOpening() {
-    var scroll = Math.max(0, window.scrollY);
-    var heroStart = openingRanges.heroStart;
-    var heroRunway = openingRanges.heroRunway;
-    var ticketStart = openingRanges.ticketStart;
-    var ticketHeight = openingRanges.ticketHeight;
-    var ticketRunway = openingRanges.ticketRunway;
-    setTouchPhase(heroScene, 'opening-revealed', scroll, heroStart + heroRunway * 0.10);
-    setTouchPhase(heroScene, 'opening-passed', scroll, heroStart + heroRunway * 0.72);
-    setTouchPhase(ticketSection, 'opening-revealed', scroll, ticketStart - ticketHeight * 0.19);
+  function arrival(phase, position) {
+    return easeScene((position - phase.start) / (phase.enterEnd - phase.start));
+  }
 
-    if (setTouchPhase(ticketSection, 'opening-torn', scroll, ticketStart + ticketRunway * 0.08)) {
-      if (touchTear) {
-        touchTear.reverse();
-      } else {
-        touchTear = ticketTab.animate([
-          { transform: 'translate3d(0, 0, 0) rotate(0)', opacity: 1, easing: 'ease-in-out' },
-          { transform: 'translate3d(0, 0, 0) rotate(9deg)', opacity: 1, offset: 0.52, easing: 'ease-in-out' },
-          { transform: 'translate3d(80%, 44%, 0) rotate(24deg)', opacity: 0 },
-        ], { duration: touchTearDuration, fill: 'both' });
-        touchTear.onfinish = queueSceneUpdate;
-      }
-    }
-    var tearFinished = touchTear && !touchTear.pending && touchTear.playbackRate > 0 &&
-      touchTear.currentTime === touchTearDuration && touchTear.playState === 'finished';
-    // A flick can leave the pinned range before the timed tear completes.
-    if (touchTear && scroll >= ticketStart + ticketRunway && !tearFinished) {
-      touchTear.playbackRate = 1;
-      touchTear.finish();
-      tearFinished = true;
-    }
-
-    var countdownEntry = openingRanges.countdownEntry;
-    setTouchPhase(countdownScene, 'opening-revealed', scroll, countdownEntry - 48);
-    setTouchPhase(countdownScene, 'opening-settled', scroll, openingRanges.countdownStart);
-    var fadeStart = tearFinished ? countdownEntry + 24 : Infinity;
-    setTouchPhase(ticketSection, 'opening-passed', scroll, fadeStart);
+  function updateTicketTear(position) {
+    // Peel from the top with the bottom anchored, then let the stub fall.
+    var tearStart = ticketPhase.enterEnd + 24;
+    var tearEnd = ticketPhase.exitStart - 24;
+    var tear = limitProgress((position - tearStart) / (tearEnd - tearStart));
+    var peel = easeScene(tear / 0.52);
+    var drop = easeScene((tear - 0.52) / 0.48);
+    ticketTab.style.transform = 'translate3d(' + drop * 80 + '%, ' + drop * 44 + '%, 0) rotate(' + (peel * 9 + drop * 15) + 'deg)';
+    ticketTab.style.opacity = 1 - drop;
   }
 
   function updateScrollScenes() {
     sceneFrame = 0;
-    if (touchOpening.matches) updateTouchOpening();
-    var headerHeight = headerInner.offsetHeight;
-    var countdownTop = countdownScene.getBoundingClientRect().top - headerHeight;
-    // Native animations cover everything before the countdown pins.
-    var beforeCountdown = nativeSceneArrival && countdownTop > 0;
-    if (beforeCountdown && scenesIdle) return;
-    scenesIdle = beforeCountdown;
+    var position = Math.max(0, Math.min(mottoPhase.end, window.scrollY - openingStart));
+    if (position === lastPosition) return;
+    lastPosition = position;
 
-    var countdownHeight = countdownStage.offsetHeight;
-    var countdownDistance = countdownScene.clientHeight - countdownHeight;
-    var countdownExit = limitProgress((-countdownTop - countdownDistance) / (countdownHeight * 0.58));
-    var mottoTop = mottoScene.getBoundingClientRect().top - headerHeight;
-    var mottoHeight = mottoStage.offsetHeight;
-    var mottoLead = mottoHeight * 0.23;
-    var takeoffWidth, takeoffHeight, takeoffTop, takeoffProgress, takeoffOpacity;
+    // Each scene reaches zero at the same scroll position where the next one begins.
+    openingPhases.forEach(function (phase) {
+      var opacity = position < phase.enterEnd ? arrival(phase, position) : 1 - departure(phase, position);
+      if (phase.opacity === opacity) return;
+      phase.opacity = opacity;
+      phase.layer.style.opacity = opacity;
+    });
+
+    var titleExit = departure(titlePhase, position);
+    titlePhase.layer.style.transform = 'translate3d(0, ' + (-48 * titleExit) + 'px, 0) scale(' + (1 - 0.10 * titleExit) + ')';
+    // Keep the stage fixed and move only the ticket and countdown artwork.
+    var entranceOffset = Math.min(openingHeight / 6, 104);
+    var ticketOffset = entranceOffset * (1 - arrival(ticketPhase, position)) - 42 * departure(ticketPhase, position);
+    var countdownIn = arrival(countdownPhase, position);
+    var countdownOffset = entranceOffset * (1 - countdownIn) - 42 * departure(countdownPhase, position);
+    ticketArrival.style.transform = 'translate3d(0, ' + ticketOffset + 'px, 0)';
+    countdownArrival.style.transform = 'translate3d(0, ' + countdownOffset + 'px, 0) scale(' + (0.90 + 0.10 * countdownIn) + ')';
+    updateTicketTear(position);
+
+    var glow = titlePhase.opacity + logoPhase.opacity;
+    heroStage.style.setProperty('--scene-glow-opacity', glow);
+    var mottoReveal = mottoPhase.enterEnd + (mottoPhase.exitStart - mottoPhase.enterEnd) * 0.5;
+    mottoStage.style.setProperty('--motto-progress', limitProgress((position - mottoPhase.start) / (mottoReveal - mottoPhase.start)));
     if (takeoffRenderer) {
-      takeoffWidth = takeoffStage.clientWidth;
-      takeoffHeight = takeoffStage.offsetHeight;
-      takeoffTop = takeoffScene.getBoundingClientRect().top - headerHeight;
-      var takeoffRunway = Math.max(1, takeoffScene.clientHeight - takeoffHeight);
-      takeoffProgress = limitProgress(-takeoffTop / takeoffRunway);
-      var entry = easeScene((takeoffHeight * 0.86 - takeoffTop) / (takeoffHeight * 0.58));
-      var exit = easeScene((takeoffProgress - 0.78) / 0.14);
-      takeoffOpacity = entry * (1 - exit);
-      mottoLead = takeoffHeight * 0.45 + takeoffRunway * 0.08;
-    }
-    var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoHeight);
-    var mottoProgress = limitProgress((mottoLead - mottoTop) / (mottoDistance + mottoLead));
-    var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoHeight * 0.6));
-
-    if (!nativeSceneArrival && !touchOpening.matches) {
-      var scroll = Math.max(0, window.scrollY);
-      var heroProgress = limitProgress((scroll - openingRanges.heroStart) / openingRanges.heroRunway);
-      var copyExit = limitProgress(heroProgress / 0.36);
-      var logoEnter = easeScene((heroProgress - 0.22) / 0.27);
-      var logoExit = easeScene((heroProgress - 0.6) / 0.36);
-      var logoOpacity = (0.12 + 0.82 * logoEnter) * (1 - logoExit);
-      heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
-      heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
-      heroStage.style.setProperty('--hero-logo-opacity', logoOpacity);
-      heroStage.style.setProperty('--scene-glow-opacity', Math.max(1 - copyExit, logoOpacity));
-
-      var tearEnd = 0.8;
-      var ticketTop = openingRanges.ticketStart - scroll;
-      var ticketProgress = limitProgress(-ticketTop / openingRanges.ticketRunway);
-      var tearProgress = limitProgress(ticketProgress / tearEnd);
-      // Fade near the lower third as the ticket moves naturally with the page.
-      ticketStage.style.setProperty('--scene-entry', easeScene(1 - ticketTop / (openingRanges.ticketHeight / 6)));
-      ticket.style.setProperty('--ticket-peel', easeScene(tearProgress / 0.52));
-      ticket.style.setProperty('--ticket-drop', easeScene((tearProgress - 0.52) / 0.48));
-      ticketStage.style.setProperty('--ticket-exit', limitProgress((ticketProgress - tearEnd) / (1 - tearEnd)));
-    }
-    if (!nativeSceneArrival && !touchOpening.matches) setSceneEntrance(countdownStage, countdownTop, countdownHeight);
-    countdownStage.style.setProperty('--countdown-exit', countdownExit);
-    mottoStage.style.setProperty('--motto-progress', mottoProgress);
-    mottoStage.style.setProperty('--motto-exit', mottoExit);
-    if (takeoffRenderer) {
-      takeoffStage.style.setProperty('--takeoff-opacity', takeoffOpacity);
-      if (!nativeSceneArrival) {
-        takeoffStage.style.setProperty('--takeoff-offset', (-limitProgress(takeoffTop / takeoffHeight) * takeoffHeight * 0.86) + 'px');
-        mottoStage.style.setProperty('--motto-approach-offset', (-limitProgress(mottoTop / mottoLead) * mottoLead * 0.72) + 'px');
-      }
-      takeoffRenderer.update(takeoffProgress, takeoffOpacity > 0.004, takeoffWidth, takeoffHeight);
+      var flight = limitProgress((position - takeoffPhase.enterEnd) / (takeoffPhase.end - takeoffPhase.enterEnd));
+      takeoffRenderer.update(flight, takeoffPhase.opacity > 0, openingWidth, openingHeight);
     }
   }
 
@@ -240,31 +160,17 @@
     if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScrollScenes);
   }
 
-  function syncOpeningMode() {
-    main.classList.toggle('has-touch-opening', touchOpening.matches);
-    if (!touchOpening.matches && touchTear) {
-      touchTear.cancel();
-      touchTear = null;
-      ticketSection.classList.remove('opening-torn');
-    }
-    scenesIdle = false;
-    measureOpeningRanges();
-  }
-
   main.classList.add('has-scroll-scenes');
-  syncOpeningMode();
-  touchOpening.addEventListener('change', syncOpeningMode);
+  measureOpening();
   if ('ResizeObserver' in window) {
-    var openingObserver = new ResizeObserver(measureOpeningRanges);
-    [headerInner.parentElement, heroScene, heroStage, ticketSection, ticketStage, countdownStage, countdownContent].forEach(function (element) {
-      openingObserver.observe(element);
-    });
+    var openingObserver = new ResizeObserver(measureOpening);
+    openingObserver.observe(openingStage);
+    openingObserver.observe(headerInner.parentElement);
   } else {
-    window.addEventListener('resize', measureOpeningRanges);
+    window.addEventListener('resize', measureOpening);
   }
   window.addEventListener('scroll', queueSceneUpdate, { passive: true });
-  window.addEventListener('resize', queueSceneUpdate);
-  window.addEventListener('pageshow', measureOpeningRanges);
+  window.addEventListener('pageshow', measureOpening);
 
   var targetTime = new Date('2026-12-24T18:00:00+08:00').getTime();
   var elDays = document.getElementById('cd-days');

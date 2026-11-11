@@ -147,26 +147,26 @@ button:disabled { cursor: default; opacity: 0.55; }
 
 /* Sections & Grid */
 section { padding: 4.5rem 0; }
-main > section + section {
+main > section {
   position: relative;
   --divider-ink: var(--gold);
   --divider-offset: 0px;
 }
-main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before,
-main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
+main > section::before,
+main > section::after {
   content: "";
   position: absolute;
   inset-block-start: var(--divider-offset);
   inset-inline-start: 50%;
   pointer-events: none;
 }
-main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before {
+main > section::before {
   width: min(72%, 32rem);
   height: 1px;
   translate: -50%;
   background: linear-gradient(90deg, transparent, var(--divider-ink) calc(50% - 1rem), transparent calc(50% - 1rem) calc(50% + 1rem), var(--divider-ink) calc(50% + 1rem), transparent);
 }
-main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
+main > section::after {
   width: 1.3rem;
   height: 1.3rem;
   background: var(--divider-ink);
@@ -269,10 +269,12 @@ main > .cream-section {
 
 /* Hero and key visual */
 
-.scroll-scene {
-  --scene-height: calc(100svh - 4rem);
-  --scene-runway: clamp(10rem, 32svh, 18rem);
-  padding: 0;
+.opening-stage {
+  --scene-height: max(0px, calc(100svh - 4rem));
+}
+
+.opening-stage > section {
+  padding-block: 0;
 }
 
 .scene-stage {
@@ -285,13 +287,35 @@ main > .cream-section {
 
 .scene-stage > .container { width: 100%; }
 
-.has-scroll-scenes .scroll-scene {
-  min-block-size: calc(var(--scene-height) + var(--scene-runway));
+.has-scroll-scenes .opening-sequence {
+  /* Keep the journal below the stage even when mobile browser bars retract. */
+  min-block-size: calc(var(--opening-length, 100svh) + 100lvh - 100svh);
 }
 
-.has-scroll-scenes .scene-stage {
+.has-scroll-scenes .opening-stage {
   position: sticky;
   top: 4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-block-size: var(--scene-height);
+  overflow: clip;
+  isolation: isolate;
+  background: linear-gradient(var(--bg-deep), var(--bg-navy) 54%, var(--bg-deep));
+}
+
+.has-scroll-scenes .opening-stage > section {
+  grid-area: 1 / 1;
+  display: grid;
+  background: transparent;
+}
+
+.has-scroll-scenes .opening-stage > section:not(.hero-scene),
+.has-scroll-scenes .hero-orbit {
+  opacity: 0;
+}
+
+.has-scroll-scenes .opening-stage :is(.scene-stage, .ticket-stage) {
+  min-block-size: 0;
 }
 
 :is(.hero-stage, .scene-arrival, .motto-stage)::before,
@@ -305,9 +329,7 @@ main > .cream-section {
   pointer-events: none;
 }
 
-#hero {
-  --scene-runway: clamp(13rem, 42svh, 25rem);
-  overflow-x: clip;
+.hero-scene {
   background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
@@ -322,7 +344,7 @@ main > .cream-section {
   z-index: -1;
   width: min(81vw, 65svh, 39rem);
   height: auto;
-  opacity: var(--hero-logo-opacity, 0.12);
+  opacity: 0.12;
   pointer-events: none;
 }
 
@@ -385,8 +407,6 @@ main > .cream-section {
   justify-items: center;
   gap: clamp(1.65rem, 4.5svh, 3.25rem);
   text-align: center;
-  opacity: var(--hero-copy-opacity, 1);
-  translate: 0 var(--hero-copy-lift, 0px);
 }
 
 .hero-heading { display: grid; }
@@ -441,13 +461,7 @@ main > .cream-section {
 /* Scroll ticket */
 
 .ticket-section {
-  --ticket-inset: 1rem;
-  --ticket-stage-height: calc(100svh - 4rem - 2 * var(--ticket-inset));
-  --arrival-height: var(--ticket-stage-height);
-  --ticket-scroll-distance: clamp(10rem, 28svh, 15rem);
-  isolation: isolate;
-  min-block-size: calc(var(--ticket-stage-height) + var(--ticket-scroll-distance) + 2 * var(--ticket-inset));
-  padding: var(--ticket-inset) 1.25rem;
+  padding: 0 clamp(1.85rem, 5.6vw, 2.5rem);
   overflow-x: clip;
   background: var(--bg-navy);
   color: var(--text-main);
@@ -455,11 +469,9 @@ main > .cream-section {
 
 .ticket-stage {
   --scene-glow: rgb(var(--gold-rgb) / 12%);
-  position: sticky;
-  top: calc(4rem + var(--ticket-inset));
   isolation: isolate;
   display: grid;
-  min-block-size: var(--ticket-stage-height);
+  min-block-size: var(--scene-height);
 }
 
 .ticket-stage .scene-arrival > .container { padding-inline: 0; }
@@ -469,171 +481,9 @@ main > .cream-section {
   isolation: isolate;
   display: grid;
   align-content: center;
-  opacity: var(--scene-entry, 1);
-  transform: translateY(var(--scene-entry-offset, 0px));
-  scale: calc(1 - (1 - var(--arrival-scale, 1)) * (1 - var(--scene-entry, 1)));
 }
 
 .scene-arrival > .container { width: 100%; }
-
-.ticket-stage .scene-arrival {
-  opacity: calc(var(--scene-entry, 1) * (1 - var(--ticket-exit, 0)));
-  translate: 0 calc(var(--ticket-exit, 0) * -3.5rem);
-}
-
-@supports (animation-timeline: view()) and (animation-timeline: scroll(root block)) and (animation-range: entry 0% entry 100%) and (animation-range: 0px 100px) and (view-timeline-inset: 4rem 0px) {
-  .has-scroll-scenes :is(.countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
-    view-timeline-name: --arrival;
-    /* Keep the timeline aligned with the stage when mobile browser controls retract. */
-    view-timeline-inset: 4rem max(0px, calc(100dvh - 100svh));
-  }
-
-  .has-scroll-scenes .countdown-stage .scene-arrival {
-    animation: scene-arrive auto linear both;
-    animation-timeline: --arrival;
-    animation-range: entry 0% entry 100%;
-  }
-
-  @keyframes scene-arrive {
-    from {
-      opacity: 0;
-      transform: translateY(calc(var(--arrival-height) * -5 / 6)) scale(var(--arrival-scale, 1));
-    }
-    to { opacity: 1; transform: none; }
-  }
-
-  .has-scroll-scenes .takeoff-art,
-  .has-scroll-scenes .takeoff-scene:not([hidden]) + .ball-motto .motto-stage > .container {
-    animation: scene-approach auto linear both;
-    animation-timeline: --arrival;
-    animation-range: entry var(--approach-start, 0px) entry 100%;
-  }
-
-  @keyframes scene-approach {
-    from { transform: translateY(var(--approach-travel)); }
-    to { transform: none; }
-  }
-
-  /* Document offsets keep the opening independent of the changing visual viewport. */
-  .has-scroll-scenes :is(#hero, .ticket-section) {
-    --opening-end: calc(var(--opening-start) + var(--opening-runway));
-  }
-
-  .has-scroll-scenes .hero-copy {
-    animation: hero-copy-depart auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--opening-start) calc(var(--opening-start) + var(--opening-runway) * 0.36);
-  }
-
-  .has-scroll-scenes .hero-orbit {
-    animation: hero-orbit-pass auto ease-in-out both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--opening-start) var(--opening-end);
-  }
-
-  .has-scroll-scenes .hero-stage::before,
-  .has-scroll-scenes .hero-star-trails {
-    animation: hero-light-pass auto linear both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--opening-start) var(--opening-end);
-  }
-
-  @keyframes hero-copy-depart {
-    from { opacity: 1; transform: none; }
-    to { opacity: 0; transform: translateY(-4.5rem); }
-  }
-
-  @keyframes hero-orbit-pass {
-    0%, 22% { opacity: 0.12; }
-    49%, 60% { opacity: 0.94; }
-    96%, 100% { opacity: 0; }
-  }
-
-  @keyframes hero-light-pass {
-    0% { opacity: 1; }
-    26.6% { opacity: 0.26; }
-    49%, 60% { opacity: 0.94; }
-    96%, 100% { opacity: 0; }
-  }
-
-  .has-scroll-scenes .ticket-section {
-    --ticket-tear-end: calc(var(--opening-start) + var(--opening-runway) * 0.8);
-  }
-
-  .has-scroll-scenes .ticket-stage .scene-arrival {
-    animation: scene-arrive auto linear both, ticket-depart auto linear forwards;
-    animation-timeline: scroll(root block), scroll(root block);
-    animation-range: var(--opening-entry) var(--opening-start), var(--ticket-tear-end) var(--opening-end);
-  }
-
-  .has-scroll-scenes .tear-ticket-tab {
-    animation: ticket-tear auto ease-in-out both;
-    animation-timeline: scroll(root block);
-    animation-range: var(--opening-start) var(--ticket-tear-end);
-  }
-
-  @keyframes ticket-tear {
-    0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); }
-    52% { opacity: 1; transform: translate3d(0, 0, 0) rotate(9deg); }
-    100% { opacity: 0; transform: translate3d(80%, 44%, 0) rotate(24deg); }
-  }
-
-  @keyframes ticket-depart {
-    from { opacity: 1; transform: none; }
-    to { opacity: 0; transform: translateY(-3.5rem); }
-  }
-}
-
-/* Leave enough room for the timed tear to play while the stage is pinned. */
-.has-touch-opening .ticket-section {
-  --ticket-scroll-distance: clamp(17rem, 46svh, 25rem);
-}
-
-.has-touch-opening .hero-copy,
-.has-touch-opening .hero-orbit,
-.has-touch-opening .hero-stage::before,
-.has-touch-opening .hero-star-trails,
-.has-touch-opening .ticket-stage .scene-arrival {
-  animation: none;
-  transition: opacity 0.4s ease-in-out;
-}
-
-.has-touch-opening .hero-copy { opacity: 1; translate: none; }
-.has-touch-opening .hero-orbit { opacity: 0.12; }
-.has-touch-opening .hero-stage::before,
-.has-touch-opening .hero-star-trails { opacity: 1; }
-
-.has-touch-opening #hero.opening-revealed .hero-copy { opacity: 0; }
-.has-touch-opening #hero.opening-revealed .hero-orbit { opacity: 0.94; }
-.has-touch-opening #hero.opening-passed .hero-orbit,
-.has-touch-opening #hero.opening-passed .hero-stage::before,
-.has-touch-opening #hero.opening-passed .hero-star-trails { opacity: 0; }
-
-.has-touch-opening .ticket-stage .scene-arrival {
-  opacity: 0;
-  transform: none;
-  translate: none;
-}
-
-.has-touch-opening .ticket-section.opening-revealed .scene-arrival { opacity: 1; }
-.has-touch-opening .ticket-section.opening-passed .scene-arrival { opacity: 0; }
-
-.has-touch-opening .countdown-stage .scene-arrival {
-  animation: none;
-  opacity: 0;
-  transform: none;
-  scale: 1;
-  transition: opacity 0.22s ease-out;
-}
-
-.has-touch-opening .countdown.opening-revealed .scene-arrival { opacity: 1; }
-.has-touch-opening .countdown.opening-settled .scene-arrival { transition-duration: 0s; }
-
-.has-touch-opening .tear-ticket-tab {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
 
 .tear-ticket {
   max-width: 36rem;
@@ -667,10 +517,6 @@ main > .cream-section {
 .tear-ticket-tab {
   /* Anchor the last perforation while the seam opens from the top. */
   transform-origin: bottom left;
-  transform:
-    translate3d(calc(var(--ticket-drop, 0) * 80%), calc(var(--ticket-drop, 0) * 44%), 0)
-    rotate(calc(var(--ticket-peel, 0) * 9deg + var(--ticket-drop, 0) * 15deg));
-  opacity: calc(1 - var(--ticket-drop, 0));
 }
 
 .has-scroll-scenes .tear-ticket-tab { will-change: transform, opacity; }
@@ -799,22 +645,13 @@ main > .cream-section {
 /* Countdown and shared section headings */
 
 .countdown {
-  --scene-runway: clamp(6rem, 18svh, 10rem);
-  --arrival-height: var(--scene-height);
-  --arrival-scale: 0.72;
   background: linear-gradient(var(--bg-navy), var(--bg-deep));
   text-align: center;
 }
 
 .countdown-stage {
-  --countdown-presence: calc(1 - var(--countdown-exit, 0));
   --scene-glow: var(--glow-countdown);
-  --scene-glow-opacity: var(--countdown-presence);
   align-content: stretch;
-}
-
-.countdown-stage .scene-arrival > .container {
-  opacity: var(--countdown-presence);
 }
 
 .countdown-title {
@@ -847,15 +684,7 @@ main > .cream-section {
   color: var(--gold);
 }
 
-.takeoff-scene,
-.takeoff-scene + .ball-motto {
-  --takeoff-runway: clamp(19rem, 86svh, 55rem);
-  --takeoff-hold: calc(var(--scene-height) * 0.55);
-}
-
 .takeoff-scene {
-  --scene-runway: calc(var(--takeoff-runway) + var(--takeoff-hold));
-  --approach-travel: calc(var(--scene-height) * -0.86);
   background: var(--bg-deep);
 }
 
@@ -864,8 +693,6 @@ main > .cream-section {
 .takeoff-art {
   position: absolute;
   inset: 0;
-  opacity: var(--takeoff-opacity, 0);
-  translate: 0 var(--takeoff-offset, 0px);
   mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
   pointer-events: none;
 }
@@ -879,25 +706,13 @@ main > .cream-section {
 }
 
 .ball-motto {
-  --scene-runway: clamp(11rem, 34svh, 20rem);
   background: var(--bg-deep);
   text-align: center;
 }
 
-.takeoff-scene:not([hidden]) + .ball-motto {
-  /* The next scene approaches while the preceding sticky stage is still held. */
-  margin-block-start: calc(-1 * var(--takeoff-hold));
-  --motto-lead: calc(var(--scene-height) - var(--takeoff-hold) + (var(--takeoff-runway) + var(--takeoff-hold)) * 0.08);
-  --approach-start: calc(var(--scene-height) - var(--motto-lead));
-  --approach-travel: calc(var(--motto-lead) * -0.72);
-}
-
 .motto-stage {
   --scene-glow: rgb(var(--gold-rgb) / 13%);
-  --scene-glow-opacity: clamp(0, calc(var(--motto-progress, 1) * 1.7 - var(--motto-exit, 0) * 1.7), 1);
 }
-
-.motto-stage > .container { translate: 0 var(--motto-approach-offset, 0px); }
 
 .motto-text {
   width: min(100%, 13em);
@@ -1339,18 +1154,18 @@ main > .cream-section {
 }
 
 @supports (animation-timeline: scroll()) and (animation-range: 0px 100px) {
-  main > section + section {
+  main > section {
     view-timeline-name: --section-scroll;
     view-timeline-inset: 0 -2rem;
   }
 
-  main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before {
+  main > section::before {
     animation: draw-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + clamp(4rem, 15svh, 8rem));
   }
 
-  main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
+  main > section::after {
     animation: flight-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + 4rem);
