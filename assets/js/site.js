@@ -96,7 +96,6 @@
     var ticketInset = parseFloat(getComputedStyle(ticketSection).paddingBlockStart);
     openingRanges = {
       heroStart: heroStart,
-      heroHeight: heroStage.offsetHeight,
       heroRunway: Math.max(1, heroScene.clientHeight - heroStage.offsetHeight),
       ticketStart: ticketStart,
       ticketHeight: ticketHeight,
@@ -123,24 +122,29 @@
   function updateTouchOpening() {
     var scroll = Math.max(0, window.scrollY);
     var heroStart = openingRanges.heroStart;
-    var heroHeight = openingRanges.heroHeight;
+    var heroRunway = openingRanges.heroRunway;
     var ticketStart = openingRanges.ticketStart;
     var ticketHeight = openingRanges.ticketHeight;
-    setTouchPhase(heroScene, 'opening-revealed', scroll, heroStart + heroHeight * 0.16);
-    setTouchPhase(heroScene, 'opening-passed', scroll, heroStart + heroHeight * 0.43);
+    var ticketRunway = openingRanges.ticketRunway;
+    setTouchPhase(heroScene, 'opening-revealed', scroll, heroStart + heroRunway * 0.10);
+    setTouchPhase(heroScene, 'opening-passed', scroll, heroStart + heroRunway * 0.72);
     setTouchPhase(ticketSection, 'opening-revealed', scroll, ticketStart - ticketHeight * 0.19);
-    setTouchPhase(ticketSection, 'opening-passed', scroll, ticketStart + ticketHeight * 0.35);
-    if (!setTouchPhase(ticketSection, 'opening-torn', scroll, ticketStart + ticketHeight * 0.045)) return;
 
-    if (touchTear) {
-      touchTear.reverse();
-    } else {
-      touchTear = ticketTab.animate([
-        { transform: 'translate3d(0, 0, 0) rotate(0)', opacity: 1, easing: 'ease-in-out' },
-        { transform: 'translate3d(0, 0, 0) rotate(9deg)', opacity: 1, offset: 0.52, easing: 'ease-in-out' },
-        { transform: 'translate3d(80%, 44%, 0) rotate(24deg)', opacity: 0 },
-      ], { duration: 620, fill: 'both' });
+    if (setTouchPhase(ticketSection, 'opening-torn', scroll, ticketStart + ticketRunway * 0.08)) {
+      if (touchTear) {
+        touchTear.reverse();
+      } else {
+        touchTear = ticketTab.animate([
+          { transform: 'translate3d(0, 0, 0) rotate(0)', opacity: 1, easing: 'ease-in-out' },
+          { transform: 'translate3d(0, 0, 0) rotate(9deg)', opacity: 1, offset: 0.52, easing: 'ease-in-out' },
+          { transform: 'translate3d(80%, 44%, 0) rotate(24deg)', opacity: 0 },
+        ], { duration: 620, fill: 'both' });
+        touchTear.onfinish = queueSceneUpdate;
+      }
     }
+    var tearFinished = touchTear && touchTear.playbackRate > 0 && touchTear.playState === 'finished';
+    var fadeStart = tearFinished ? ticketStart + ticketRunway * 0.82 : Infinity;
+    setTouchPhase(ticketSection, 'opening-passed', scroll, fadeStart);
   }
 
   function updateScrollScenes() {

@@ -584,14 +584,9 @@ main > .cream-section {
   }
 }
 
-/* Touch scrolling carries these scenes in document flow. Their effects run on time. */
-.has-touch-opening #hero,
-.has-touch-opening .ticket-section { min-block-size: 0; }
-
-.has-touch-opening .hero-stage,
-.has-touch-opening .ticket-stage {
-  position: relative;
-  top: auto;
+/* Leave enough room for the timed tear to play while the stage is pinned. */
+.has-touch-opening .ticket-section {
+  --ticket-scroll-distance: clamp(17rem, 46svh, 25rem);
 }
 
 .has-touch-opening .hero-copy,
