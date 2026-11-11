@@ -842,9 +842,10 @@ main > .cream-section {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
-  border: 0;
+  height: auto;
+  object-fit: contain;
   border-radius: 0 0 1rem 1rem;
-  background: var(--cream-bg);
+  background: var(--bg-deep);
 }
 
 .journal-link {
@@ -859,11 +860,11 @@ main > .cream-section {
 }
 
 .journal-link:hover, .journal-link:active { background: rgb(var(--gold-rgb) / 12%); }
-.journal-entry:focus-within, .journal-entry.has-frame-focus {
+.journal-entry:focus-within {
   outline: 2px solid var(--gold-light);
   outline-offset: 4px;
 }
-.journal-media:focus, .has-frame-focus .journal-media, .journal-link:focus-visible {
+.journal-media:focus-visible, .journal-link:focus-visible {
   outline: 2px solid var(--gold-light);
   outline-offset: -3px;
 }

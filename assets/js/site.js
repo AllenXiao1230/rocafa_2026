@@ -318,19 +318,6 @@
     modalOpener.focus({ preventScroll: true });
   });
 
-  // Focus inside a cross-origin embed may not propagate a focus event to its card.
-  var focusedJournal;
-  function syncJournalFocus() {
-    var active = document.activeElement;
-    var card = active.matches('.journal-media') ? active.closest('.journal-entry') : null;
-    if (focusedJournal === card) return;
-    if (focusedJournal) focusedJournal.classList.remove('has-frame-focus');
-    if (card) card.classList.add('has-frame-focus');
-    focusedJournal = card;
-  }
-  window.addEventListener('blur', function () { requestAnimationFrame(syncJournalFocus); });
-  document.addEventListener('focusin', syncJournalFocus);
-
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
       '.ticket-star-trails',
