@@ -152,21 +152,21 @@ main > section + section {
   --divider-ink: var(--gold);
   --divider-offset: 0px;
 }
-main > section + section:not(.ticket-section, .countdown)::before,
-main > section + section:not(.ticket-section, .countdown)::after {
+main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before,
+main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
   content: "";
   position: absolute;
   inset-block-start: var(--divider-offset);
   inset-inline-start: 50%;
   pointer-events: none;
 }
-main > section + section:not(.ticket-section, .countdown)::before {
+main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before {
   width: min(72%, 32rem);
   height: 1px;
   translate: -50%;
   background: linear-gradient(90deg, transparent, var(--divider-ink) calc(50% - 1rem), transparent calc(50% - 1rem) calc(50% + 1rem), var(--divider-ink) calc(50% + 1rem), transparent);
 }
-main > section + section:not(.ticket-section, .countdown)::after {
+main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
   width: 1.3rem;
   height: 1.3rem;
   background: var(--divider-ink);
@@ -702,6 +702,30 @@ main > .cream-section {
   color: var(--gold);
 }
 
+.takeoff-scene {
+  --scene-runway: clamp(19rem, 86svh, 55rem);
+  background: var(--bg-deep);
+}
+
+.takeoff-stage { z-index: 1; }
+
+.takeoff-art {
+  position: absolute;
+  inset: 0;
+  opacity: var(--takeoff-opacity, 0);
+  translate: 0 var(--takeoff-offset, 0px);
+  mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+  pointer-events: none;
+}
+
+.takeoff-art canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .ball-motto {
   --scene-runway: clamp(11rem, 34svh, 20rem);
   background: var(--bg-deep);
@@ -712,6 +736,8 @@ main > .cream-section {
   --scene-glow: rgb(var(--gold-rgb) / 13%);
   --scene-glow-opacity: clamp(0, calc(var(--motto-progress, 1) * 1.7 - var(--motto-exit, 0) * 1.7), 1);
 }
+
+.motto-stage > .container { translate: 0 var(--motto-approach-offset, 0px); }
 
 .motto-text {
   width: min(100%, 13em);
@@ -1158,13 +1184,13 @@ main > .cream-section {
     view-timeline-inset: 0 -2rem;
   }
 
-  main > section + section:not(.ticket-section, .countdown)::before {
+  main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::before {
     animation: draw-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + clamp(4rem, 15svh, 8rem));
   }
 
-  main > section + section:not(.ticket-section, .countdown)::after {
+  main > section + section:not(.ticket-section, .countdown, .takeoff-scene):not(:where(.takeoff-scene:not([hidden]) + .ball-motto))::after {
     animation: flight-divider auto linear both;
     animation-timeline: --section-scroll;
     animation-range: entry var(--divider-offset) entry calc(var(--divider-offset) + 4rem);
