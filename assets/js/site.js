@@ -46,10 +46,12 @@
   var openingStage = opening.querySelector('.opening-stage');
   var headerInner = document.querySelector('.header-inner');
   var heroStage = opening.querySelector('.hero-stage');
+  var invitationCaption = opening.querySelector('.invitation-caption');
   var ticketTab = opening.querySelector('.tear-ticket-tab');
   var ticketArrival = opening.querySelector('.ticket-stage .scene-arrival');
   var countdownArrival = opening.querySelector('.countdown-stage .scene-arrival');
   var takeoffScene = opening.querySelector('.takeoff-scene');
+  var takeoffCaption = takeoffScene.querySelector('.takeoff-caption');
   var mottoScene = opening.querySelector('.ball-motto');
   var mottoStage = mottoScene.querySelector('.motto-stage');
   var takeoffRenderer = typeof createAjtScene === 'function' && createAjtScene(
@@ -61,10 +63,10 @@
   // Distances are expressed as fractions of one stable stage height.
   var titlePhase = { layer: opening.querySelector('.hero-copy'), enter: 0, hold: 0.14, exit: 0.24 };
   var logoPhase = { layer: opening.querySelector('.hero-orbit'), enter: 0.58, hold: 0.22, exit: 0.58 };
-  var ticketPhase = { layer: opening.querySelector('.ticket-section'), enter: 0.22, hold: 0.66, exit: 0.24 };
+  var ticketPhase = { layer: opening.querySelector('.ticket-section'), enter: 0.22, hold: 0.78, exit: 0.24 };
   var countdownPhase = { layer: opening.querySelector('.countdown'), enter: 0.24, hold: 0.40, exit: 0.24 };
-  var takeoffPhase = { layer: takeoffScene, enter: 0.25, hold: 0.99, exit: 0.25 };
-  var mottoPhase = { layer: mottoScene, enter: 0.25, hold: 0.52, exit: 0.22 };
+  var takeoffPhase = { layer: takeoffScene, enter: 0.25, hold: 1.17, exit: 0.25 };
+  var mottoPhase = { layer: mottoScene, enter: 0.25, hold: 0.64, exit: 0.22 };
   var openingPhases = [titlePhase, logoPhase, ticketPhase, countdownPhase];
   if (takeoffRenderer) openingPhases.push(takeoffPhase);
   openingPhases.push(mottoPhase);
@@ -112,8 +114,9 @@
 
   function updateTicketTear(position) {
     // Peel from the top with the bottom anchored, then let the stub fall.
-    var tearStart = ticketPhase.enterEnd + 24;
-    var tearEnd = ticketPhase.exitStart - 24;
+    var holdDistance = ticketPhase.exitStart - ticketPhase.enterEnd;
+    var tearStart = ticketPhase.enterEnd + holdDistance * 0.15;
+    var tearEnd = ticketPhase.exitStart - holdDistance * 0.15;
     var tear = limitProgress((position - tearStart) / (tearEnd - tearStart));
     var peel = easeScene(tear / 0.52);
     var drop = easeScene((tear - 0.52) / 0.48);
@@ -148,10 +151,14 @@
 
     var glow = titlePhase.opacity + logoPhase.opacity;
     heroStage.style.setProperty('--scene-glow-opacity', glow);
-    var mottoReveal = mottoPhase.enterEnd + (mottoPhase.exitStart - mottoPhase.enterEnd) * 0.5;
+    var invitation = easeScene((arrival(logoPhase, position) - 0.72) / 0.28) * logoPhase.opacity;
+    invitationCaption.style.setProperty('--caption-opacity', invitation);
+    var mottoReveal = mottoPhase.enterEnd + (mottoPhase.exitStart - mottoPhase.enterEnd) * 0.58;
     mottoStage.style.setProperty('--motto-progress', limitProgress((position - mottoPhase.start) / (mottoReveal - mottoPhase.start)));
     if (takeoffRenderer) {
-      var flight = limitProgress((position - takeoffPhase.enterEnd) / (takeoffPhase.end - takeoffPhase.enterEnd));
+      var flightDistance = takeoffPhase.exitStart - takeoffPhase.enterEnd;
+      var flight = limitProgress((position - takeoffPhase.enterEnd - flightDistance * 0.10) / (flightDistance * 0.90));
+      takeoffCaption.style.setProperty('--caption-opacity', easeScene((flight - 0.65) / 0.17));
       takeoffRenderer.update(flight, takeoffPhase.opacity > 0, openingWidth, openingHeight);
     }
   }
