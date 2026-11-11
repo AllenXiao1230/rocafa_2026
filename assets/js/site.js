@@ -81,25 +81,6 @@
     return progress * progress * (3 - 2 * progress);
   }
 
-  function updateTakeoff(headerHeight) {
-    var height = takeoffStage.offsetHeight;
-    var top = takeoffScene.getBoundingClientRect().top - headerHeight;
-    var runway = takeoffScene.clientHeight - height;
-    var distance = Math.max(1, runway + height * 0.55);
-    var progress = limitProgress(-top / distance);
-    var fadeEnd = 0.92;
-    var entry = easeScene((height * 0.86 - top) / (height * 0.58));
-    var exit = easeScene((progress - 0.78) / (fadeEnd - 0.78));
-    var opacity = entry * (1 - exit);
-    var approachOffset = -Math.min(height, Math.max(0, top)) * 0.86;
-    // Keep the canvas framed under the header until the exit fade has finished.
-    var exitOffset = Math.max(0, -top - runway);
-    takeoffStage.style.setProperty('--takeoff-opacity', opacity);
-    takeoffStage.style.setProperty('--takeoff-offset', (approachOffset + exitOffset) + 'px');
-    takeoffRenderer.update(progress, opacity > 0.004);
-    return Math.max(0, runway + height - distance * fadeEnd);
-  }
-
   function updateScrollScenes() {
     sceneFrame = 0;
     var headerHeight = headerInner.offsetHeight;
@@ -121,10 +102,23 @@
     var countdownDistance = countdownScene.clientHeight - countdownHeight;
     var countdownExit = limitProgress((-countdownTop - countdownDistance) / (countdownHeight * 0.58));
     var mottoTop = mottoScene.getBoundingClientRect().top - headerHeight;
-    var mottoLead = takeoffRenderer ? updateTakeoff(headerHeight) : mottoStage.offsetHeight * 0.23;
-    var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoStage.offsetHeight);
+    var mottoHeight = mottoStage.offsetHeight;
+    var mottoLead = mottoHeight * 0.23;
+    var takeoffWidth, takeoffHeight, takeoffTop, takeoffProgress, takeoffOpacity;
+    if (takeoffRenderer) {
+      takeoffWidth = takeoffStage.clientWidth;
+      takeoffHeight = takeoffStage.offsetHeight;
+      takeoffTop = takeoffScene.getBoundingClientRect().top - headerHeight;
+      var takeoffRunway = Math.max(1, takeoffScene.clientHeight - takeoffHeight);
+      takeoffProgress = limitProgress(-takeoffTop / takeoffRunway);
+      var entry = easeScene((takeoffHeight * 0.86 - takeoffTop) / (takeoffHeight * 0.58));
+      var exit = easeScene((takeoffProgress - 0.78) / 0.14);
+      takeoffOpacity = entry * (1 - exit);
+      mottoLead = takeoffHeight * 0.45 + takeoffRunway * 0.08;
+    }
+    var mottoDistance = Math.max(1, mottoScene.clientHeight - mottoHeight);
     var mottoProgress = limitProgress((mottoLead - mottoTop) / (mottoDistance + mottoLead));
-    var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoStage.offsetHeight * 0.6));
+    var mottoExit = limitProgress((-mottoTop - mottoDistance) / (mottoHeight * 0.6));
 
     heroStage.style.setProperty('--hero-copy-opacity', 1 - copyExit);
     heroStage.style.setProperty('--hero-copy-lift', (-4.5 * copyExit) + 'rem');
@@ -145,7 +139,12 @@
     mottoStage.style.setProperty('--motto-progress', mottoProgress);
     mottoStage.style.setProperty('--motto-exit', mottoExit);
     if (takeoffRenderer) {
-      mottoStage.style.setProperty('--motto-approach-offset', (-Math.min(mottoLead, Math.max(0, mottoTop)) * 0.72) + 'px');
+      takeoffStage.style.setProperty('--takeoff-opacity', takeoffOpacity);
+      if (!nativeSceneArrival) {
+        takeoffStage.style.setProperty('--takeoff-offset', (-limitProgress(takeoffTop / takeoffHeight) * takeoffHeight * 0.86) + 'px');
+        mottoStage.style.setProperty('--motto-approach-offset', (-limitProgress(mottoTop / mottoLead) * mottoLead * 0.72) + 'px');
+      }
+      takeoffRenderer.update(takeoffProgress, takeoffOpacity > 0.004, takeoffWidth, takeoffHeight);
     }
   }
 

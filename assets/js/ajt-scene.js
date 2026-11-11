@@ -1,8 +1,5 @@
-function createAjtScene(canvas, exhaustCanvas) {
-  const pageColors = getComputedStyle(document.documentElement);
-  const night = pageColors.getPropertyValue('--bg-deep').trim() || '#080f1d';
-  const navy = pageColors.getPropertyValue('--bg-navy').trim() || '#111c30';
-  const light = pageColors.getPropertyValue('--glow-hero').trim() || 'rgba(71,101,163,.22)';
+function createAjtRenderer(canvas, exhaustCanvas, colors) {
+  const { night, navy, light } = colors;
   // =========================================================================
   // AIDC T-5 Brave Eagle (AJT 勇鷹高教機) Colored Vector Line-Art Animation
   // Runway 36 threshold to the north, with a rear chase camera.
@@ -71,7 +68,7 @@ function createAjtScene(canvas, exhaustCanvas) {
   }
 
   function updateKinematics(p) {
-    state.distanceM = Math.round(1450 * Math.pow(p, 1.65));
+    state.distanceM = 1450 * Math.pow(p, 1.65);
 
     // Smooth pitch-up rotation starting around Vr (p = 0.43)
     if (p < 0.43) {
@@ -112,23 +109,13 @@ function createAjtScene(canvas, exhaustCanvas) {
   // =========================================================================
   // 3D Coordinate Transformations & Camera Projection
   // =========================================================================
-  function aircraftToWorld(lx, ly, lz, acPos, pitchRad, rollRad) {
-    const cosR = Math.cos(rollRad);
-    const sinR = Math.sin(rollRad);
-    const x1 = lx * cosR - ly * sinR;
-    const y1 = lx * sinR + ly * cosR;
-    const z1 = lz;
-
-    const cosP = Math.cos(pitchRad);
-    const sinP = Math.sin(pitchRad);
-    const x2 = x1;
-    const y2 = y1 * cosP + z1 * sinP;
-    const z2 = -y1 * sinP + z1 * cosP;
-
+  function aircraftToWorld(lx, ly, lz, acPos) {
+    const x = lx * acPos.cosRoll - ly * acPos.sinRoll;
+    const y = lx * acPos.sinRoll + ly * acPos.cosRoll;
     return {
-      x: x2 + acPos.x,
-      y: y2 + acPos.y,
-      z: z2 + acPos.z
+      x: x + acPos.x,
+      y: y * acPos.cosPitch + lz * acPos.sinPitch + acPos.y,
+      z: -y * acPos.sinPitch + lz * acPos.cosPitch + acPos.z
     };
   }
 
@@ -137,15 +124,10 @@ function createAjtScene(canvas, exhaustCanvas) {
     const dy = pt.y - cam.y;
     const dz = pt.z - cam.z;
 
-    const cosY = Math.cos(cam.yaw);
-    const sinY = Math.sin(cam.yaw);
-    const rx = dx * cosY - dz * sinY;
-    const rz1 = dx * sinY + dz * cosY;
-
-    const cosP = Math.cos(cam.pitch);
-    const sinP = Math.sin(cam.pitch);
-    const ry = dy * cosP - rz1 * sinP;
-    const rz = dy * sinP + rz1 * cosP;
+    const rx = dx * cam.cosYaw - dz * cam.sinYaw;
+    const rz1 = dx * cam.sinYaw + dz * cam.cosYaw;
+    const ry = dy * cam.cosPitch - rz1 * cam.sinPitch;
+    const rz = dy * cam.sinPitch + rz1 * cam.cosPitch;
 
     return { cx: rx, cy: ry, cz: rz };
   }
@@ -228,7 +210,7 @@ function createAjtScene(canvas, exhaustCanvas) {
     [[0, .82], [.16, 1], [.65, 1], [.82, .81], [.78, .62], [0, .16], [0, 0], [.84, 0]],
   ];
 
-  function projectFinMarking(u, v, side, acPos, pitch, roll, cam, width, height) {
+  function projectFinMarking(u, v, side, acPos, cam, width, height) {
     const y = lerp(finStations[1].y, finStations.at(-2).y, v);
     const end = finStations.findIndex(station => station.y >= y);
     const a = finStations[end - 1];
@@ -237,12 +219,12 @@ function createAjtScene(canvas, exhaustCanvas) {
     const z = lerp(lerp(a.zL, b.zL, t), lerp(a.zT, b.zT, t), u);
     const profile = u < .38 ? u / .38 : u < .76 ? lerp(1, .55, (u - .38) / .38) : lerp(.55, 0, (u - .76) / .24);
     const x = side * (lerp(a.th, b.th, t) * profile + .002);
-    return projectPoint(aircraftToWorld(x, y, z, acPos, pitch, roll), cam, width, height);
+    return projectPoint(aircraftToWorld(x, y, z, acPos), cam, width, height);
   }
 
-  function drawFinMarkings(acPos, pitch, roll, cam, width, height, theme) {
+  function drawFinMarkings(acPos, cam, width, height, theme) {
     const side = Math.sign(cam.x - acPos.x) || 1;
-    const project = ([u, v]) => projectFinMarking(u, v, side, acPos, pitch, roll, cam, width, height);
+    const project = ([u, v]) => projectFinMarking(u, v, side, acPos, cam, width, height);
     const paint = (points, color, filled, strokeWidth = 0) => {
       const projected = points.map(project);
       if (!projected.every(Boolean)) return;
@@ -289,7 +271,7 @@ function createAjtScene(canvas, exhaustCanvas) {
   // 5. Tall swept vertical stabilizer with dorsal fin fillet, RWR bullet tip pod,
   //    and signature Red & Blue swept Brave Eagle livery stripes!
   // =========================================================================
-  function buildAJTRenderables(state, acPos, pitchRad, rollRad, cam, width, height, theme) {
+  function buildAJTRenderables(state, acPos, cam, width, height, theme) {
     const faces = [];
     const segments = [];
 
@@ -298,7 +280,7 @@ function createAjtScene(canvas, exhaustCanvas) {
     const gear = state.gearDeploy;
 
     function vtx(lx, ly, lz) {
-      const wp = aircraftToWorld(lx, ly, lz, acPos, pitchRad, rollRad);
+      const wp = aircraftToWorld(lx, ly, lz, acPos);
       return projectPoint(wp, cam, width, height);
     }
 
@@ -1176,8 +1158,7 @@ function createAjtScene(canvas, exhaustCanvas) {
     exhaust.restore();
   }
 
-  function renderScene() {
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+  function renderScene(dpr) {
     const width = canvas.width;
     const height = canvas.height;
     const theme = THEMES[state.styleMode];
@@ -1196,27 +1177,37 @@ function createAjtScene(canvas, exhaustCanvas) {
     const rollRad = (state.rollOsc * Math.PI) / 180;
 
     const altMeters = state.altitudeFt * 0.3048;
-    const rotationLift = Math.sin(pitchRad) * 0.65 * (1 - smoothstep(0.65, 0.74, state.progress));
+    const sinPitch = Math.sin(pitchRad);
+    const rotationLift = sinPitch * 0.65 * (1 - smoothstep(0.65, 0.74, state.progress));
     const acPos = {
       x: 0,
       y: 1.40 + rotationLift + altMeters,
-      z: state.distanceM
+      z: state.distanceM,
+      cosRoll: Math.cos(rollRad),
+      sinRoll: Math.sin(rollRad),
+      cosPitch: Math.cos(pitchRad),
+      sinPitch
     };
 
     const climbLagY = Math.min(altMeters * 0.28, 12);
     const chaseOffset = lerp(2.45, 4.40, smoothstep(.69, 1, state.progress));
     const chaseDistance = 13.1;
+    const yaw = -Math.atan2(chaseOffset, chaseDistance) + .025;
+    const pitch = -0.165 + climbLagY * .006;
     const cam = {
       x: acPos.x + chaseOffset,
       y: acPos.y + 3.4 - climbLagY * .22 - 1.15 * smoothstep(.78, 1, state.progress),
       z: acPos.z - chaseDistance,
-      yaw: -Math.atan2(chaseOffset, chaseDistance) + .025,
-      pitch: -0.165 + climbLagY * .006,
+      yaw,
+      cosYaw: Math.cos(yaw),
+      sinYaw: Math.sin(yaw),
+      cosPitch: Math.cos(pitch),
+      sinPitch: Math.sin(pitch),
       fov: Math.min(width, height) * .98
     };
     nozzleProjections = [-.34, .34].map((x, index) => {
-      const start = projectPoint(aircraftToWorld(x, .01, -4.11, acPos, pitchRad, rollRad), cam, width, height);
-      const end = projectPoint(aircraftToWorld(x, .01, -6.65, acPos, pitchRad, rollRad), cam, width, height);
+      const start = projectPoint(aircraftToWorld(x, .01, -4.11, acPos), cam, width, height);
+      const end = projectPoint(aircraftToWorld(x, .01, -6.65, acPos), cam, width, height);
       return { start, end, phase: index * 1.8 };
     }).filter(nozzle => nozzle.start && nozzle.end);
 
@@ -1396,7 +1387,7 @@ function createAjtScene(canvas, exhaustCanvas) {
       { x: -0.9, y: 0, z: 1.5 }
     ];
     const shadowPts = shadowOutlineLocal.map(lp => {
-      const wp = aircraftToWorld(lp.x, lp.y, lp.z, acPos, pitchRad, rollRad);
+      const wp = aircraftToWorld(lp.x, lp.y, lp.z, acPos);
       return projectPoint({ x: wp.x, y: 0.02, z: wp.z }, cam, width, height);
     }).filter(Boolean);
 
@@ -1416,7 +1407,7 @@ function createAjtScene(canvas, exhaustCanvas) {
     }
 
     // 6. Unified Depth-Sorted 3D Aircraft Rendering (Colored Livery + Watertight HLR)
-    const renderables = buildAJTRenderables(state, acPos, pitchRad, rollRad, cam, width, height, theme);
+    const renderables = buildAJTRenderables(state, acPos, cam, width, height, theme);
 
     renderables.sort((a, b) => b.depth - a.depth);
 
@@ -1483,7 +1474,7 @@ function createAjtScene(canvas, exhaustCanvas) {
       }
     });
 
-    drawFinMarkings(acPos, pitchRad, rollRad, cam, width, height, theme);
+    drawFinMarkings(acPos, cam, width, height, theme);
 
     // Each airflow trail begins on the trailing cap of its wingtip rail.
     const vortexStrength = smoothstep(0.43, 0.58, state.progress);
@@ -1500,7 +1491,7 @@ function createAjtScene(canvas, exhaustCanvas) {
         for (let i = 0; i <= steps; i++) {
           const t = i / steps;
           const lp = wingtipWakePoint(side, t, vPhase, vortexStrength);
-          const wp = aircraftToWorld(lp.x, lp.y, lp.z, acPos, pitchRad, rollRad);
+          const wp = aircraftToWorld(lp.x, lp.y, lp.z, acPos);
           wp.y = Math.max(0.15, wp.y - t * 0.30);
           const sp = projectPoint(wp, cam, width, height);
           if (sp) {
@@ -1522,41 +1513,162 @@ function createAjtScene(canvas, exhaustCanvas) {
 
   if (!ctx || !exhaust) return null;
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let flameFrame = null;
+  let frame = null;
+  let target;
   let renderedProgress = null;
+  let lastExhaustFrame = -Infinity;
 
-  function drawFlameFrame(now) {
+  function renderFrame(now) {
+    const { progress, width: viewportWidth, height: viewportHeight, pixelRatio, gentleMotion } = target;
+    const maxPixels = 950000;
+    const ratio = Math.max(1, Math.min(2, pixelRatio,
+      Math.sqrt(maxPixels / (viewportWidth * viewportHeight))));
+    const width = Math.max(1, Math.round(viewportWidth * ratio));
+    const height = Math.max(1, Math.round(viewportHeight * ratio));
+    const resized = canvas.width !== width || canvas.height !== height;
+    if (resized) {
+      canvas.width = exhaustCanvas.width = width;
+      canvas.height = exhaustCanvas.height = height;
+    }
+    const moved = resized || renderedProgress !== progress;
+    if (moved) {
+      state.progress = progress;
+      updateKinematics(progress);
+      renderScene(ratio);
+      renderedProgress = progress;
+    }
     const p = state.progress;
-    const power = .30 + .70 * smoothstep(.025, .32, p) - .52 * smoothstep(.78, 1, p);
-    drawExhaust(now, power, reducedMotion.matches);
-    flameFrame = requestAnimationFrame(drawFlameFrame);
+    if (moved || now - lastExhaustFrame >= 32) {
+      const power = .30 + .70 * smoothstep(.025, .32, p) - .52 * smoothstep(.78, 1, p);
+      drawExhaust(now, power, gentleMotion);
+      lastExhaustFrame = now;
+    }
+    frame = requestAnimationFrame(renderFrame);
   }
 
   return {
-    update(progress, visible) {
-      if (!visible) {
-        if (flameFrame !== null) cancelAnimationFrame(flameFrame);
-        flameFrame = null;
+    update(next) {
+      if (!next.visible) {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
         return;
       }
-
-      const ratio = Math.min(2, window.devicePixelRatio || 1);
-      const width = Math.max(1, Math.round(canvas.clientWidth * ratio));
-      const height = Math.max(1, Math.round(canvas.clientHeight * ratio));
-      const resized = canvas.width !== width || canvas.height !== height;
-      if (resized) {
-        canvas.width = exhaustCanvas.width = width;
-        canvas.height = exhaustCanvas.height = height;
-      }
-
-      if (resized || renderedProgress !== progress) {
-        state.progress = progress;
-        updateKinematics(progress);
-        renderScene();
-        renderedProgress = progress;
-      }
-      if (flameFrame === null) flameFrame = requestAnimationFrame(drawFlameFrame);
+      target = next;
+      if (frame === null) frame = requestAnimationFrame(renderFrame);
     },
   };
+}
+
+const ajtSceneScript = typeof document === 'undefined' ? null : document.currentScript.src;
+
+function createAjtScene(canvas, exhaustCanvas) {
+  const pageColors = getComputedStyle(document.documentElement);
+  const colors = {
+    night: pageColors.getPropertyValue('--bg-deep').trim() || '#080f1d',
+    navy: pageColors.getPropertyValue('--bg-navy').trim() || '#111c30',
+    light: pageColors.getPropertyValue('--glow-hero').trim() || 'rgba(71,101,163,.22)',
+  };
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let worker;
+  if (typeof Worker === 'function' && typeof canvas.transferControlToOffscreen === 'function') {
+    try {
+      worker = new Worker(ajtSceneScript);
+    } catch {
+      // Local file previews can disallow workers.
+    }
+  }
+
+  let renderer;
+  let latest;
+  let sent;
+  let ready = false;
+  let awaitingWorker = false;
+  let transferStarted = false;
+
+  function startFallback() {
+    if (worker) worker.terminate();
+    worker = null;
+    if (transferStarted) {
+      const flightReplacement = canvas.cloneNode(false);
+      const exhaustReplacement = exhaustCanvas.cloneNode(false);
+      canvas.replaceWith(flightReplacement);
+      exhaustCanvas.replaceWith(exhaustReplacement);
+      canvas = flightReplacement;
+      exhaustCanvas = exhaustReplacement;
+    }
+    renderer = createAjtRenderer(canvas, exhaustCanvas, colors);
+    if (renderer && latest) renderer.update(latest);
+  }
+
+  function sendLatest() {
+    // Keep one message in flight so scrolling cannot queue stale poses.
+    if (!ready || awaitingWorker || !latest || latest === sent) return;
+    sent = latest;
+    awaitingWorker = true;
+    worker.postMessage({ state: sent });
+  }
+
+  if (worker) {
+    worker.onmessage = ({ data }) => {
+      if (data === 'ready') {
+        try {
+          transferStarted = true;
+          const flight = canvas.transferControlToOffscreen();
+          const exhaust = exhaustCanvas.transferControlToOffscreen();
+          worker.postMessage({ flight, exhaust, colors }, [flight, exhaust]);
+          ready = true;
+        } catch {
+          startFallback();
+          return;
+        }
+      } else if (data === 'failed') {
+        startFallback();
+        return;
+      } else {
+        awaitingWorker = false;
+      }
+      sendLatest();
+    };
+    worker.onerror = event => {
+      event.preventDefault();
+      startFallback();
+    };
+  } else {
+    startFallback();
+    if (!renderer) return null;
+  }
+
+  function update(progress, visible, width, height) {
+    const pixelRatio = window.devicePixelRatio || 1;
+    const gentleMotion = motion.matches;
+    if (latest && latest.progress === progress && latest.visible === visible &&
+        latest.width === width && latest.height === height &&
+        latest.pixelRatio === pixelRatio && latest.gentleMotion === gentleMotion) return;
+    latest = { progress, visible, width, height, pixelRatio, gentleMotion };
+    if (worker) sendLatest();
+    else if (renderer) renderer.update(latest);
+  }
+
+  motion.addEventListener('change', () => {
+    if (latest) update(latest.progress, latest.visible, latest.width, latest.height);
+  });
+  return { update };
+}
+
+if (typeof document === 'undefined') {
+  if (typeof requestAnimationFrame !== 'function') {
+    postMessage('failed');
+  } else {
+    let renderer;
+    self.onmessage = ({ data }) => {
+      if (data.flight) {
+        renderer = createAjtRenderer(data.flight, data.exhaust, data.colors);
+        if (!renderer) postMessage('failed');
+      } else if (renderer) {
+        renderer.update(data.state);
+        postMessage('received');
+      }
+    };
+    postMessage('ready');
+  }
 }

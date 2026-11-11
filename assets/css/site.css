@@ -485,7 +485,7 @@ main > .cream-section {
 .scene-arrival > .container { width: 100%; }
 
 @supports (animation-timeline: view()) and (animation-range: entry 0% entry 100%) and (view-timeline-inset: 4rem 0px) {
-  .has-scroll-scenes :is(.ticket-section, .countdown) {
+  .has-scroll-scenes :is(.ticket-section, .countdown, .takeoff-scene, .takeoff-scene:not([hidden]) + .ball-motto) {
     view-timeline-name: --arrival;
     /* Keep the timeline aligned with the stage when mobile browser controls retract. */
     view-timeline-inset: 4rem max(0px, calc(100dvh - 100svh));
@@ -503,6 +503,18 @@ main > .cream-section {
       transform: translateY(calc(var(--arrival-height) * -5 / 6)) scale(var(--arrival-scale, 1));
     }
     to { opacity: 1; transform: none; }
+  }
+
+  .has-scroll-scenes .takeoff-art,
+  .has-scroll-scenes .takeoff-scene:not([hidden]) + .ball-motto .motto-stage > .container {
+    animation: scene-approach auto linear both;
+    animation-timeline: --arrival;
+    animation-range: entry var(--approach-start, 0px) entry 100%;
+  }
+
+  @keyframes scene-approach {
+    from { transform: translateY(var(--approach-travel)); }
+    to { transform: none; }
   }
 }
 
@@ -702,8 +714,15 @@ main > .cream-section {
   color: var(--gold);
 }
 
+.takeoff-scene,
+.takeoff-scene + .ball-motto {
+  --takeoff-runway: clamp(19rem, 86svh, 55rem);
+  --takeoff-hold: calc(var(--scene-height) * 0.55);
+}
+
 .takeoff-scene {
-  --scene-runway: clamp(19rem, 86svh, 55rem);
+  --scene-runway: calc(var(--takeoff-runway) + var(--takeoff-hold));
+  --approach-travel: calc(var(--scene-height) * -0.86);
   background: var(--bg-deep);
 }
 
@@ -730,6 +749,14 @@ main > .cream-section {
   --scene-runway: clamp(11rem, 34svh, 20rem);
   background: var(--bg-deep);
   text-align: center;
+}
+
+.takeoff-scene:not([hidden]) + .ball-motto {
+  /* The next scene approaches while the preceding sticky stage is still held. */
+  margin-block-start: calc(-1 * var(--takeoff-hold));
+  --motto-lead: calc(var(--scene-height) - var(--takeoff-hold) + (var(--takeoff-runway) + var(--takeoff-hold)) * 0.08);
+  --approach-start: calc(var(--scene-height) - var(--motto-lead));
+  --approach-travel: calc(var(--motto-lead) * -0.72);
 }
 
 .motto-stage {
