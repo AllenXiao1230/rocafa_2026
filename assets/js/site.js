@@ -87,7 +87,9 @@
   }
 
   function measureOpening() {
-    openingStart = window.scrollY + opening.getBoundingClientRect().top - headerInner.offsetHeight;
+    var headerHeight = headerInner.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+    openingStart = window.scrollY + opening.getBoundingClientRect().top - headerHeight;
     openingWidth = openingStage.clientWidth;
     openingHeight = openingStage.clientHeight;
     var distance = Math.max(280, Math.min(820, openingHeight));
@@ -172,7 +174,7 @@
   if ('ResizeObserver' in window) {
     var openingObserver = new ResizeObserver(measureOpening);
     openingObserver.observe(openingStage);
-    openingObserver.observe(headerInner.parentElement);
+    openingObserver.observe(headerInner);
   } else {
     window.addEventListener('resize', measureOpening);
   }
@@ -303,7 +305,7 @@
     });
   }
 
-  connectDialog('open-kv-modal-btn', 'ROCAFA 2026', '《越境·寰宇》主視覺', '<p>午夜深藍星河與香檳金星軌環繞共舞的身影，呼應跨越天際、相聚平安夜的晚會主題。</p>');
+  connectDialog('open-kv-modal-btn', 'ROCAFA 2026', '《越境·寰宇》主視覺', '<img class="modal-key-visual" src="assets/materials/journal/theme-announcement.jpg" width="1080" height="1080" alt="金色星軌環繞地球與共舞的身影"><p>午夜深藍星河與香檳金星軌環繞共舞的身影，呼應跨越天際、相聚平安夜的晚會主題。</p>');
   connectDialog('open-transit-modal-btn', 'ROCAFA 2026', '交通方式與接駁說明', '<p><strong>大會接駁專車</strong>：填表時選擇接駁車，當日於高雄捷運紅線 R24 岡山高醫站搭車。詳細班次以官方公告為準。</p><p><strong>自行前往</strong>：導航至高雄市岡山區介壽西路 1 號（空軍軍官學校）。入場請出示法定身分證件正本。</p>');
 
   closeModalBtn.addEventListener('click', function () { modal.close(); });

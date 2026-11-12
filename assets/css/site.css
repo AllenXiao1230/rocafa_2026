@@ -48,10 +48,11 @@
   --stub-emblem: #172641;
   --quiet-rule: rgba(148,163,184,0.2);
   --warm-transition: clamp(6rem, 16vw, 14rem);
+  --header-height: 4rem;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { overflow-x: clip; }
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 1rem); }
 [hidden] { display: none !important; }
 :focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
 .cream-section :focus-visible { outline-color: var(--bronze); }
@@ -114,7 +115,7 @@ button:disabled { cursor: default; opacity: 0.55; }
   position: sticky; top: 0; z-index: 40;
   background: var(--bg-deep);
 }
-.header-inner { height: 4rem; display: flex; align-items: center; gap: 1.5rem; }
+.header-inner { min-height: 4rem; display: flex; align-items: center; gap: 1.5rem; }
 .header-actions { display: flex; align-items: center; gap: 0.5rem; }
 .brand-link { display: flex; align-items: center; gap: 0.75rem; }
 .brand-emblem { display: block; flex-shrink: 0; }
@@ -247,9 +248,7 @@ main > .cream-section {
 
 /* Hero and key visual */
 
-.opening-stage {
-  --scene-height: max(0px, calc(100svh - 4rem));
-}
+.opening-stage { --scene-height: max(0px, calc(100svh - var(--header-height))); }
 
 .opening-stage > section {
   padding-block: 0;
@@ -272,7 +271,7 @@ main > .cream-section {
 
 .has-scroll-scenes .opening-stage {
   position: sticky;
-  top: 4rem;
+  top: var(--header-height);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   min-block-size: var(--scene-height);
@@ -820,7 +819,6 @@ main > .cream-section {
 
 .journal-list {
   display: grid;
-  align-items: start;
   grid-auto-flow: column;
   grid-auto-columns: 35%;
   gap: 1.25rem;
@@ -871,11 +869,11 @@ main > .cream-section {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
   border-radius: 0 0 1rem 1rem;
   background: var(--bg-deep);
 }
-
-video.journal-media { aspect-ratio: 16 / 9; }
 
 .journal-link {
   display: flex;
@@ -1032,6 +1030,15 @@ video.journal-media { aspect-ratio: 16 / 9; }
 /* FAQ and final registration links */
 
 #modal-body p + p { margin-top: 0.75rem; }
+.modal-key-visual {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 50svh;
+  margin-bottom: 0.75rem;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
 .btn-gold, .btn-outline, .mobile-toggle, .mobile-menu a, #close-modal-btn {
   min-height: 44px;
 }
@@ -1132,11 +1139,11 @@ video.journal-media { aspect-ratio: 16 / 9; }
 @media (max-width: 900px) {
   .grid-3 { grid-template-columns: minmax(0, 1fr); }
   .desktop-nav { display: none; }
-  .header-inner { gap: 0.5rem; }
-  .header-actions { margin-inline-start: auto; }
-  .header-register-button { padding-inline: 0.75rem; }
+  .header-inner { flex-wrap: wrap; gap: 0.35rem 0.5rem; padding-block: 0.35rem; }
+  .header-actions { min-width: 0; max-width: 100%; margin-inline-start: auto; }
+  .header-register-button { padding-inline: 0.75rem; white-space: normal; text-align: center; }
   .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
-  .mobile-menu { max-height: calc(100dvh - 4rem); overflow-y: auto; }
+  .mobile-menu { position: absolute; inset: 100% 0 auto; max-height: calc(100dvh - var(--header-height)); overflow-y: auto; }
 }
 
 @media (max-width: 1000px) {
