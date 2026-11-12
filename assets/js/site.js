@@ -325,6 +325,29 @@
     modalOpener.focus({ preventScroll: true });
   });
 
+  var journalList = document.getElementById('journal-list');
+  var journalControls = document.querySelector('.journal-controls');
+  var journalButtons = journalControls.querySelectorAll('button');
+
+  function updateJournalControls() {
+    var maxScroll = journalList.scrollWidth - journalList.clientWidth;
+    journalControls.hidden = maxScroll <= 1;
+    journalButtons[0].setAttribute('aria-disabled', String(journalList.scrollLeft <= 1));
+    journalButtons[1].setAttribute('aria-disabled', String(journalList.scrollLeft >= maxScroll - 1));
+  }
+
+  journalButtons.forEach(function (button, index) {
+    button.addEventListener('click', function () {
+      if (button.getAttribute('aria-disabled') === 'true') return;
+      var cards = journalList.children;
+      var step = cards[1].offsetLeft - cards[0].offsetLeft;
+      journalList.scrollBy({ left: index === 0 ? -step : step, behavior: 'smooth' });
+    });
+  });
+  journalList.addEventListener('scroll', updateJournalControls, { passive: true });
+  window.addEventListener('resize', updateJournalControls);
+  updateJournalControls();
+
   if ('IntersectionObserver' in window) {
     var entranceTargets = document.querySelectorAll([
       '.ticket-star-trails',

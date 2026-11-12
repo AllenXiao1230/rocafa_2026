@@ -9,7 +9,7 @@
   <meta property="og:title" content="越境·寰宇｜2026 空軍官校禮儀示範晚會" />
   <meta property="og:description" content="12 月 24 日於空軍軍官學校舉行。查看活動資訊與報名流程。" />
   <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261111-story" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261113-journal" />
 </head>
 <body id="top">
   <a class="skip-link" href="#main-content">跳至主要內容</a>
@@ -167,9 +167,21 @@
     <section id="journal">
       <div class="container">
         <div class="section-heading">
-          <h2 class="section-title">寰宇航誌</h2>
+          <h2 class="section-title" id="journal-heading">寰宇航誌</h2>
         </div>
-        <div class="journal-list">
+        <div class="journal-controls" hidden>
+          <button class="btn-outline" type="button" aria-controls="journal-list" aria-label="上一張" aria-disabled="true">←</button>
+          <button class="btn-outline" type="button" aria-controls="journal-list" aria-label="下一張">→</button>
+        </div>
+        <div class="journal-list" id="journal-list" role="region" aria-labelledby="journal-heading" tabindex="0">
+          <article class="journal-entry">
+            <div class="journal-entry-body">
+              <p class="journal-meta">照片</p>
+              <h3 class="item-title">晚會身影</h3>
+            </div>
+            <a class="journal-link" href="https://www.instagram.com/p/Dfo7Pp6y1es/" target="_blank" rel="noopener noreferrer" aria-label="在 Instagram 查看原文：晚會身影">在 Instagram 查看原文</a>
+            <img class="journal-media" src="assets/materials/journal/ball-portrait.jpg" width="1068" height="804" alt="身穿藍色禮服的學員站在樓梯上" loading="lazy" decoding="async" />
+          </article>
           <article class="journal-entry">
             <div class="journal-entry-body">
               <p class="journal-meta"><time datetime="2026-11-09">11 月 9 日</time> · 照片</p>
@@ -458,6 +470,6 @@
   </dialog>
 
   <script src="assets/js/ajt-scene.js?v=20261112-climb"></script>
-  <script src="assets/js/site.js?v=20261112-climb"></script>
+  <script src="assets/js/site.js?v=20261113-journal"></script>
 </body>
 </html>
