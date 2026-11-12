@@ -814,6 +814,7 @@ main > .cream-section {
 
 /* Journal */
 #journal {
+  --journal-mat: #13293e;
   background: linear-gradient(var(--bg-deep), var(--bg-navy));
 }
 
@@ -865,14 +866,34 @@ main > .cream-section {
 .journal-entry-body .item-title { margin-top: 0.2rem; text-align: left; }
 .journal-entry-copy { margin-top: 0.45rem; color: var(--text-secondary); }
 
+.journal-frame {
+  flex: none;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+  padding: clamp(0.5rem, 1.35vw, 0.875rem);
+  border-top: 1px solid var(--rule);
+  border-radius: 0 0 1rem 1rem;
+  background: var(--journal-mat);
+}
+
 .journal-media {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
-  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 1px rgb(var(--gold-rgb) / 55%), 0 0.25rem 0.65rem rgb(0 0 0 / 22%);
+}
+
+video.journal-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: contain;
-  border-radius: 0 0 1rem 1rem;
-  background: var(--bg-deep);
+  background: var(--journal-mat);
 }
 
 .journal-link {
