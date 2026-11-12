@@ -1175,7 +1175,7 @@ video.journal-media {
 @media (max-width: 680px) {
   .journal-list {
     --journal-gap: 0.875rem;
-    --journal-inset: calc(var(--container-gutter) + clamp(1.6rem, 9vw, 3.5rem));
+    --journal-inset: clamp(2.25rem, 10.5vw, 4.25rem);
     grid-auto-columns: 100%;
     margin-inline: calc(-1 * var(--container-gutter));
   }
