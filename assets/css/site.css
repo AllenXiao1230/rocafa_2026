@@ -819,14 +819,18 @@ main > .cream-section {
 }
 
 .journal-list {
+  --journal-gap: 1.25rem;
+  --journal-inset: clamp(3rem, 8vw, 5rem);
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 35%;
-  gap: 1.25rem;
+  grid-auto-columns: calc((100% - var(--journal-gap)) / 2);
+  gap: var(--journal-gap);
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--journal-inset);
   scrollbar-color: var(--gold-deep) var(--bg-deep);
+  padding-inline: var(--journal-inset);
   padding-block: 0.375rem 0.875rem;
 }
 
@@ -1168,12 +1172,12 @@ video.journal-media {
   .mobile-menu { position: absolute; inset: 100% 0 auto; max-height: calc(100dvh - var(--header-height)); overflow-y: auto; }
 }
 
-@media (max-width: 1000px) {
-  .journal-list { grid-auto-columns: 47%; }
-}
-
 @media (max-width: 680px) {
-  .journal-list { grid-auto-columns: 87%; gap: 0.875rem; }
+  .journal-list {
+    --journal-gap: 0.875rem;
+    --journal-inset: clamp(1.6rem, 9vw, 3.5rem);
+    grid-auto-columns: 100%;
+  }
 }
 
 @media (max-width: 560px) {

@@ -331,6 +331,11 @@
   var journalControls = document.querySelector('.journal-controls');
   var journalButtons = journalControls.querySelectorAll('button');
 
+  function journalCardStep() {
+    var cards = journalList.children;
+    return cards[1].offsetLeft - cards[0].offsetLeft;
+  }
+
   function updateJournalControls() {
     var maxScroll = journalList.scrollWidth - journalList.clientWidth;
     journalControls.hidden = maxScroll <= 1;
@@ -341,13 +346,13 @@
   journalButtons.forEach(function (button, index) {
     button.addEventListener('click', function () {
       if (button.getAttribute('aria-disabled') === 'true') return;
-      var cards = journalList.children;
-      var step = cards[1].offsetLeft - cards[0].offsetLeft;
+      var step = journalCardStep();
       journalList.scrollBy({ left: index === 0 ? -step : step, behavior: 'smooth' });
     });
   });
   journalList.addEventListener('scroll', updateJournalControls, { passive: true });
   window.addEventListener('resize', updateJournalControls);
+  if (journalList.children.length >= 4) journalList.scrollLeft = journalCardStep();
   updateJournalControls();
 
   if ('IntersectionObserver' in window) {
