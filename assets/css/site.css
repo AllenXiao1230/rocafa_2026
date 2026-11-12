@@ -109,7 +109,7 @@ button:disabled { cursor: default; opacity: 0.55; }
 .btn-outline:hover { background: rgb(var(--gold-rgb) / 15%); }
 .btn-gold:active { background: var(--gold-deep); }
 .btn-outline:active, .mobile-toggle:active { background: rgb(var(--gold-rgb) / 24%); }
-.container { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+.container { --container-gutter: 1.25rem; max-width: 1120px; margin: 0 auto; padding-inline: var(--container-gutter); }
 /* Header */
 .site-header {
   position: sticky; top: 0; z-index: 40;
@@ -1175,8 +1175,9 @@ video.journal-media {
 @media (max-width: 680px) {
   .journal-list {
     --journal-gap: 0.875rem;
-    --journal-inset: clamp(1.6rem, 9vw, 3.5rem);
+    --journal-inset: calc(var(--container-gutter) + clamp(1.6rem, 9vw, 3.5rem));
     grid-auto-columns: 100%;
+    margin-inline: calc(-1 * var(--container-gutter));
   }
 }
 
