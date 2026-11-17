@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="跟著 AJT 勇鷹高教機從 36 跑道向北滑跑、抬頭與離地。">
+  <meta name="theme-color" content="#080f1d">
+  <title>AJT 勇鷹起飛｜RWY 36</title>
+  <link rel="stylesheet" href="style.css?v=wing-stripes">
+  <script defer src="takeoff.js?v=continuous-orange-exhaust"></script>
+</head>
+<body>
+  <div id="canvasContainer" class="scene">
+    <canvas id="sceneCanvas" role="img" aria-label="機尾追蹤視角，紅白藍勇鷹高教機從 36 端向北滑跑起飛"></canvas>
+    <canvas id="exhaustCanvas" aria-hidden="true"></canvas>
+  </div>
+
+  <header class="scene-heading">
+    <h1>勇鷹起飛</h1>
+    <p><span lang="en">RWY 36</span> <span>·</span> 向北起飛</p>
+  </header>
+
+  <main id="scrollTrack" aria-label="捲動控制勇鷹起飛動畫"></main>
+
+  <div class="scene-caption">
+    <p id="phase" class="phase" aria-live="polite">待命</p>
+    <div id="scrollHint">
+      <span>向下捲動起飛</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m18 9-6 6-6-6"/>
+      </svg>
+    </div>
+    <button id="replay" type="button" hidden>回到起點</button>
+  </div>
+
+  <noscript><p class="noscript">請啟用 JavaScript 以觀看起飛動畫。</p></noscript>
+</body>
+</html>

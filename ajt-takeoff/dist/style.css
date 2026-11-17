@@ -1,0 +1,81 @@
+@font-face {
+  font-family: "Noto Serif TC Event";
+  src: url("fonts/notoseriftc-event.woff2") format("woff2");
+  font-weight: 500 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans TC Event";
+  src: url("fonts/notosanstc-event.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --navy: #080f1d;
+  --gold: #e1bf88;
+  --ivory: #f7e3bd;
+  --muted: #c5cfdf;
+  background: var(--navy);
+  color: var(--ivory);
+  font-family: "Noto Sans TC Event", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.scene { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+canvas { display: block; width: 100%; height: 100%; }
+#exhaustCanvas { position: absolute; inset: 0; }
+#scrollTrack { min-height: 440vh; min-height: 440svh; }
+.scene-heading {
+  position: fixed;
+  inset: max(22px, env(safe-area-inset-top)) 18px auto;
+  text-align: center;
+  pointer-events: none;
+}
+h1 {
+  margin: 0;
+  font: 700 clamp(1.65rem, 4.5vw, 2.8rem)/1.15 "Noto Serif TC Event", "Noto Serif TC", "Songti TC", PMingLiU, serif;
+  letter-spacing: .1em;
+  padding-inline-start: .1em;
+}
+.scene-heading p { margin: 9px 0 0; color: var(--gold); font-size: .78rem; letter-spacing: .1em; }
+.scene-heading p span:first-child { font-family: Georgia, serif; }
+.scene-caption {
+  position: fixed;
+  inset: auto 16px max(17px, env(safe-area-inset-bottom));
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  pointer-events: none;
+}
+.phase { margin: 0; font-size: .83rem; letter-spacing: .12em; }
+#scrollHint {
+  display: grid;
+  justify-items: center;
+  color: var(--muted);
+  font-size: .78rem;
+  letter-spacing: .12em;
+}
+#scrollHint[hidden], #replay[hidden] { display: none; }
+#replay {
+  pointer-events: auto;
+  min-height: 44px;
+  padding-inline: 14px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: var(--navy);
+  color: var(--ivory);
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+#replay:hover { background: #22314c; }
+#replay:focus-visible { outline: 2px solid var(--ivory); outline-offset: 3px; }
+.noscript { position: fixed; inset: 46% 16px auto; text-align: center; }
+@media (max-height: 500px) {
+  .scene-heading { inset-block-start: 12px; }
+  h1 { font-size: 1.35rem; }
+  .scene-heading p { margin-block-start: 5px; }
+  .scene-caption { inset-block-end: 9px; }
+}
