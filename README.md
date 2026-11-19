@@ -2,7 +2,7 @@
 
 《越境·寰宇》活動網站，收錄晚會資訊、寰宇航誌、航程、報名流程與入場須知。 [正式網站](https://rocafa.2026.studioxuan.qzz.io/) · [官方 Instagram](https://www.instagram.com/rocafa_2026/)
 
-正式站程式與素材已於 2026 年 11 月 13 日比對至 `f1bd71b`。寰宇航誌目前有四篇貼文，採橫向滑動。手機版的媒體卡置中，左右預覽延伸到螢幕邊緣。 [正式站版本](https://github.com/AllenXiao1230/rocafa_2026/commit/f1bd71b) · [寰宇航誌](https://rocafa.2026.studioxuan.qzz.io/#journal)
+2026 年 11 月 19 日新增 Iceland Airlines 藝人公告，晚會資訊與航程同步列出高爾宣 OSN、黃祝賢儒 AZU、Who Cares 胡凱兒。寰宇航誌目前有五篇貼文，採橫向滑動。手機版的媒體卡置中，左右預覽延伸到螢幕邊緣。 [寰宇航誌](https://rocafa.2026.studioxuan.qzz.io/#journal)
 
 ## 本機預覽
 

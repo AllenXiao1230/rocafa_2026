@@ -359,7 +359,7 @@
     var entranceTargets = document.querySelectorAll([
       '.ticket-star-trails',
       '.section-heading > *',
-      '#info .card', '.journal-entry',
+      '#info .card', '.artist-lineup > *', '.journal-entry',
       '.schedule-entry', '.protocol-steps > .card',
       '.faq-item', '.footer-inner > *'
     ].join(','));
