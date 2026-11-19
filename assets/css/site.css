@@ -784,6 +784,7 @@ main > .cream-section {
 }
 
 #info { background: linear-gradient(var(--bg-navy), var(--bg-twilight)); }
+#lineup { background: var(--bg-twilight); }
 
 .info-card-summary {
   font-size: 0.9rem;
@@ -818,7 +819,7 @@ main > .cream-section {
   align-items: center;
   gap: clamp(2rem, 6vw, 5rem);
   max-width: 54rem;
-  margin: clamp(3rem, 7vw, 6rem) auto 0;
+  margin-inline: auto;
 }
 
 .artist-lineup-poster { display: block; width: 100%; height: auto; border-radius: 0.5rem; }
